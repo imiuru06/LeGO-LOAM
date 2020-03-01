@@ -226,7 +226,7 @@ public:
                 continue;
 
             //
-            if(horizonAngle <= - 60 && horizonAngle >= -120)
+            if(horizonAngle <= - 75 && horizonAngle >= -105)
               continue;
 
             rangeMat.at<float>(rowIdn, columnIdn) = range;
