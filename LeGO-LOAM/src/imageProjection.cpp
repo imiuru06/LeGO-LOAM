@@ -225,9 +225,10 @@ public:
             if (range < 0.1)
                 continue;
 
-            //
-            if(horizonAngle <= - 75 && horizonAngle >= -105)
-              continue;
+            // jw , using for skipping the unuseful data of Person pushing the cart 
+            if(horizonAngle <= - 60 && horizonAngle >= -120)
+		if(verticalAngle <= -10 && verticalAngle >= 10)
+	              continue;
 
             rangeMat.at<float>(rowIdn, columnIdn) = range;
 
