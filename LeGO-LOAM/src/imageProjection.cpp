@@ -214,6 +214,12 @@ public:
 
             horizonAngle = atan2(thisPoint.x, thisPoint.y) * 180 / M_PI;
 
+            // jw
+            /*
+            if(horizonAngle >= -60 && horizonAngle <= -120)
+              continue;
+              */
+
             columnIdn = -round((horizonAngle-90.0)/ang_res_x) + Horizon_SCAN/2;
             if (columnIdn >= Horizon_SCAN)
                 columnIdn -= Horizon_SCAN;
