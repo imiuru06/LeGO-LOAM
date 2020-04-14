@@ -23,6 +23,14 @@
 #include <pcl/common/common.h>
 #include <pcl/registration/icp.h>
 
+// by correctTransform
+#include <pcl/filters/passthrough.h>
+#include <pcl/console/parse.h>
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/sample_consensus/sac_model_cylinder.h>
+
+
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_datatypes.h>
 
