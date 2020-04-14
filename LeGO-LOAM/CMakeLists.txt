@@ -56,5 +56,9 @@ target_link_libraries(featureAssociation ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${
 add_executable(mapOptmization src/mapOptmization.cpp)
 target_link_libraries(mapOptmization ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} gtsam)
 
+add_executable(correctTransform src/correctTransform.cpp)
+add_dependencies(correctTransform ${catkin_EXPORTED_TARGETS} cloud_msgs_gencpp)
+target_link_libraries(correctTransform ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES} gtsam)
+
 add_executable(transformFusion src/transformFusion.cpp)
 target_link_libraries(transformFusion ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES})

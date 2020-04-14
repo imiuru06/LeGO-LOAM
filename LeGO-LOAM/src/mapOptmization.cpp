@@ -76,6 +76,8 @@ private:
     ros::Subscriber subLaserOdometry;
     ros::Subscriber subImu;
 
+    ros::Subscriber subSphereCloud;
+
     nav_msgs::Odometry odomAftMapped;
     tf::StampedTransform aftMappedTrans;
     tf::TransformBroadcaster tfBroadcaster;
@@ -115,6 +117,12 @@ private:
 
     pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLast; // surf feature set from odoOptimization
     pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLastDS; // downsampled corner featuer set from odoOptimization
+
+
+
+    pcl::PointCloud<PointType>::Ptr CloudSphereLast;
+
+
 
     pcl::PointCloud<PointType>::Ptr laserCloudOri;
     pcl::PointCloud<PointType>::Ptr coeffSel;
@@ -157,16 +165,24 @@ private:
     pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyPoses; // for global map visualization
     pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyFrames; // for global map visualization
 
+
+
+
+
     double timeLaserCloudCornerLast;
     double timeLaserCloudSurfLast;
     double timeLaserOdometry;
     double timeLaserCloudOutlierLast;
     double timeLastGloalMapPublish;
 
+    double timeCloudSphereLast;
+
     bool newLaserCloudCornerLast;
     bool newLaserCloudSurfLast;
     bool newLaserOdometry;
     bool newLaserCloudOutlierLast;
+
+    bool newCloudSphereLast;
 
 
     float transformLast[6];
@@ -240,6 +256,9 @@ public:
         subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
         subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
+        subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
+
+
         pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
         pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
         pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
@@ -283,6 +302,11 @@ public:
         laserCloudSurfTotalLast.reset(new pcl::PointCloud<PointType>()); // surf feature set from odoOptimization
         laserCloudSurfTotalLastDS.reset(new pcl::PointCloud<PointType>()); // downsampled surf featuer set from odoOptimization
 
+
+        CloudSphereLast.reset(new pcl::PointCloud<PointType>());
+
+
+
         laserCloudOri.reset(new pcl::PointCloud<PointType>());
         coeffSel.reset(new pcl::PointCloud<PointType>());
 
@@ -316,6 +340,8 @@ public:
         timeLaserCloudOutlierLast = 0;
         timeLastGloalMapPublish = 0;
 
+        timeCloudSphereLast = 0;
+
         timeLastProcessing = -1;
 
         newLaserCloudCornerLast = false;
@@ -323,6 +349,8 @@ public:
 
         newLaserOdometry = false;
         newLaserCloudOutlierLast = false;
+
+        newCloudSphereLast = false;
 
         for (int i = 0; i < 6; ++i){
             transformLast[i] = 0;
@@ -487,10 +515,12 @@ public:
 		    transformTobeMapped[2] = 0.998 * transformTobeMapped[2] + 0.002 * imuRollLast;
 		  }
 
-		for (int i = 0; i < 6; i++) {
-		    transformBefMapped[i] = transformSum[i];
-		    transformAftMapped[i] = transformTobeMapped[i];
-		}
+      ROS_INFO("transformUpdate");
+
+  		for (int i = 0; i < 6; i++) {
+  		    transformBefMapped[i] = transformSum[i];
+  		    transformAftMapped[i] = transformTobeMapped[i];
+  		}
     }
 
     void updatePointAssociateToMapSinCos(){
@@ -648,6 +678,15 @@ public:
         imuRoll[imuPointerLast] = roll;
         imuPitch[imuPointerLast] = pitch;
     }
+
+    void cloudSphereHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
+        timeCloudSphereLast = msg->header.stamp.toSec();
+        CloudSphereLast->clear();
+        pcl::fromROSMsg(*msg, *CloudSphereLast);
+        newCloudSphereLast = true;
+    }
+
+
 
     void publishTF(){
 
