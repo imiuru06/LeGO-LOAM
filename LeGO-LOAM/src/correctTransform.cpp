@@ -130,23 +130,57 @@ public:
       // Params related it following the utility.h
       // 1) get ROI Cloud around Pose3
       // 2) get
+      if (keyPoseOriginlast->points.empty() == true)
+        return;
 
       getCylinderParam();
-
 
       // ?) Pulish all data.
       pulishAll();
     }
 
     void getCylinderParam(){
-      if (keyPoseOriginlast->points.empty())
-        return;
 
       // keyPoseOriginlast is trajectory.
       // last idx is the present.
       // robot positiong
       int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
       int valueRange = 5;
+
+      geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
+                                 //(keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
+                                    (keyPoseOriginlast->points[idxKeyPoseOrigin].roll, -keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
+                                    // from mapOptimization, rpy was yrp orders...
+                                    // i want to find a xy plane vector of Base robot.
+      cout << "roll : " << keyPoseOriginlast->points[idxKeyPoseOrigin].roll*180/PI << endl;
+      cout << "pitch : " << keyPoseOriginlast->points[idxKeyPoseOrigin].pitch*180/PI << endl;
+      cout << "yaw : " << keyPoseOriginlast->points[idxKeyPoseOrigin].yaw*180/PI << endl;
+
+      // get the angle between Vectors
+      float gx = 0, gy = 0, gz = 0;   // groud
+      float bx = 0, by = 0, bz = 0, bw = 0, term = 0;   // base
+      float normVecb = 0, normVecg = 0;
+      float angleBetweenVectors = 0;
+      float angleDegree = 0;
+
+      //
+      bw = geoQuat.w;
+      // v = q_xyz/sqrt(1-qw*qw)
+      term = 1/sqrt(1-bw*bw);
+      bx = geoQuat.x*term;
+      by = geoQuat.y*term;
+      bz = geoQuat.z*term;
+      normVecb = sqrt(bx*bx+by*by+bz*bz);
+
+      if (abs(1-normVecb) > 0.005)
+        return;
+
+      cout << "base plane vector" << endl;
+      cout << bx << endl;
+      cout << by << endl;
+      cout << bz << endl;
+      cout << "Norm is " << normVecb << endl;
+
 
       pass.setInputCloud(laserCloudSurroundlast);
       pass.setFilterFieldName("x");
@@ -165,61 +199,40 @@ public:
       modelRansac.getInliers(inliersRansac);
       modelRansac.getModelCoefficients(normalVector);
 
-      // VectorXf need a resize of memory size because it is dynamic.
-      normalVector.resize(4);
-
       pcl::copyPointCloud(*cloudRoiFiltered, inliersRansac, *cloudRansacResult);
 
-      geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
-                                (keyPoseOriginlast->points[idxKeyPoseOrigin].roll, -keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, -keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
-
-
-      // get the angle between Vectors
-      float gx = 0, gy = 0, gz = 0;   // groud
-      float bx = 0, by = 0, bz = 0;   // base
-      float angleBetweenVectors = 0;
-      float angleDegree = 0;
-
-      gx = normalVector(0);
-      gy = normalVector(1);
-      gz = normalVector(2);
-      bx = geoQuat.x;
-      by = -geoQuat.y;
-      bz = -geoQuat.z;
+      // VectorXf need a resize of memory size because it is dynamic.
+      normalVector.resize(4);
+/*
+      gx = -normalVector(2);
+      gy = normalVector(0);
+      gz = normalVector(1);
+*/
+      gx = -normalVector(2);
+      gy = -normalVector(0);
+      gz = normalVector(1);
+      normVecg = sqrt(gx*gx+gy*gy+gz*gz);
 
       cout << "ground vector" << endl;
       cout << gx << endl;
       cout << gy << endl;
       cout << gz << endl;
-
-      cout << "base plane vector" << endl;
-      cout << bx << endl;
-      cout << by << endl;
-      cout << bz << endl;
+      cout << "Norm is " << normVecg << endl;
 
       // calculate the angle bet ground vector and base plane vector
-      angleBetweenVectors = acos((gx*bx+gy*by+gz*bz)/(sqrt(gx*gx+gy*gy+gz*gz)*sqrt(bx*bx+by*by+bz*bz)));
+      angleBetweenVectors = acos(gx*bx+gy*by+gz*bz);
       angleDegree = angleBetweenVectors*180/PI;// abs(angleBetweenVectors)*180/PI;
       cout << "angle radian : "  << angleBetweenVectors << endl;
       cout << "angle degree : "  << angleDegree << endl;
-      //cout << "cout : " << cntTest << endl;
-/*
-      maxAngRad = angleBetweenVectors;
-      cout << maxAngRad << endl;
-*/      /*
-      cout << "angle radian" << endl;
-      cout << "max:" << max( << endl;
-      cout << "angle degree" << endl;
-      cout << bx << endl;
-      */
-      // cout << angleDegree << endl;
 
     }
 
     void pulishAll(){
 
       if (pubSphereCloud.getNumSubscribers() == 0)
-          return;
+        return;
+      if (cloudRansacResult->points.empty())
+        return;
 
       sensor_msgs::PointCloud2 cloudMsgTemp;
       pcl::toROSMsg(*cloudRansacResult, cloudMsgTemp);
@@ -245,14 +258,15 @@ int main(int argc, char** argv)
     std::thread visualizeMapThread(&mapOptimization::visualizeGlobalMapThread, &MO);
 */
 
-    ros::Rate rate(10);
+    ros::Rate rate(1);
     while (ros::ok())
     {
 
 
         CT.runMain();
-        rate.sleep();
         ros::spinOnce();
+        rate.sleep();
+
 
     }
     ros::spin();
