@@ -719,7 +719,7 @@ public:
 
         if (pubKeyPoses.getNumSubscribers() != 0){
             sensor_msgs::PointCloud2 cloudMsgTemp;
-            pcl::toROSMsg(*cloudKeyPoses3D, cloudMsgTemp);
+            pcl::toROSMsg(*cloudKeyPoses6D, cloudMsgTemp);
             cloudMsgTemp.header.stamp = ros::Time().fromSec(timeLaserOdometry);
             cloudMsgTemp.header.frame_id = "/camera_init";
             pubKeyPoses.publish(cloudMsgTemp);
