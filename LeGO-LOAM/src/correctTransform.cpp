@@ -17,18 +17,13 @@ private:
 // ROS Publisher
   ros::Publisher pubSphereCloud;
 
-
-/*
-  ros::Publisher pubLaserCloudSurround;
-  ros::Publisher pubOdomAftMapped;
-  ros::Publisher pubKeyPoses;
-
 // ROS Publisher for Frame
-
+/*
   ros::Publisher pubHistoryKeyFrames;
   ros::Publisher pubIcpKeyFrames;
   ros::Publisher pubRecentKeyFrames;
 */
+
 // ROS Subscriber
 // for Susscriber
 // ros::Subscriber subVar;
@@ -40,26 +35,28 @@ private:
 // in constructor, set timeVar = false;
 
 /*
-  ros::Subscriber subLaserCloudCornerLast;
-  ros::Subscriber subLaserCloudSurfLast;
+
   ros::Subscriber subOutlierCloudLast;
   ros::Subscriber subLaserOdometry;
-  ros::Subscriber subImu;
-
 
 */
   ros::Subscriber subLaserCloudSurround;
   ros::Subscriber subKeyPoseOrigin;
 
 
-  pcl::PointCloud<PointType>::Ptr cloudRoiFiltered;
+
   pcl::PointCloud<PointType>::Ptr laserCloudSurroundlast; //
-  pcl::PointCloud<PointType>::Ptr keyPoseOriginlast;
+
+  pcl::PointCloud<PointType>::Ptr cloudRoiFiltered;
+  pcl::PointCloud<PointTypePose>::Ptr keyPoseOriginlast;
+
+  pcl::PointCloud<PointType>::Ptr cloudRansacResult;
+
+  vector<int> inliersRansac;
+  Eigen::VectorXf normalVector;
 
   // for roi filter
   pcl::PassThrough<PointType> pass;
-
-
 
   double timelaserCloudSurround;
   double timeKeyPoseOrigin;
@@ -68,17 +65,12 @@ private:
   bool newlaserCloudSurroundLast;
   bool newKeyPoseOrigin;
 
-
-
-
 public:
     // Constructor
     correctTransform():
         nh("~")
     {
       /*
-      pubKeyPoses = nh.advertise<sensor_msgs::PointCloud2>("/key_pose_origin", 2);
-      pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_surround", 2);
       pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
       */
       pubSphereCloud = nh.advertise<sensor_msgs::PointCloud2>("/cloud_sphere", 2);
@@ -91,7 +83,6 @@ public:
       subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
       subOutlierCloudLast = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud_last", 2, &mapOptimization::laserCloudOutlierLastHandler, this);
       subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
-      subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
       pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
       pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
@@ -104,13 +95,15 @@ public:
     void allocateMemory() {
       laserCloudSurroundlast.reset(new pcl::PointCloud<PointType>());
       cloudRoiFiltered.reset(new pcl::PointCloud<PointType>());
-      keyPoseOriginlast.reset(new pcl::PointCloud<PointType>());
+      keyPoseOriginlast.reset(new pcl::PointCloud<PointTypePose>());
+      cloudRansacResult.reset(new pcl::PointCloud<PointType>());
 
       timelaserCloudSurround = 0;
       timeKeyPoseOrigin = 0;
 
       newlaserCloudSurroundLast = false;
       newKeyPoseOrigin = false;
+
     }
 
     void keyPoseOriginHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
@@ -165,6 +158,62 @@ public:
 
       pass.filter (*cloudRoiFiltered);
 
+      pcl::SampleConsensusModelPlane<PointType>::Ptr modelTarget(new pcl::SampleConsensusModelPlane<PointType> (cloudRoiFiltered));
+      pcl::RandomSampleConsensus<PointType> modelRansac(modelTarget);
+      modelRansac.setDistanceThreshold(.15);
+      modelRansac.computeModel();
+      modelRansac.getInliers(inliersRansac);
+      modelRansac.getModelCoefficients(normalVector);
+
+      // VectorXf need a resize of memory size because it is dynamic.
+      normalVector.resize(4);
+
+      pcl::copyPointCloud(*cloudRoiFiltered, inliersRansac, *cloudRansacResult);
+
+      geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
+                                (keyPoseOriginlast->points[idxKeyPoseOrigin].roll, -keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, -keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
+
+
+      // get the angle between Vectors
+      float gx = 0, gy = 0, gz = 0;   // groud
+      float bx = 0, by = 0, bz = 0;   // base
+      float angleBetweenVectors = 0;
+      float angleDegree = 0;
+
+      gx = normalVector(0);
+      gy = normalVector(1);
+      gz = normalVector(2);
+      bx = geoQuat.x;
+      by = -geoQuat.y;
+      bz = -geoQuat.z;
+
+      cout << "ground vector" << endl;
+      cout << gx << endl;
+      cout << gy << endl;
+      cout << gz << endl;
+
+      cout << "base plane vector" << endl;
+      cout << bx << endl;
+      cout << by << endl;
+      cout << bz << endl;
+
+      // calculate the angle bet ground vector and base plane vector
+      angleBetweenVectors = acos((gx*bx+gy*by+gz*bz)/(sqrt(gx*gx+gy*gy+gz*gz)*sqrt(bx*bx+by*by+bz*bz)));
+      angleDegree = angleBetweenVectors*180/PI;// abs(angleBetweenVectors)*180/PI;
+      cout << "angle radian : "  << angleBetweenVectors << endl;
+      cout << "angle degree : "  << angleDegree << endl;
+      //cout << "cout : " << cntTest << endl;
+/*
+      maxAngRad = angleBetweenVectors;
+      cout << maxAngRad << endl;
+*/      /*
+      cout << "angle radian" << endl;
+      cout << "max:" << max( << endl;
+      cout << "angle degree" << endl;
+      cout << bx << endl;
+      */
+      // cout << angleDegree << endl;
+
     }
 
     void pulishAll(){
@@ -173,7 +222,7 @@ public:
           return;
 
       sensor_msgs::PointCloud2 cloudMsgTemp;
-      pcl::toROSMsg(*cloudRoiFiltered, cloudMsgTemp);
+      pcl::toROSMsg(*cloudRansacResult, cloudMsgTemp);
       cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
       cloudMsgTemp.header.frame_id = "/camera_init";
       pubSphereCloud.publish(cloudMsgTemp);
@@ -196,17 +245,15 @@ int main(int argc, char** argv)
     std::thread visualizeMapThread(&mapOptimization::visualizeGlobalMapThread, &MO);
 */
 
-    ros::Rate rate(200);
+    ros::Rate rate(10);
     while (ros::ok())
     {
-        ros::spinOnce();
-        /*
-        CT.run();
-        FA.runFeatureAssociation();
-        */
-        CT.runMain();
 
+
+        CT.runMain();
         rate.sleep();
+        ros::spinOnce();
+
     }
     ros::spin();
 /*

@@ -1,0 +1,526 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	0	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+daysUntilStale	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^daysUntilStale: 30$/;"	function	line:2
+daysUntilClose	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^daysUntilClose: 7$/;"	function	line:4
+exemptLabels	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^exemptLabels:$/;"	function	line:6
+staleLabel	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^staleLabel: wontfix$/;"	function	line:10
+markComment	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^markComment: >$/;"	function	line:12
+closeComment	/home/adip/catkin_ws/src/LeGO-LOAM/.github/stale.yml	/^closeComment: false$/;"	function	line:17
+TESTVARIABLES_H_	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^#define TESTVARIABLES_H_$/;"	macro	line:5
+maxAngRad	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float maxAngRad = 0;$/;"	variable	line:8
+minAngRad	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float minAngRad = 0;$/;"	variable	line:9
+maxAngDeg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float maxAngDeg = 0;$/;"	variable	line:10
+minAngDeg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float minAngDeg = 0;$/;"	variable	line:11
+cntTest	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^int cntTest = 0;$/;"	variable	line:15
+_UTILITY_LIDAR_ODOMETRY_H_	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^#define _UTILITY_LIDAR_ODOMETRY_H_$/;"	macro	line:2
+PI	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^#define PI /;"	macro	line:59
+PointType	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^typedef pcl::PointXYZI  PointType;$/;"	typedef	line:63
+pointCloudTopic	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string pointCloudTopic = "\/velodyne_points";$/;"	variable	line:65
+imuTopic	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string imuTopic = "\/imu\/data";$/;"	variable	line:66
+fileDirectory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string fileDirectory = "~\/catkin_ws\/pcd\/";$/;"	variable	line:69
+N_SCAN	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int N_SCAN = 16;$/;"	variable	line:72
+Horizon_SCAN	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int Horizon_SCAN = 1800;$/;"	variable	line:73
+ang_res_x	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_res_x = 0.2;$/;"	variable	line:74
+ang_res_y	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_res_y = 2.0;$/;"	variable	line:75
+ang_bottom	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_bottom = 15.0+0.1;$/;"	variable	line:76
+groundScanInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int groundScanInd = 7;$/;"	variable	line:77
+loopClosureEnableFlag	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const bool loopClosureEnableFlag = false;$/;"	variable	line:105
+mappingProcessInterval	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const double mappingProcessInterval = 0.3;$/;"	variable	line:106
+scanPeriod	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float scanPeriod = 0.1;$/;"	variable	line:108
+systemDelay	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int systemDelay = 0;$/;"	variable	line:109
+imuQueLength	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int imuQueLength = 200;$/;"	variable	line:110
+sensorMountAngle	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float sensorMountAngle = 0.0;$/;"	variable	line:112
+segmentTheta	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentTheta = 60.0\/180.0*M_PI; \/\/ decrese this value may improve accuracy$/;"	variable	line:113
+segmentValidPointNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int segmentValidPointNum = 5;$/;"	variable	line:114
+segmentValidLineNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int segmentValidLineNum = 3;$/;"	variable	line:115
+segmentAlphaX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentAlphaX = ang_res_x \/ 180.0 * M_PI;$/;"	variable	line:116
+segmentAlphaY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentAlphaY = ang_res_y \/ 180.0 * M_PI;$/;"	variable	line:117
+edgeFeatureNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int edgeFeatureNum = 2;$/;"	variable	line:120
+surfFeatureNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int surfFeatureNum = 4;$/;"	variable	line:121
+sectionsTotal	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int sectionsTotal = 6;$/;"	variable	line:122
+edgeThreshold	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float edgeThreshold = 0.1;$/;"	variable	line:123
+surfThreshold	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float surfThreshold = 0.1;$/;"	variable	line:124
+nearestFeatureSearchSqDist	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float nearestFeatureSearchSqDist = 25;$/;"	variable	line:125
+surroundingKeyframeSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float surroundingKeyframeSearchRadius = 50.0; \/\/ key frame that is within n meters from current pose will be considerd for scan-to-map optimization (when loop closure disabled)$/;"	variable	line:129
+surroundingKeyframeSearchNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int   surroundingKeyframeSearchNum = 50; \/\/ submap size (when loop closure enabled)$/;"	variable	line:130
+historyKeyframeSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float historyKeyframeSearchRadius = 7.0; \/\/ key frame that is within n meters from current pose will be considerd for loop closure$/;"	variable	line:132
+historyKeyframeSearchNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int   historyKeyframeSearchNum = 25; \/\/ 2n+1 number of hostory key frames will be fused into a submap for loop closure$/;"	variable	line:133
+historyKeyframeFitnessScore	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float historyKeyframeFitnessScore = 0.3; \/\/ the smaller the better alignment$/;"	variable	line:134
+globalMapVisualizationSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float globalMapVisualizationSearchRadius = 500.0; \/\/ key frames with in n meters will be visualized$/;"	variable	line:136
+smoothness_t	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct smoothness_t{$/;"	struct	line:139
+value	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float value;$/;"	member	line:140	struct:smoothness_t
+ind	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    size_t ind;$/;"	member	line:141	struct:smoothness_t
+by_value	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct by_value{$/;"	struct	line:144
+operator ()	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    bool operator()(smoothness_t const &left, smoothness_t const &right) {$/;"	function	line:145	struct:by_value	signature:(smoothness_t const &left, smoothness_t const &right)
+PointXYZIRPYT	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct PointXYZIRPYT$/;"	struct	line:153
+PCL_ADD_INTENSITY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    PCL_ADD_INTENSITY;$/;"	member	line:156	struct:PointXYZIRPYT
+roll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float roll;$/;"	member	line:157	struct:PointXYZIRPYT
+pitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float pitch;$/;"	member	line:158	struct:PointXYZIRPYT
+yaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float yaw;$/;"	member	line:159	struct:PointXYZIRPYT
+time	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    double time;$/;"	member	line:160	struct:PointXYZIRPYT
+EIGEN_ALIGN16	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^} EIGEN_ALIGN16;$/;"	variable	line:162	typeref:struct:PointXYZIRPYT
+PointTypePose	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^typedef PointXYZIRPYT  PointTypePose;$/;"	typedef	line:171
+FeatureAssociation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^class FeatureAssociation{$/;"	class	line:37	file:
+nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^	ros::NodeHandle nh;$/;"	member	line:41	class:FeatureAssociation	file:
+subLaserCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Subscriber subLaserCloud;$/;"	member	line:43	class:FeatureAssociation	file:
+subLaserCloudInfo	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Subscriber subLaserCloudInfo;$/;"	member	line:44	class:FeatureAssociation	file:
+subOutlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Subscriber subOutlierCloud;$/;"	member	line:45	class:FeatureAssociation	file:
+subImu	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Subscriber subImu;$/;"	member	line:46	class:FeatureAssociation	file:
+pubCornerPointsSharp	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubCornerPointsSharp;$/;"	member	line:48	class:FeatureAssociation	file:
+pubCornerPointsLessSharp	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubCornerPointsLessSharp;$/;"	member	line:49	class:FeatureAssociation	file:
+pubSurfPointsFlat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubSurfPointsFlat;$/;"	member	line:50	class:FeatureAssociation	file:
+pubSurfPointsLessFlat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubSurfPointsLessFlat;$/;"	member	line:51	class:FeatureAssociation	file:
+segmentedCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr segmentedCloud;$/;"	member	line:53	class:FeatureAssociation	file:
+outlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr outlierCloud;$/;"	member	line:54	class:FeatureAssociation	file:
+cornerPointsSharp	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr cornerPointsSharp;$/;"	member	line:56	class:FeatureAssociation	file:
+cornerPointsLessSharp	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr cornerPointsLessSharp;$/;"	member	line:57	class:FeatureAssociation	file:
+surfPointsFlat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr surfPointsFlat;$/;"	member	line:58	class:FeatureAssociation	file:
+surfPointsLessFlat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr surfPointsLessFlat;$/;"	member	line:59	class:FeatureAssociation	file:
+surfPointsLessFlatScan	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScan;$/;"	member	line:61	class:FeatureAssociation	file:
+surfPointsLessFlatScanDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScanDS;$/;"	member	line:62	class:FeatureAssociation	file:
+downSizeFilter	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilter;$/;"	member	line:64	class:FeatureAssociation	file:
+timeScanCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double timeScanCur;$/;"	member	line:66	class:FeatureAssociation	file:
+timeNewSegmentedCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double timeNewSegmentedCloud;$/;"	member	line:67	class:FeatureAssociation	file:
+timeNewSegmentedCloudInfo	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double timeNewSegmentedCloudInfo;$/;"	member	line:68	class:FeatureAssociation	file:
+timeNewOutlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double timeNewOutlierCloud;$/;"	member	line:69	class:FeatureAssociation	file:
+newSegmentedCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool newSegmentedCloud;$/;"	member	line:71	class:FeatureAssociation	file:
+newSegmentedCloudInfo	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool newSegmentedCloudInfo;$/;"	member	line:72	class:FeatureAssociation	file:
+newOutlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool newOutlierCloud;$/;"	member	line:73	class:FeatureAssociation	file:
+segInfo	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    cloud_msgs::cloud_info segInfo;$/;"	member	line:75	class:FeatureAssociation	file:
+cloudHeader	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    std_msgs::Header cloudHeader;$/;"	member	line:76	class:FeatureAssociation	file:
+systemInitCount	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int systemInitCount;$/;"	member	line:78	class:FeatureAssociation	file:
+systemInited	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool systemInited;$/;"	member	line:79	class:FeatureAssociation	file:
+cloudSmoothness	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    std::vector<smoothness_t> cloudSmoothness;$/;"	member	line:81	class:FeatureAssociation	file:
+cloudCurvature	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cloudCurvature[N_SCAN*Horizon_SCAN];$/;"	member	line:82	class:FeatureAssociation	file:
+cloudNeighborPicked	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int cloudNeighborPicked[N_SCAN*Horizon_SCAN];$/;"	member	line:83	class:FeatureAssociation	file:
+cloudLabel	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int cloudLabel[N_SCAN*Horizon_SCAN];$/;"	member	line:84	class:FeatureAssociation	file:
+imuPointerFront	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int imuPointerFront;$/;"	member	line:86	class:FeatureAssociation	file:
+imuPointerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int imuPointerLast;$/;"	member	line:87	class:FeatureAssociation	file:
+imuPointerLastIteration	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int imuPointerLastIteration;$/;"	member	line:88	class:FeatureAssociation	file:
+imuRollStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollStart, imuPitchStart, imuYawStart;$/;"	member	line:90	class:FeatureAssociation	file:
+imuPitchStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollStart, imuPitchStart, imuYawStart;$/;"	member	line:90	class:FeatureAssociation	file:
+imuYawStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollStart, imuPitchStart, imuYawStart;$/;"	member	line:90	class:FeatureAssociation	file:
+cosImuRollStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+cosImuPitchStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+cosImuYawStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+sinImuRollStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+sinImuPitchStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+sinImuYawStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float cosImuRollStart, cosImuPitchStart, cosImuYawStart, sinImuRollStart, sinImuPitchStart, sinImuYawStart;$/;"	member	line:91	class:FeatureAssociation	file:
+imuRollCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollCur, imuPitchCur, imuYawCur;$/;"	member	line:92	class:FeatureAssociation	file:
+imuPitchCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollCur, imuPitchCur, imuYawCur;$/;"	member	line:92	class:FeatureAssociation	file:
+imuYawCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollCur, imuPitchCur, imuYawCur;$/;"	member	line:92	class:FeatureAssociation	file:
+imuVeloXStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXStart, imuVeloYStart, imuVeloZStart;$/;"	member	line:94	class:FeatureAssociation	file:
+imuVeloYStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXStart, imuVeloYStart, imuVeloZStart;$/;"	member	line:94	class:FeatureAssociation	file:
+imuVeloZStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXStart, imuVeloYStart, imuVeloZStart;$/;"	member	line:94	class:FeatureAssociation	file:
+imuShiftXStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXStart, imuShiftYStart, imuShiftZStart;$/;"	member	line:95	class:FeatureAssociation	file:
+imuShiftYStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXStart, imuShiftYStart, imuShiftZStart;$/;"	member	line:95	class:FeatureAssociation	file:
+imuShiftZStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXStart, imuShiftYStart, imuShiftZStart;$/;"	member	line:95	class:FeatureAssociation	file:
+imuVeloXCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXCur, imuVeloYCur, imuVeloZCur;$/;"	member	line:97	class:FeatureAssociation	file:
+imuVeloYCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXCur, imuVeloYCur, imuVeloZCur;$/;"	member	line:97	class:FeatureAssociation	file:
+imuVeloZCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloXCur, imuVeloYCur, imuVeloZCur;$/;"	member	line:97	class:FeatureAssociation	file:
+imuShiftXCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXCur, imuShiftYCur, imuShiftZCur;$/;"	member	line:98	class:FeatureAssociation	file:
+imuShiftYCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXCur, imuShiftYCur, imuShiftZCur;$/;"	member	line:98	class:FeatureAssociation	file:
+imuShiftZCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftXCur, imuShiftYCur, imuShiftZCur;$/;"	member	line:98	class:FeatureAssociation	file:
+imuShiftFromStartXCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartXCur, imuShiftFromStartYCur, imuShiftFromStartZCur;$/;"	member	line:100	class:FeatureAssociation	file:
+imuShiftFromStartYCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartXCur, imuShiftFromStartYCur, imuShiftFromStartZCur;$/;"	member	line:100	class:FeatureAssociation	file:
+imuShiftFromStartZCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartXCur, imuShiftFromStartYCur, imuShiftFromStartZCur;$/;"	member	line:100	class:FeatureAssociation	file:
+imuVeloFromStartXCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartXCur, imuVeloFromStartYCur, imuVeloFromStartZCur;$/;"	member	line:101	class:FeatureAssociation	file:
+imuVeloFromStartYCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartXCur, imuVeloFromStartYCur, imuVeloFromStartZCur;$/;"	member	line:101	class:FeatureAssociation	file:
+imuVeloFromStartZCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartXCur, imuVeloFromStartYCur, imuVeloFromStartZCur;$/;"	member	line:101	class:FeatureAssociation	file:
+imuAngularRotationXCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXCur, imuAngularRotationYCur, imuAngularRotationZCur;$/;"	member	line:103	class:FeatureAssociation	file:
+imuAngularRotationYCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXCur, imuAngularRotationYCur, imuAngularRotationZCur;$/;"	member	line:103	class:FeatureAssociation	file:
+imuAngularRotationZCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXCur, imuAngularRotationYCur, imuAngularRotationZCur;$/;"	member	line:103	class:FeatureAssociation	file:
+imuAngularRotationXLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXLast, imuAngularRotationYLast, imuAngularRotationZLast;$/;"	member	line:104	class:FeatureAssociation	file:
+imuAngularRotationYLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXLast, imuAngularRotationYLast, imuAngularRotationZLast;$/;"	member	line:104	class:FeatureAssociation	file:
+imuAngularRotationZLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationXLast, imuAngularRotationYLast, imuAngularRotationZLast;$/;"	member	line:104	class:FeatureAssociation	file:
+imuAngularFromStartX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularFromStartX, imuAngularFromStartY, imuAngularFromStartZ;$/;"	member	line:105	class:FeatureAssociation	file:
+imuAngularFromStartY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularFromStartX, imuAngularFromStartY, imuAngularFromStartZ;$/;"	member	line:105	class:FeatureAssociation	file:
+imuAngularFromStartZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularFromStartX, imuAngularFromStartY, imuAngularFromStartZ;$/;"	member	line:105	class:FeatureAssociation	file:
+imuTime	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double imuTime[imuQueLength];$/;"	member	line:107	class:FeatureAssociation	file:
+imuRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRoll[imuQueLength];$/;"	member	line:108	class:FeatureAssociation	file:
+imuPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuPitch[imuQueLength];$/;"	member	line:109	class:FeatureAssociation	file:
+imuYaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuYaw[imuQueLength];$/;"	member	line:110	class:FeatureAssociation	file:
+imuAccX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAccX[imuQueLength];$/;"	member	line:112	class:FeatureAssociation	file:
+imuAccY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAccY[imuQueLength];$/;"	member	line:113	class:FeatureAssociation	file:
+imuAccZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAccZ[imuQueLength];$/;"	member	line:114	class:FeatureAssociation	file:
+imuVeloX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloX[imuQueLength];$/;"	member	line:116	class:FeatureAssociation	file:
+imuVeloY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloY[imuQueLength];$/;"	member	line:117	class:FeatureAssociation	file:
+imuVeloZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloZ[imuQueLength];$/;"	member	line:118	class:FeatureAssociation	file:
+imuShiftX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftX[imuQueLength];$/;"	member	line:120	class:FeatureAssociation	file:
+imuShiftY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftY[imuQueLength];$/;"	member	line:121	class:FeatureAssociation	file:
+imuShiftZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftZ[imuQueLength];$/;"	member	line:122	class:FeatureAssociation	file:
+imuAngularVeloX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularVeloX[imuQueLength];$/;"	member	line:124	class:FeatureAssociation	file:
+imuAngularVeloY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularVeloY[imuQueLength];$/;"	member	line:125	class:FeatureAssociation	file:
+imuAngularVeloZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularVeloZ[imuQueLength];$/;"	member	line:126	class:FeatureAssociation	file:
+imuAngularRotationX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationX[imuQueLength];$/;"	member	line:128	class:FeatureAssociation	file:
+imuAngularRotationY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationY[imuQueLength];$/;"	member	line:129	class:FeatureAssociation	file:
+imuAngularRotationZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuAngularRotationZ[imuQueLength];$/;"	member	line:130	class:FeatureAssociation	file:
+pubLaserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubLaserCloudCornerLast;$/;"	member	line:134	class:FeatureAssociation	file:
+pubLaserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubLaserCloudSurfLast;$/;"	member	line:135	class:FeatureAssociation	file:
+pubLaserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubLaserOdometry;$/;"	member	line:136	class:FeatureAssociation	file:
+pubOutlierCloudLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    ros::Publisher pubOutlierCloudLast;$/;"	member	line:137	class:FeatureAssociation	file:
+skipFrameNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int skipFrameNum;$/;"	member	line:139	class:FeatureAssociation	file:
+systemInitedLM	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool systemInitedLM;$/;"	member	line:140	class:FeatureAssociation	file:
+laserCloudCornerLastNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int laserCloudCornerLastNum;$/;"	member	line:142	class:FeatureAssociation	file:
+laserCloudSurfLastNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int laserCloudSurfLastNum;$/;"	member	line:143	class:FeatureAssociation	file:
+pointSelCornerInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int pointSelCornerInd[N_SCAN*Horizon_SCAN];$/;"	member	line:145	class:FeatureAssociation	file:
+pointSearchCornerInd1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float pointSearchCornerInd1[N_SCAN*Horizon_SCAN];$/;"	member	line:146	class:FeatureAssociation	file:
+pointSearchCornerInd2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float pointSearchCornerInd2[N_SCAN*Horizon_SCAN];$/;"	member	line:147	class:FeatureAssociation	file:
+pointSelSurfInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int pointSelSurfInd[N_SCAN*Horizon_SCAN];$/;"	member	line:149	class:FeatureAssociation	file:
+pointSearchSurfInd1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float pointSearchSurfInd1[N_SCAN*Horizon_SCAN];$/;"	member	line:150	class:FeatureAssociation	file:
+pointSearchSurfInd2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float pointSearchSurfInd2[N_SCAN*Horizon_SCAN];$/;"	member	line:151	class:FeatureAssociation	file:
+pointSearchSurfInd3	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float pointSearchSurfInd3[N_SCAN*Horizon_SCAN];$/;"	member	line:152	class:FeatureAssociation	file:
+transformCur	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float transformCur[6];$/;"	member	line:154	class:FeatureAssociation	file:
+transformSum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float transformSum[6];$/;"	member	line:155	class:FeatureAssociation	file:
+imuRollLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollLast, imuPitchLast, imuYawLast;$/;"	member	line:157	class:FeatureAssociation	file:
+imuPitchLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollLast, imuPitchLast, imuYawLast;$/;"	member	line:157	class:FeatureAssociation	file:
+imuYawLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuRollLast, imuPitchLast, imuYawLast;$/;"	member	line:157	class:FeatureAssociation	file:
+imuShiftFromStartX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartX, imuShiftFromStartY, imuShiftFromStartZ;$/;"	member	line:158	class:FeatureAssociation	file:
+imuShiftFromStartY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartX, imuShiftFromStartY, imuShiftFromStartZ;$/;"	member	line:158	class:FeatureAssociation	file:
+imuShiftFromStartZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuShiftFromStartX, imuShiftFromStartY, imuShiftFromStartZ;$/;"	member	line:158	class:FeatureAssociation	file:
+imuVeloFromStartX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartX, imuVeloFromStartY, imuVeloFromStartZ;$/;"	member	line:159	class:FeatureAssociation	file:
+imuVeloFromStartY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartX, imuVeloFromStartY, imuVeloFromStartZ;$/;"	member	line:159	class:FeatureAssociation	file:
+imuVeloFromStartZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    float imuVeloFromStartX, imuVeloFromStartY, imuVeloFromStartZ;$/;"	member	line:159	class:FeatureAssociation	file:
+laserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudCornerLast;$/;"	member	line:161	class:FeatureAssociation	file:
+laserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfLast;$/;"	member	line:162	class:FeatureAssociation	file:
+laserCloudOri	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudOri;$/;"	member	line:163	class:FeatureAssociation	file:
+coeffSel	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::PointCloud<PointType>::Ptr coeffSel;$/;"	member	line:164	class:FeatureAssociation	file:
+kdtreeCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeCornerLast;$/;"	member	line:166	class:FeatureAssociation	file:
+kdtreeSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeSurfLast;$/;"	member	line:167	class:FeatureAssociation	file:
+pointSearchInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    std::vector<int> pointSearchInd;$/;"	member	line:169	class:FeatureAssociation	file:
+pointSearchSqDis	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    std::vector<float> pointSearchSqDis;$/;"	member	line:170	class:FeatureAssociation	file:
+pointOri	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+pointSel	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+tripod1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+tripod2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+tripod3	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+pointProj	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+coeff	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    PointType pointOri, pointSel, tripod1, tripod2, tripod3, pointProj, coeff;$/;"	member	line:172	class:FeatureAssociation	file:
+laserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    nav_msgs::Odometry laserOdometry;$/;"	member	line:174	class:FeatureAssociation	file:
+tfBroadcaster	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    tf::TransformBroadcaster tfBroadcaster;$/;"	member	line:176	class:FeatureAssociation	file:
+laserOdometryTrans	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    tf::StampedTransform laserOdometryTrans;$/;"	member	line:177	class:FeatureAssociation	file:
+isDegenerate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool isDegenerate;$/;"	member	line:179	class:FeatureAssociation	file:
+matP	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    cv::Mat matP;$/;"	member	line:180	class:FeatureAssociation	file:
+frameCount	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    int frameCount;$/;"	member	line:182	class:FeatureAssociation	file:
+FeatureAssociation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    FeatureAssociation():$/;"	function	line:186	class:FeatureAssociation	signature:()
+initializationValue	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void initializationValue()$/;"	function	line:208	class:FeatureAssociation	signature:()
+updateImuRollPitchYawStartSinCos	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void updateImuRollPitchYawStartSinCos(){$/;"	function	line:304	class:FeatureAssociation	signature:()
+ShiftToStartIMU	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void ShiftToStartIMU(float pointTime)$/;"	function	line:314	class:FeatureAssociation	signature:(float pointTime)
+VeloToStartIMU	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void VeloToStartIMU()$/;"	function	line:333	class:FeatureAssociation	signature:()
+TransformToStartIMU	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void TransformToStartIMU(PointType *p)$/;"	function	line:352	class:FeatureAssociation	signature:(PointType *p)
+AccumulateIMUShiftAndRotation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void AccumulateIMUShiftAndRotation()$/;"	function	line:379	class:FeatureAssociation	signature:()
+imuHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void imuHandler(const sensor_msgs::Imu::ConstPtr& imuIn)$/;"	function	line:418	class:FeatureAssociation	signature:(const sensor_msgs::Imu::ConstPtr& imuIn)
+laserCloudHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void laserCloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg){$/;"	function	line:448	class:FeatureAssociation	signature:(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
+outlierCloudHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void outlierCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msgIn){$/;"	function	line:461	class:FeatureAssociation	signature:(const sensor_msgs::PointCloud2ConstPtr& msgIn)
+laserCloudInfoHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void laserCloudInfoHandler(const cloud_msgs::cloud_infoConstPtr& msgIn)$/;"	function	line:471	class:FeatureAssociation	signature:(const cloud_msgs::cloud_infoConstPtr& msgIn)
+adjustDistortion	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void adjustDistortion()$/;"	function	line:478	class:FeatureAssociation	signature:()
+calculateSmoothness	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void calculateSmoothness()$/;"	function	line:608	class:FeatureAssociation	signature:()
+markOccludedPoints	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void markOccludedPoints()$/;"	function	line:630	class:FeatureAssociation	signature:()
+extractFeatures	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void extractFeatures()$/;"	function	line:667	class:FeatureAssociation	signature:()
+publishCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void publishCloud()$/;"	function	line:773	class:FeatureAssociation	signature:()
+TransformToStart	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void TransformToStart(PointType const * const pi, PointType * const po)$/;"	function	line:847	class:FeatureAssociation	signature:(PointType const * const pi, PointType * const po)
+TransformToEnd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void TransformToEnd(PointType const * const pi, PointType * const po)$/;"	function	line:872	class:FeatureAssociation	signature:(PointType const * const pi, PointType * const po)
+PluginIMURotation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void PluginIMURotation(float bcx, float bcy, float bcz, float blx, float bly, float blz,$/;"	function	line:942	class:FeatureAssociation	signature:(float bcx, float bcy, float bcz, float blx, float bly, float blz, float alx, float aly, float alz, float &acx, float &acy, float &acz)
+AccumulateRotation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void AccumulateRotation(float cx, float cy, float cz, float lx, float ly, float lz,$/;"	function	line:1002	class:FeatureAssociation	signature:(float cx, float cy, float cz, float lx, float ly, float lz, float &ox, float &oy, float &oz)
+rad2deg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double rad2deg(double radians)$/;"	function	line:1021	class:FeatureAssociation	signature:(double radians)
+deg2rad	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    double deg2rad(double degrees)$/;"	function	line:1026	class:FeatureAssociation	signature:(double degrees)
+findCorrespondingCornerFeatures	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void findCorrespondingCornerFeatures(int iterCount){$/;"	function	line:1031	class:FeatureAssociation	signature:(int iterCount)
+findCorrespondingSurfFeatures	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void findCorrespondingSurfFeatures(int iterCount){$/;"	function	line:1142	class:FeatureAssociation	signature:(int iterCount)
+calculateTransformationSurf	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool calculateTransformationSurf(int iterCount){$/;"	function	line:1257	class:FeatureAssociation	signature:(int iterCount)
+calculateTransformationCorner	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool calculateTransformationCorner(int iterCount){$/;"	function	line:1366	class:FeatureAssociation	signature:(int iterCount)
+calculateTransformation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    bool calculateTransformation(int iterCount){$/;"	function	line:1467	class:FeatureAssociation	signature:(int iterCount)
+checkSystemInitialization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void checkSystemInitialization(){$/;"	function	line:1592	class:FeatureAssociation	signature:()
+updateInitialGuess	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void updateInitialGuess(){$/;"	function	line:1626	class:FeatureAssociation	signature:()
+updateTransformation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void updateTransformation(){$/;"	function	line:1653	class:FeatureAssociation	signature:()
+integrateTransformation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void integrateTransformation(){$/;"	function	line:1684	class:FeatureAssociation	signature:()
+publishOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void publishOdometry(){$/;"	function	line:1714	class:FeatureAssociation	signature:()
+adjustOutlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void adjustOutlierCloud(){$/;"	function	line:1733	class:FeatureAssociation	signature:()
+publishCloudsLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void publishCloudsLast(){$/;"	function	line:1746	class:FeatureAssociation	signature:()
+runFeatureAssociation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^    void runFeatureAssociation()$/;"	function	line:1804	class:FeatureAssociation	signature:()
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/featureAssociation.cpp	/^int main(int argc, char** argv)$/;"	function	line:1853	signature:(int argc, char** argv)
+ImageProjection	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^class ImageProjection{$/;"	class	line:32	file:
+nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::NodeHandle nh;$/;"	member	line:35	class:ImageProjection	file:
+subLaserCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Subscriber subLaserCloud;$/;"	member	line:37	class:ImageProjection	file:
+pubFullCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubFullCloud;$/;"	member	line:39	class:ImageProjection	file:
+pubFullInfoCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubFullInfoCloud;$/;"	member	line:40	class:ImageProjection	file:
+pubGroundCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubGroundCloud;$/;"	member	line:42	class:ImageProjection	file:
+pubSegmentedCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubSegmentedCloud;$/;"	member	line:43	class:ImageProjection	file:
+pubSegmentedCloudPure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubSegmentedCloudPure;$/;"	member	line:44	class:ImageProjection	file:
+pubSegmentedCloudInfo	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubSegmentedCloudInfo;$/;"	member	line:45	class:ImageProjection	file:
+pubOutlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ros::Publisher pubOutlierCloud;$/;"	member	line:46	class:ImageProjection	file:
+laserCloudIn	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudIn;$/;"	member	line:48	class:ImageProjection	file:
+fullCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr fullCloud; \/\/ projected velodyne raw cloud, but saved in the form of 1-D matrix$/;"	member	line:50	class:ImageProjection	file:
+fullInfoCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr fullInfoCloud; \/\/ same as fullCloud, but with intensity - range$/;"	member	line:51	class:ImageProjection	file:
+groundCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr groundCloud;$/;"	member	line:53	class:ImageProjection	file:
+segmentedCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr segmentedCloud;$/;"	member	line:54	class:ImageProjection	file:
+segmentedCloudPure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr segmentedCloudPure;$/;"	member	line:55	class:ImageProjection	file:
+outlierCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    pcl::PointCloud<PointType>::Ptr outlierCloud;$/;"	member	line:56	class:ImageProjection	file:
+nanPoint	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    PointType nanPoint; \/\/ fill in fullCloud at each iteration$/;"	member	line:58	class:ImageProjection	file:
+rangeMat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    cv::Mat rangeMat; \/\/ range matrix for range image$/;"	member	line:60	class:ImageProjection	file:
+labelMat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    cv::Mat labelMat; \/\/ label matrix for segmentaiton marking$/;"	member	line:61	class:ImageProjection	file:
+groundMat	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    cv::Mat groundMat; \/\/ ground matrix for ground cloud marking$/;"	member	line:62	class:ImageProjection	file:
+labelCount	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    int labelCount;$/;"	member	line:63	class:ImageProjection	file:
+startOrientation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    float startOrientation;$/;"	member	line:65	class:ImageProjection	file:
+endOrientation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    float endOrientation;$/;"	member	line:66	class:ImageProjection	file:
+segMsg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    cloud_msgs::cloud_info segMsg; \/\/ info of segmented cloud$/;"	member	line:68	class:ImageProjection	file:
+cloudHeader	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    std_msgs::Header cloudHeader;$/;"	member	line:69	class:ImageProjection	file:
+neighborIterator	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    std::vector<std::pair<int8_t, int8_t> > neighborIterator; \/\/ neighbor iterator for segmentaiton process$/;"	member	line:71	class:ImageProjection	file:
+allPushedIndX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    uint16_t *allPushedIndX; \/\/ array for tracking points of a segmented object$/;"	member	line:73	class:ImageProjection	file:
+allPushedIndY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    uint16_t *allPushedIndY;$/;"	member	line:74	class:ImageProjection	file:
+queueIndX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    uint16_t *queueIndX; \/\/ array for breadth-first search process of segmentation$/;"	member	line:76	class:ImageProjection	file:
+queueIndY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    uint16_t *queueIndY;$/;"	member	line:77	class:ImageProjection	file:
+ImageProjection	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ImageProjection():$/;"	function	line:80	class:ImageProjection	signature:()
+allocateMemory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void allocateMemory(){$/;"	function	line:103	class:ImageProjection	signature:()
+resetParameters	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void resetParameters(){$/;"	function	line:138	class:ImageProjection	signature:()
+~ImageProjection	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    ~ImageProjection(){}$/;"	function	line:154	class:ImageProjection	signature:()
+copyPointCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void copyPointCloud(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg){$/;"	function	line:156	class:ImageProjection	signature:(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
+cloudHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void cloudHandler(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg){$/;"	function	line:166	class:ImageProjection	signature:(const sensor_msgs::PointCloud2ConstPtr& laserCloudMsg)
+findStartEndAngle	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void findStartEndAngle(){$/;"	function	line:184	class:ImageProjection	signature:()
+projectPointCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void projectPointCloud(){$/;"	function	line:196	class:ImageProjection	signature:()
+groundRemoval	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void groundRemoval(){$/;"	function	line:240	class:ImageProjection	signature:()
+cloudSegmentation	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void cloudSegmentation(){$/;"	function	line:292	class:ImageProjection	signature:()
+labelComponents	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void labelComponents(int row, int col){$/;"	function	line:350	class:ImageProjection	signature:(int row, int col)
+publishCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^    void publishCloud(){$/;"	function	line:443	class:ImageProjection	signature:()
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/imageProjection.cpp	/^int main(int argc, char** argv){$/;"	function	line:493	signature:(int argc, char** argv)
+mapOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^class mapOptimization{$/;"	class	line:49	file:
+gtSAMgraph	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    NonlinearFactorGraph gtSAMgraph;$/;"	member	line:53	class:mapOptimization	file:
+initialEstimate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    Values initialEstimate;$/;"	member	line:54	class:mapOptimization	file:
+optimizedEstimate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    Values optimizedEstimate;$/;"	member	line:55	class:mapOptimization	file:
+isam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ISAM2 *isam;$/;"	member	line:56	class:mapOptimization	file:
+isamCurrentEstimate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    Values isamCurrentEstimate;$/;"	member	line:57	class:mapOptimization	file:
+priorNoise	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    noiseModel::Diagonal::shared_ptr priorNoise;$/;"	member	line:59	class:mapOptimization	file:
+odometryNoise	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    noiseModel::Diagonal::shared_ptr odometryNoise;$/;"	member	line:60	class:mapOptimization	file:
+constraintNoise	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    noiseModel::Diagonal::shared_ptr constraintNoise;$/;"	member	line:61	class:mapOptimization	file:
+nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::NodeHandle nh;$/;"	member	line:63	class:mapOptimization	file:
+pubLaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubLaserCloudSurround;$/;"	member	line:65	class:mapOptimization	file:
+pubOdomAftMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubOdomAftMapped;$/;"	member	line:66	class:mapOptimization	file:
+pubKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubKeyPoses;$/;"	member	line:67	class:mapOptimization	file:
+pubHistoryKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubHistoryKeyFrames;$/;"	member	line:69	class:mapOptimization	file:
+pubIcpKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubIcpKeyFrames;$/;"	member	line:70	class:mapOptimization	file:
+pubRecentKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Publisher pubRecentKeyFrames;$/;"	member	line:71	class:mapOptimization	file:
+subLaserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subLaserCloudCornerLast;$/;"	member	line:73	class:mapOptimization	file:
+subLaserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subLaserCloudSurfLast;$/;"	member	line:74	class:mapOptimization	file:
+subOutlierCloudLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subOutlierCloudLast;$/;"	member	line:75	class:mapOptimization	file:
+subLaserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subLaserOdometry;$/;"	member	line:76	class:mapOptimization	file:
+subImu	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subImu;$/;"	member	line:77	class:mapOptimization	file:
+subSphereCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    ros::Subscriber subSphereCloud;$/;"	member	line:79	class:mapOptimization	file:
+odomAftMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    nav_msgs::Odometry odomAftMapped;$/;"	member	line:81	class:mapOptimization	file:
+aftMappedTrans	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    tf::StampedTransform aftMappedTrans;$/;"	member	line:82	class:mapOptimization	file:
+tfBroadcaster	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    tf::TransformBroadcaster tfBroadcaster;$/;"	member	line:83	class:mapOptimization	file:
+cornerCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    vector<pcl::PointCloud<PointType>::Ptr> cornerCloudKeyFrames;$/;"	member	line:85	class:mapOptimization	file:
+surfCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    vector<pcl::PointCloud<PointType>::Ptr> surfCloudKeyFrames;$/;"	member	line:86	class:mapOptimization	file:
+outlierCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    vector<pcl::PointCloud<PointType>::Ptr> outlierCloudKeyFrames;$/;"	member	line:87	class:mapOptimization	file:
+recentCornerCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> recentCornerCloudKeyFrames;$/;"	member	line:89	class:mapOptimization	file:
+recentSurfCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> recentSurfCloudKeyFrames;$/;"	member	line:90	class:mapOptimization	file:
+recentOutlierCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> recentOutlierCloudKeyFrames;$/;"	member	line:91	class:mapOptimization	file:
+latestFrameID	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int latestFrameID;$/;"	member	line:92	class:mapOptimization	file:
+surroundingExistingKeyPosesID	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    vector<int> surroundingExistingKeyPosesID;$/;"	member	line:94	class:mapOptimization	file:
+surroundingCornerCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> surroundingCornerCloudKeyFrames;$/;"	member	line:95	class:mapOptimization	file:
+surroundingSurfCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> surroundingSurfCloudKeyFrames;$/;"	member	line:96	class:mapOptimization	file:
+surroundingOutlierCloudKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    deque<pcl::PointCloud<PointType>::Ptr> surroundingOutlierCloudKeyFrames;$/;"	member	line:97	class:mapOptimization	file:
+previousRobotPosPoint	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType previousRobotPosPoint;$/;"	member	line:99	class:mapOptimization	file:
+currentRobotPosPoint	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType currentRobotPosPoint;$/;"	member	line:100	class:mapOptimization	file:
+cloudKeyPoses3D	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr cloudKeyPoses3D;$/;"	member	line:102	class:mapOptimization	file:
+cloudKeyPoses6D	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointTypePose>::Ptr cloudKeyPoses6D;$/;"	member	line:103	class:mapOptimization	file:
+surroundingKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr surroundingKeyPoses;$/;"	member	line:107	class:mapOptimization	file:
+surroundingKeyPosesDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr surroundingKeyPosesDS;$/;"	member	line:108	class:mapOptimization	file:
+laserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudCornerLast; \/\/ corner feature set from odoOptimization$/;"	member	line:110	class:mapOptimization	file:
+laserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfLast; \/\/ surf feature set from odoOptimization$/;"	member	line:111	class:mapOptimization	file:
+laserCloudCornerLastDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudCornerLastDS; \/\/ downsampled corner featuer set from odoOptimization$/;"	member	line:112	class:mapOptimization	file:
+laserCloudSurfLastDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfLastDS; \/\/ downsampled surf featuer set from odoOptimization$/;"	member	line:113	class:mapOptimization	file:
+laserCloudOutlierLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudOutlierLast; \/\/ corner feature set from odoOptimization$/;"	member	line:115	class:mapOptimization	file:
+laserCloudOutlierLastDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudOutlierLastDS; \/\/ corner feature set from odoOptimization$/;"	member	line:116	class:mapOptimization	file:
+laserCloudSurfTotalLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLast; \/\/ surf feature set from odoOptimization$/;"	member	line:118	class:mapOptimization	file:
+laserCloudSurfTotalLastDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLastDS; \/\/ downsampled corner featuer set from odoOptimization$/;"	member	line:119	class:mapOptimization	file:
+CloudSphereLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr CloudSphereLast;$/;"	member	line:123	class:mapOptimization	file:
+laserCloudOri	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudOri;$/;"	member	line:127	class:mapOptimization	file:
+coeffSel	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr coeffSel;$/;"	member	line:128	class:mapOptimization	file:
+laserCloudCornerFromMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudCornerFromMap;$/;"	member	line:130	class:mapOptimization	file:
+laserCloudSurfFromMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfFromMap;$/;"	member	line:131	class:mapOptimization	file:
+laserCloudCornerFromMapDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudCornerFromMapDS;$/;"	member	line:132	class:mapOptimization	file:
+laserCloudSurfFromMapDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr laserCloudSurfFromMapDS;$/;"	member	line:133	class:mapOptimization	file:
+kdtreeCornerFromMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeCornerFromMap;$/;"	member	line:135	class:mapOptimization	file:
+kdtreeSurfFromMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeSurfFromMap;$/;"	member	line:136	class:mapOptimization	file:
+kdtreeSurroundingKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeSurroundingKeyPoses;$/;"	member	line:138	class:mapOptimization	file:
+kdtreeHistoryKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeHistoryKeyPoses;$/;"	member	line:139	class:mapOptimization	file:
+nearHistoryCornerKeyFrameCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr nearHistoryCornerKeyFrameCloud;$/;"	member	line:142	class:mapOptimization	file:
+nearHistoryCornerKeyFrameCloudDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr nearHistoryCornerKeyFrameCloudDS;$/;"	member	line:143	class:mapOptimization	file:
+nearHistorySurfKeyFrameCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr nearHistorySurfKeyFrameCloud;$/;"	member	line:144	class:mapOptimization	file:
+nearHistorySurfKeyFrameCloudDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr nearHistorySurfKeyFrameCloudDS;$/;"	member	line:145	class:mapOptimization	file:
+latestCornerKeyFrameCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr latestCornerKeyFrameCloud;$/;"	member	line:147	class:mapOptimization	file:
+latestSurfKeyFrameCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr latestSurfKeyFrameCloud;$/;"	member	line:148	class:mapOptimization	file:
+latestSurfKeyFrameCloudDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr latestSurfKeyFrameCloudDS;$/;"	member	line:149	class:mapOptimization	file:
+kdtreeGlobalMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::KdTreeFLANN<PointType>::Ptr kdtreeGlobalMap;$/;"	member	line:151	class:mapOptimization	file:
+globalMapKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr globalMapKeyPoses;$/;"	member	line:152	class:mapOptimization	file:
+globalMapKeyPosesDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr globalMapKeyPosesDS;$/;"	member	line:153	class:mapOptimization	file:
+globalMapKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr globalMapKeyFrames;$/;"	member	line:154	class:mapOptimization	file:
+globalMapKeyFramesDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr globalMapKeyFramesDS;$/;"	member	line:155	class:mapOptimization	file:
+pointSearchInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    std::vector<int> pointSearchInd;$/;"	member	line:157	class:mapOptimization	file:
+pointSearchSqDis	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    std::vector<float> pointSearchSqDis;$/;"	member	line:158	class:mapOptimization	file:
+downSizeFilterCorner	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterCorner;$/;"	member	line:160	class:mapOptimization	file:
+downSizeFilterSurf	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterSurf;$/;"	member	line:161	class:mapOptimization	file:
+downSizeFilterOutlier	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterOutlier;$/;"	member	line:162	class:mapOptimization	file:
+downSizeFilterHistoryKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterHistoryKeyFrames; \/\/ for histor key frames of loop closure$/;"	member	line:163	class:mapOptimization	file:
+downSizeFilterSurroundingKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterSurroundingKeyPoses; \/\/ for surrounding key poses of scan-to-map optimization$/;"	member	line:164	class:mapOptimization	file:
+downSizeFilterGlobalMapKeyPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyPoses; \/\/ for global map visualization$/;"	member	line:165	class:mapOptimization	file:
+downSizeFilterGlobalMapKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyFrames; \/\/ for global map visualization$/;"	member	line:166	class:mapOptimization	file:
+timeLaserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLaserCloudCornerLast;$/;"	member	line:172	class:mapOptimization	file:
+timeLaserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLaserCloudSurfLast;$/;"	member	line:173	class:mapOptimization	file:
+timeLaserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLaserOdometry;$/;"	member	line:174	class:mapOptimization	file:
+timeLaserCloudOutlierLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLaserCloudOutlierLast;$/;"	member	line:175	class:mapOptimization	file:
+timeLastGloalMapPublish	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLastGloalMapPublish;$/;"	member	line:176	class:mapOptimization	file:
+timeCloudSphereLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeCloudSphereLast;$/;"	member	line:178	class:mapOptimization	file:
+newLaserCloudCornerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool newLaserCloudCornerLast;$/;"	member	line:180	class:mapOptimization	file:
+newLaserCloudSurfLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool newLaserCloudSurfLast;$/;"	member	line:181	class:mapOptimization	file:
+newLaserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool newLaserOdometry;$/;"	member	line:182	class:mapOptimization	file:
+newLaserCloudOutlierLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool newLaserCloudOutlierLast;$/;"	member	line:183	class:mapOptimization	file:
+newCloudSphereLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool newCloudSphereLast;$/;"	member	line:185	class:mapOptimization	file:
+transformLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformLast[6];$/;"	member	line:188	class:mapOptimization	file:
+transformSum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformSum[6];$/;"	member	line:189	class:mapOptimization	file:
+transformIncre	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformIncre[6];$/;"	member	line:190	class:mapOptimization	file:
+transformTobeMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformTobeMapped[6];$/;"	member	line:191	class:mapOptimization	file:
+transformBefMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformBefMapped[6];$/;"	member	line:192	class:mapOptimization	file:
+transformAftMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float transformAftMapped[6];$/;"	member	line:193	class:mapOptimization	file:
+imuPointerFront	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int imuPointerFront;$/;"	member	line:196	class:mapOptimization	file:
+imuPointerLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int imuPointerLast;$/;"	member	line:197	class:mapOptimization	file:
+imuTime	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double imuTime[imuQueLength];$/;"	member	line:199	class:mapOptimization	file:
+imuRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float imuRoll[imuQueLength];$/;"	member	line:200	class:mapOptimization	file:
+imuPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float imuPitch[imuQueLength];$/;"	member	line:201	class:mapOptimization	file:
+mtx	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    std::mutex mtx;$/;"	member	line:203	class:mapOptimization	file:
+timeLastProcessing	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeLastProcessing;$/;"	member	line:205	class:mapOptimization	file:
+pointOri	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType pointOri, pointSel, pointProj, coeff;$/;"	member	line:207	class:mapOptimization	file:
+pointSel	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType pointOri, pointSel, pointProj, coeff;$/;"	member	line:207	class:mapOptimization	file:
+pointProj	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType pointOri, pointSel, pointProj, coeff;$/;"	member	line:207	class:mapOptimization	file:
+coeff	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    PointType pointOri, pointSel, pointProj, coeff;$/;"	member	line:207	class:mapOptimization	file:
+matA0	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matA0;$/;"	member	line:209	class:mapOptimization	file:
+matB0	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matB0;$/;"	member	line:210	class:mapOptimization	file:
+matX0	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matX0;$/;"	member	line:211	class:mapOptimization	file:
+matA1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matA1;$/;"	member	line:213	class:mapOptimization	file:
+matD1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matD1;$/;"	member	line:214	class:mapOptimization	file:
+matV1	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matV1;$/;"	member	line:215	class:mapOptimization	file:
+isDegenerate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool isDegenerate;$/;"	member	line:217	class:mapOptimization	file:
+matP	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    cv::Mat matP;$/;"	member	line:218	class:mapOptimization	file:
+laserCloudCornerFromMapDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudCornerFromMapDSNum;$/;"	member	line:220	class:mapOptimization	file:
+laserCloudSurfFromMapDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudSurfFromMapDSNum;$/;"	member	line:221	class:mapOptimization	file:
+laserCloudCornerLastDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudCornerLastDSNum;$/;"	member	line:222	class:mapOptimization	file:
+laserCloudSurfLastDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudSurfLastDSNum;$/;"	member	line:223	class:mapOptimization	file:
+laserCloudOutlierLastDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudOutlierLastDSNum;$/;"	member	line:224	class:mapOptimization	file:
+laserCloudSurfTotalLastDSNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int laserCloudSurfTotalLastDSNum;$/;"	member	line:225	class:mapOptimization	file:
+potentialLoopFlag	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool potentialLoopFlag;$/;"	member	line:227	class:mapOptimization	file:
+timeSaveFirstCurrentScanForLoopClosure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    double timeSaveFirstCurrentScanForLoopClosure;$/;"	member	line:228	class:mapOptimization	file:
+closestHistoryFrameID	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int closestHistoryFrameID;$/;"	member	line:229	class:mapOptimization	file:
+latestFrameIDLoopCloure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    int latestFrameIDLoopCloure;$/;"	member	line:230	class:mapOptimization	file:
+aLoopIsClosed	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool aLoopIsClosed;$/;"	member	line:232	class:mapOptimization	file:
+cRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+sRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+cPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+sPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+cYaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+sYaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+tX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+tY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+tZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;$/;"	member	line:234	class:mapOptimization	file:
+ctRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+stRoll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+ctPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+stPitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+ctYaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+stYaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+tInX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+tInY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+tInZ	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;$/;"	member	line:235	class:mapOptimization	file:
+mapOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    mapOptimization():$/;"	function	line:241	class:mapOptimization	signature:()
+allocateMemory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void allocateMemory(){$/;"	function	line:285	class:mapOptimization	signature:()
+transformAssociateToMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void transformAssociateToMap()$/;"	function	line:402	class:mapOptimization	signature:()
+transformUpdate	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void transformUpdate()$/;"	function	line:489	class:mapOptimization	signature:()
+updatePointAssociateToMapSinCos	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void updatePointAssociateToMapSinCos(){$/;"	function	line:526	class:mapOptimization	signature:()
+pointAssociateToMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void pointAssociateToMap(PointType const * const pi, PointType * const po)$/;"	function	line:541	class:mapOptimization	signature:(PointType const * const pi, PointType * const po)
+updateTransformPointCloudSinCos	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void updateTransformPointCloudSinCos(PointTypePose *tIn){$/;"	function	line:557	class:mapOptimization	signature:(PointTypePose *tIn)
+transformPointCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr transformPointCloud(pcl::PointCloud<PointType>::Ptr cloudIn){$/;"	function	line:573	class:mapOptimization	signature:(pcl::PointCloud<PointType>::Ptr cloudIn)
+transformPointCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    pcl::PointCloud<PointType>::Ptr transformPointCloud(pcl::PointCloud<PointType>::Ptr cloudIn, PointTypePose* transformIn){$/;"	function	line:605	class:mapOptimization	signature:(pcl::PointCloud<PointType>::Ptr cloudIn, PointTypePose* transformIn)
+laserCloudOutlierLastHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void laserCloudOutlierLastHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:636	class:mapOptimization	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+laserCloudCornerLastHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void laserCloudCornerLastHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:643	class:mapOptimization	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+laserCloudSurfLastHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void laserCloudSurfLastHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:650	class:mapOptimization	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+laserOdometryHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void laserOdometryHandler(const nav_msgs::Odometry::ConstPtr& laserOdometry){$/;"	function	line:657	class:mapOptimization	signature:(const nav_msgs::Odometry::ConstPtr& laserOdometry)
+imuHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void imuHandler(const sensor_msgs::Imu::ConstPtr& imuIn){$/;"	function	line:671	class:mapOptimization	signature:(const sensor_msgs::Imu::ConstPtr& imuIn)
+cloudSphereHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void cloudSphereHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:682	class:mapOptimization	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+publishTF	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void publishTF(){$/;"	function	line:691	class:mapOptimization	signature:()
+publishKeyPosesAndFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void publishKeyPosesAndFrames(){$/;"	function	line:718	class:mapOptimization	signature:()
+visualizeGlobalMapThread	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void visualizeGlobalMapThread(){$/;"	function	line:737	class:mapOptimization	signature:()
+publishGlobalMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void publishGlobalMap(){$/;"	function	line:771	class:mapOptimization	signature:()
+loopClosureThread	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void loopClosureThread(){$/;"	function	line:815	class:mapOptimization	signature:()
+detectLoopClosure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool detectLoopClosure(){$/;"	function	line:827	class:mapOptimization	signature:()
+performLoopClosure	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void performLoopClosure(){$/;"	function	line:888	class:mapOptimization	signature:()
+pclPointTogtsamPose3	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    Pose3 pclPointTogtsamPose3(PointTypePose thisPoint){ \/\/ camera frame to lidar frame$/;"	function	line:960	class:mapOptimization	signature:(PointTypePose thisPoint)
+pclPointToAffine3fCameraToLidar	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    Eigen::Affine3f pclPointToAffine3fCameraToLidar(PointTypePose thisPoint){ \/\/ camera frame to lidar frame$/;"	function	line:965	class:mapOptimization	signature:(PointTypePose thisPoint)
+extractSurroundingKeyFrames	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void extractSurroundingKeyFrames(){$/;"	function	line:969	class:mapOptimization	signature:()
+downsampleCurrentScan	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void downsampleCurrentScan(){$/;"	function	line:1080	class:mapOptimization	signature:()
+cornerOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void cornerOptimization(int iterCount){$/;"	function	line:1106	class:mapOptimization	signature:(int iterCount)
+surfOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void surfOptimization(int iterCount){$/;"	function	line:1189	class:mapOptimization	signature:(int iterCount)
+LMOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    bool LMOptimization(int iterCount){$/;"	function	line:1242	class:mapOptimization	signature:(int iterCount)
+scan2MapOptimization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void scan2MapOptimization(){$/;"	function	line:1342	class:mapOptimization	signature:()
+saveKeyFramesAndFactor	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void saveKeyFramesAndFactor(){$/;"	function	line:1366	class:mapOptimization	signature:()
+correctPoses	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void correctPoses(){$/;"	function	line:1477	class:mapOptimization	signature:()
+clearCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void clearCloud(){$/;"	function	line:1501	class:mapOptimization	signature:()
+run	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^    void run(){$/;"	function	line:1508	class:mapOptimization	signature:()
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/mapOptmization.cpp	/^int main(int argc, char** argv)$/;"	function	line:1547	signature:(int argc, char** argv)
+TransformFusion	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^class TransformFusion{$/;"	class	line:35	file:
+nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    ros::NodeHandle nh;$/;"	member	line:39	class:TransformFusion	file:
+pubLaserOdometry2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    ros::Publisher pubLaserOdometry2;$/;"	member	line:41	class:TransformFusion	file:
+subLaserOdometry	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    ros::Subscriber subLaserOdometry;$/;"	member	line:42	class:TransformFusion	file:
+subOdomAftMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    ros::Subscriber subOdomAftMapped;$/;"	member	line:43	class:TransformFusion	file:
+laserOdometry2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    nav_msgs::Odometry laserOdometry2;$/;"	member	line:46	class:TransformFusion	file:
+laserOdometryTrans2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::StampedTransform laserOdometryTrans2;$/;"	member	line:47	class:TransformFusion	file:
+tfBroadcaster2	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::TransformBroadcaster tfBroadcaster2;$/;"	member	line:48	class:TransformFusion	file:
+map_2_camera_init_Trans	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::StampedTransform map_2_camera_init_Trans;$/;"	member	line:50	class:TransformFusion	file:
+tfBroadcasterMap2CameraInit	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::TransformBroadcaster tfBroadcasterMap2CameraInit;$/;"	member	line:51	class:TransformFusion	file:
+camera_2_base_link_Trans	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::StampedTransform camera_2_base_link_Trans;$/;"	member	line:53	class:TransformFusion	file:
+tfBroadcasterCamera2Baselink	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    tf::TransformBroadcaster tfBroadcasterCamera2Baselink;$/;"	member	line:54	class:TransformFusion	file:
+transformSum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    float transformSum[6];$/;"	member	line:56	class:TransformFusion	file:
+transformIncre	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    float transformIncre[6];$/;"	member	line:57	class:TransformFusion	file:
+transformMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    float transformMapped[6];$/;"	member	line:58	class:TransformFusion	file:
+transformBefMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    float transformBefMapped[6];$/;"	member	line:59	class:TransformFusion	file:
+transformAftMapped	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    float transformAftMapped[6];$/;"	member	line:60	class:TransformFusion	file:
+currentHeader	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    std_msgs::Header currentHeader;$/;"	member	line:62	class:TransformFusion	file:
+TransformFusion	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    TransformFusion(){$/;"	function	line:66	class:TransformFusion	signature:()
+transformAssociateToMap	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    void transformAssociateToMap()$/;"	function	line:94	class:TransformFusion	signature:()
+laserOdometryHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    void laserOdometryHandler(const nav_msgs::Odometry::ConstPtr& laserOdometry)$/;"	function	line:181	class:TransformFusion	signature:(const nav_msgs::Odometry::ConstPtr& laserOdometry)
+odomAftMappedHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^    void odomAftMappedHandler(const nav_msgs::Odometry::ConstPtr& odomAftMapped)$/;"	function	line:218	class:TransformFusion	signature:(const nav_msgs::Odometry::ConstPtr& odomAftMapped)
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/transformFusion.cpp	/^int main(int argc, char** argv)$/;"	function	line:243	signature:(int argc, char** argv)
+LeGO-LOAM	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^# LeGO-LOAM$/;"	function	line:1
+Dependency	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## Dependency$/;"	function	line:11
+Compile	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## Compile$/;"	function	line:24
+The system	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## The system$/;"	function	line:36
+New Lidar	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## New Lidar$/;"	function	line:56
+Run the package	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## Run the package$/;"	function	line:84
+New data-set	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## New data-set$/;"	function	line:98
+Cite *LeGO-LOAM*	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## Cite *LeGO-LOAM*$/;"	function	line:109
+Speed Optimization	/home/adip/catkin_ws/src/LeGO-LOAM/README.md	/^## Speed Optimization$/;"	function	line:123
+correctTransform	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^class correctTransform{$/;"	class	line:10	file:
+nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::NodeHandle nh;$/;"	member	line:15	class:correctTransform	file:
+pubSphereCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubSphereCloud;$/;"	member	line:18	class:correctTransform	file:
+subLaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subLaserCloudSurround;$/;"	member	line:43	class:correctTransform	file:
+subKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subKeyPoseOrigin;$/;"	member	line:44	class:correctTransform	file:
+laserCloudSurroundlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr laserCloudSurroundlast; \/\/$/;"	member	line:48	class:correctTransform	file:
+cloudRoiFiltered	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRoiFiltered;$/;"	member	line:50	class:correctTransform	file:
+keyPoseOriginlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointTypePose>::Ptr keyPoseOriginlast;$/;"	member	line:51	class:correctTransform	file:
+cloudRansacResult	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRansacResult;$/;"	member	line:53	class:correctTransform	file:
+inliersRansac	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  vector<int> inliersRansac;$/;"	member	line:55	class:correctTransform	file:
+normalVector	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  Eigen::VectorXf normalVector;$/;"	member	line:56	class:correctTransform	file:
+pass	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PassThrough<PointType> pass;$/;"	member	line:59	class:correctTransform	file:
+timelaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timelaserCloudSurround;$/;"	member	line:61	class:correctTransform	file:
+timeKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timeKeyPoseOrigin;$/;"	member	line:62	class:correctTransform	file:
+newlaserCloudSurroundLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newlaserCloudSurroundLast;$/;"	member	line:65	class:correctTransform	file:
+newKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newKeyPoseOrigin;$/;"	member	line:66	class:correctTransform	file:
+correctTransform	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    correctTransform():$/;"	function	line:70	class:correctTransform	signature:()
+allocateMemory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void allocateMemory() {$/;"	function	line:95	class:correctTransform	signature:()
+keyPoseOriginHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void keyPoseOriginHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:109	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+laserCloudSurroundHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void laserCloudSurroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:118	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+runMain	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void runMain(){$/;"	function	line:126	class:correctTransform	signature:()
+getCylinderParam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void getCylinderParam(){$/;"	function	line:141	class:correctTransform	signature:()
+pulishAll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void pulishAll(){$/;"	function	line:219	class:correctTransform	signature:()
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^int main(int argc, char** argv)$/;"	function	line:235	signature:(int argc, char** argv)
