@@ -1521,8 +1521,10 @@ public:
 
                 timeLastProcessing = timeLaserOdometry;
 
+                // Convert point cloud coordinates to the world coordinate system
                 transformAssociateToMap();
 
+                // Because the frequency of the frame number is greater than the frequency of the construction, it is necessary to extract the key frames for matching.
                 extractSurroundingKeyFrames();
 
                 downsampleCurrentScan();
@@ -1531,6 +1533,7 @@ public:
 
                 saveKeyFramesAndFactor();
 
+                // send TF Transform
                 correctPoses();
 
                 publishTF();

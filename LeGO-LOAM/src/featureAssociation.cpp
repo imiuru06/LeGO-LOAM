@@ -294,7 +294,7 @@ public:
 
         laserOdometryTrans.frame_id_ = "/camera_init";
         laserOdometryTrans.child_frame_id_ = "/laser_odom";
-        
+
         isDegenerate = false;
         matP = cv::Mat(6, 6, CV_32F, cv::Scalar::all(0));
 

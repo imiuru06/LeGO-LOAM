@@ -149,15 +149,16 @@ public:
 
       geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
                                  //(keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
-                                    (keyPoseOriginlast->points[idxKeyPoseOrigin].roll, -keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
+                                    (keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, -keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
                                     // from mapOptimization, rpy was yrp orders...
                                     // i want to find a xy plane vector of Base robot.
+                                    /*
       cout << "roll : " << keyPoseOriginlast->points[idxKeyPoseOrigin].roll*180/PI << endl;
       cout << "pitch : " << keyPoseOriginlast->points[idxKeyPoseOrigin].pitch*180/PI << endl;
       cout << "yaw : " << keyPoseOriginlast->points[idxKeyPoseOrigin].yaw*180/PI << endl;
-
+*/
       // get the angle between Vectors
-      float gx = 0, gy = 0, gz = 0;   // groud
+      float gx = 0, gy = 0, gz = 0;   // ground
       float bx = 0, by = 0, bz = 0, bw = 0, term = 0;   // base
       float normVecb = 0, normVecg = 0;
       float angleBetweenVectors = 0;
@@ -175,13 +176,22 @@ public:
       if (abs(1-normVecb) > 0.005)
         return;
 
+      ROS_INFO("base plane vector");
+      ROS_INFO("base plane vector bx : %f" , bx);
+      ROS_INFO("base plane vector by : %f" , by);
+      ROS_INFO("base plane vector bz : %f" , bz);
+      ROS_INFO("Norm is : %f" , normVecb);
+
+
+
+/*
       cout << "base plane vector" << endl;
       cout << bx << endl;
       cout << by << endl;
       cout << bz << endl;
       cout << "Norm is " << normVecb << endl;
-
-
+*/
+      // Set ROI FILTER
       pass.setInputCloud(laserCloudSurroundlast);
       pass.setFilterFieldName("x");
       pass.setFilterLimits (keyPoseOriginlast->points[idxKeyPoseOrigin].x-valueRange, keyPoseOriginlast->points[idxKeyPoseOrigin].x+valueRange);
@@ -192,6 +202,7 @@ public:
 
       pass.filter (*cloudRoiFiltered);
 
+      // Set RANSAC
       pcl::SampleConsensusModelPlane<PointType>::Ptr modelTarget(new pcl::SampleConsensusModelPlane<PointType> (cloudRoiFiltered));
       pcl::RandomSampleConsensus<PointType> modelRansac(modelTarget);
       modelRansac.setDistanceThreshold(.15);
@@ -203,28 +214,27 @@ public:
 
       // VectorXf need a resize of memory size because it is dynamic.
       normalVector.resize(4);
-/*
-      gx = -normalVector(2);
-      gy = normalVector(0);
-      gz = normalVector(1);
-*/
+
       gx = -normalVector(2);
       gy = -normalVector(0);
       gz = normalVector(1);
       normVecg = sqrt(gx*gx+gy*gy+gz*gz);
 
-      cout << "ground vector" << endl;
-      cout << gx << endl;
-      cout << gy << endl;
-      cout << gz << endl;
-      cout << "Norm is " << normVecg << endl;
+      ROS_INFO("ground vector");
+      ROS_INFO("ground vector gx : %f", gx);
+      ROS_INFO("ground vector gy : %f", gy);
+      ROS_INFO("ground vector gz : %f", gz);
+      ROS_INFO("Norm is : %f", normVecg);
 
       // calculate the angle bet ground vector and base plane vector
       angleBetweenVectors = acos(gx*bx+gy*by+gz*bz);
       angleDegree = angleBetweenVectors*180/PI;// abs(angleBetweenVectors)*180/PI;
+      ROS_INFO("angle radian : %f", angleBetweenVectors);
+      ROS_INFO("angle degree : %f", angleDegree);
+/*
       cout << "angle radian : "  << angleBetweenVectors << endl;
       cout << "angle degree : "  << angleDegree << endl;
-
+*/
     }
 
     void pulishAll(){
@@ -242,7 +252,6 @@ public:
 
       cloudRoiFiltered->clear();
     }
-
 };
 
 int main(int argc, char** argv)
@@ -262,14 +271,13 @@ int main(int argc, char** argv)
     while (ros::ok())
     {
 
-
         CT.runMain();
         ros::spinOnce();
         rate.sleep();
 
 
     }
-    ros::spin();
+    //ros::spin();
 /*
     loopthread.join();
     visualizeMapThread.join();
