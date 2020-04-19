@@ -620,7 +620,8 @@ public:
             float z1 = pointFrom->z;
 
             float x2 = x1;
-            float y2 = cos(transformIn->roll) * y1 - sin(transformIn->roll) * z1;
+            float y2 = cos(transformIn->roll) * y1 -                                     // (keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, -keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
+                                    // from mapOptimization, rpy was yrp orders...sin(transformIn->roll) * z1;
             float z2 = sin(transformIn->roll) * y1 + cos(transformIn->roll)* z1;
 
             pointTo.x = cos(transformIn->pitch) * x2 + sin(transformIn->pitch) * z2 + transformIn->x;
@@ -658,10 +659,15 @@ public:
         timeLaserOdometry = laserOdometry->header.stamp.toSec();
         double roll, pitch, yaw;
         geometry_msgs::Quaternion geoQuat = laserOdometry->pose.pose.orientation;
-        tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
-        transformSum[0] = -pitch;
-        transformSum[1] = -yaw;
+        tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //transformSum[0] = -pitch;
+        //transformSum[1] = -yaw;
+        //transformSum[2] = roll;
+        transformSum[0] = pitch;
+        transformSum[1] = yaw;
         transformSum[2] = roll;
+
         transformSum[3] = laserOdometry->pose.pose.position.x;
         transformSum[4] = laserOdometry->pose.pose.position.y;
         transformSum[5] = laserOdometry->pose.pose.position.z;
@@ -691,11 +697,14 @@ public:
     void publishTF(){
 
         geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
-                                  (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
-
+                                  // (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
+                                  (transformAftMapped[2], transformAftMapped[0], transformAftMapped[1]);
         odomAftMapped.header.stamp = ros::Time().fromSec(timeLaserOdometry);
-        odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
-        odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
+        //odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
+        //odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
+        odomAftMapped.pose.pose.orientation.x = geoQuat.y;
+        odomAftMapped.pose.pose.orientation.y = geoQuat.z;
+
         odomAftMapped.pose.pose.orientation.z = geoQuat.x;
         odomAftMapped.pose.pose.orientation.w = geoQuat.w;
         odomAftMapped.pose.pose.position.x = transformAftMapped[3];
@@ -710,7 +719,8 @@ public:
         pubOdomAftMapped.publish(odomAftMapped);
 
         aftMappedTrans.stamp_ = ros::Time().fromSec(timeLaserOdometry);
-        aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        // aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        aftMappedTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
         aftMappedTrans.setOrigin(tf::Vector3(transformAftMapped[3], transformAftMapped[4], transformAftMapped[5]));
         tfBroadcaster.sendTransform(aftMappedTrans);
     }
@@ -1450,6 +1460,7 @@ public:
             transformAftMapped[0] = latestEstimate.rotation().pitch();
             transformAftMapped[1] = latestEstimate.rotation().yaw();
             transformAftMapped[2] = latestEstimate.rotation().roll();
+
             transformAftMapped[3] = latestEstimate.translation().y();
             transformAftMapped[4] = latestEstimate.translation().z();
             transformAftMapped[5] = latestEstimate.translation().x();

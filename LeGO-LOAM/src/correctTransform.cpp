@@ -75,8 +75,9 @@ public:
       */
       pubSphereCloud = nh.advertise<sensor_msgs::PointCloud2>("/cloud_sphere", 2);
 
-
+      // subLaserCloudSurround = nh.subscribe<sensor_msgs::PointCloud2> ("/ground_cloud", 2, &correctTransform::laserCloudSurroundHandler, this);
       subLaserCloudSurround = nh.subscribe<sensor_msgs::PointCloud2> ("/laser_cloud_surround", 2, &correctTransform::laserCloudSurroundHandler, this);
+
       subKeyPoseOrigin = nh.subscribe<sensor_msgs::PointCloud2> ("/key_pose_origin", 2, &correctTransform::keyPoseOriginHandler, this);
       /*
       subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
@@ -147,9 +148,15 @@ public:
       int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
       int valueRange = 5;
 
+      float tfRoll = keyPoseOriginlast->points[idxKeyPoseOrigin].yaw;
+      float tfPitch = keyPoseOriginlast->points[idxKeyPoseOrigin].roll;
+      float tfYaw = keyPoseOriginlast->points[idxKeyPoseOrigin].pitch;
+
+
       geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
-                                 //(keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
-                                    (keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, -keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
+                                  // (keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch, keyPoseOriginlast->points[idxKeyPoseOrigin].yaw);
+                                    // (keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, -keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
+                                    (tfRoll, tfPitch, tfYaw);
                                     // from mapOptimization, rpy was yrp orders...
                                     // i want to find a xy plane vector of Base robot.
                                     /*
@@ -215,8 +222,8 @@ public:
       // VectorXf need a resize of memory size because it is dynamic.
       normalVector.resize(4);
 
-      gx = -normalVector(2);
-      gy = -normalVector(0);
+      gx = normalVector(2);
+      gy = normalVector(0);
       gz = normalVector(1);
       normVecg = sqrt(gx*gx+gy*gy+gz*gz);
 

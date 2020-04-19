@@ -129,8 +129,6 @@ private:
     float imuAngularRotationY[imuQueLength];
     float imuAngularRotationZ[imuQueLength];
 
-
-
     ros::Publisher pubLaserCloudCornerLast;
     ros::Publisher pubLaserCloudSurfLast;
     ros::Publisher pubLaserOdometry;
@@ -1712,7 +1710,19 @@ public:
     }
 
     void publishOdometry(){
-        geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(transformSum[2], -transformSum[0], -transformSum[1]);
+
+				float rollOriginTF = transformSum[2];
+				float pitchOriginTF = -transformSum[0];
+				float yawOriginTF = -transformSum[1];
+
+        // geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(transformSum[2], -transformSum[0], -transformSum[1]);
+				geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(rollOriginTF, pitchOriginTF, yawOriginTF);
+
+				// base on the map TF
+				// -geoQuat.y = ori of x
+				// -geoQuat.z = ori of y
+				// geoQuat.x = ori of z
+				// geoQuat.w = ori of w
 
         laserOdometry.header.stamp = cloudHeader.stamp;
         laserOdometry.pose.pose.orientation.x = -geoQuat.y;
