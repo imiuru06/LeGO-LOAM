@@ -32,7 +32,7 @@
 #include <pcl/surface/mls.h>
 #include <pcl/surface/bilateral_upsampling.h>
 
-
+#include <pcl/features/normal_3d.h>
 
 
 
@@ -81,7 +81,7 @@ using namespace std;
 
 typedef pcl::PointXYZI  PointType;
 
-extern const string pointCloudTopic = "/velodyne_points";
+extern const string pointCloudTopic = "/cylinder";
 extern const string imuTopic = "/imu/data";
 
 // Save pcd
