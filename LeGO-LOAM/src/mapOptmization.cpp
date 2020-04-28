@@ -76,7 +76,12 @@ private:
     ros::Subscriber subLaserOdometry;
     ros::Subscriber subImu;
 
+
+    // added
     ros::Subscriber subSphereCloud;
+    ros::Subscriber subQuaternionBaseRobot;
+    ros::Subscriber subQuaternionEnv;
+
 
     nav_msgs::Odometry odomAftMapped;
     tf::StampedTransform aftMappedTrans;
@@ -165,10 +170,6 @@ private:
     pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyPoses; // for global map visualization
     pcl::VoxelGrid<PointType> downSizeFilterGlobalMapKeyFrames; // for global map visualization
 
-
-
-
-
     double timeLaserCloudCornerLast;
     double timeLaserCloudSurfLast;
     double timeLaserOdometry;
@@ -176,6 +177,9 @@ private:
     double timeLastGloalMapPublish;
 
     double timeCloudSphereLast;
+    double timeQuaternionBaseRobot;
+    double timeQuaternionEnvironment;
+
 
     bool newLaserCloudCornerLast;
     bool newLaserCloudSurfLast;
@@ -234,6 +238,22 @@ private:
     float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;
     float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;
 
+    tf::Quaternion QuatBaseRobot;
+    tf::Quaternion QuatEnvironment;
+
+    double QuatBaseRobotTime[BaseRobotEnvQuatQueLength];
+    float QuatBaseRobotRoll[BaseRobotEnvQuatQueLength];
+    float QuatBaseRobotPitch[BaseRobotEnvQuatQueLength];
+
+    double QuatEnvironmentTime[BaseRobotEnvQuatQueLength];
+    float QuatEnvironmentRoll[BaseRobotEnvQuatQueLength];
+    float QuatEnvironmentPitch[BaseRobotEnvQuatQueLength];
+
+    int QuatBaseRobotPointerLast;
+    int QuatEnvironmentPointerLast;
+
+
+
 public:
 
 
@@ -241,45 +261,48 @@ public:
     mapOptimization():
         nh("~")
     {
+
     	ISAM2Params parameters;
-		parameters.relinearizeThreshold = 0.01;
-		parameters.relinearizeSkip = 1;
+		  parameters.relinearizeThreshold = 0.01;
+		  parameters.relinearizeSkip = 1;
     	isam = new ISAM2(parameters);
 
-        pubKeyPoses = nh.advertise<sensor_msgs::PointCloud2>("/key_pose_origin", 2);
-        pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_surround", 2);
-        pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
+      pubKeyPoses = nh.advertise<sensor_msgs::PointCloud2>("/key_pose_origin", 2);
+      pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_surround", 2);
+      pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
 
-        subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
-        subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
-        subOutlierCloudLast = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud_last", 2, &mapOptimization::laserCloudOutlierLastHandler, this);
-        subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
-        subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
+      subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
+      subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
+      subOutlierCloudLast = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud_last", 2, &mapOptimization::laserCloudOutlierLastHandler, this);
+      subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
+      subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
-        subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
+      subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
+      subQuaternionBaseRobot = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_BaseRobot", 2, &mapOptimization::quarternionBaseRobotHandler, this);
+      subQuaternionEnv = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_Environment", 2, &mapOptimization::quarternionEnvironmentHandler, this);
 
 
-        pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
-        pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
-        pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
+      pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
+      pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
+      pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
 
-        downSizeFilterCorner.setLeafSize(0.2, 0.2, 0.2);
-        downSizeFilterSurf.setLeafSize(0.4, 0.4, 0.4);
-        downSizeFilterOutlier.setLeafSize(0.4, 0.4, 0.4);
+      downSizeFilterCorner.setLeafSize(0.2, 0.2, 0.2);
+      downSizeFilterSurf.setLeafSize(0.4, 0.4, 0.4);
+      downSizeFilterOutlier.setLeafSize(0.4, 0.4, 0.4);
 
-        downSizeFilterHistoryKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for histor key frames of loop closure
-        downSizeFilterSurroundingKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for surrounding key poses of scan-to-map optimization
+      downSizeFilterHistoryKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for histor key frames of loop closure
+      downSizeFilterSurroundingKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for surrounding key poses of scan-to-map optimization
 
-        downSizeFilterGlobalMapKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for global map visualization
-        downSizeFilterGlobalMapKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for global map visualization
+      downSizeFilterGlobalMapKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for global map visualization
+      downSizeFilterGlobalMapKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for global map visualization
 
-        odomAftMapped.header.frame_id = "/camera_init";
-        odomAftMapped.child_frame_id = "/aft_mapped";
+      odomAftMapped.header.frame_id = "/camera_init";
+      odomAftMapped.child_frame_id = "/aft_mapped";
 
-        aftMappedTrans.frame_id_ = "/camera_init";
-        aftMappedTrans.child_frame_id_ = "/aft_mapped";
+      aftMappedTrans.frame_id_ = "/camera_init";
+      aftMappedTrans.child_frame_id_ = "/aft_mapped";
 
-        allocateMemory();
+      allocateMemory();
     }
 
     void allocateMemory(){
@@ -341,6 +364,9 @@ public:
         timeLastGloalMapPublish = 0;
 
         timeCloudSphereLast = 0;
+        timeQuaternionBaseRobot = 0;
+        timeQuaternionEnvironment = 0;
+
 
         timeLastProcessing = -1;
 
@@ -369,6 +395,23 @@ public:
             imuRoll[i] = 0;
             imuPitch[i] = 0;
         }
+
+        QuatBaseRobotPointerLast = -1;
+        QuatEnvironmentPointerLast = -1;
+
+        for (int i =0; i< BaseRobotEnvQuatQueLength; ++i){
+
+          QuatBaseRobotTime[i] = 0;
+          QuatBaseRobotRoll[i] = 0;
+          QuatBaseRobotPitch[i] = 0;
+
+          QuatEnvironmentTime[i] = 0;
+          QuatEnvironmentRoll[i] = 0;
+          QuatEnvironmentPitch[i] = 0;
+        }
+
+
+
 
         gtsam::Vector Vector6(6);
         Vector6 << 1e-6, 1e-6, 1e-6, 1e-8, 1e-8, 1e-6;
@@ -399,8 +442,7 @@ public:
         latestFrameID = 0;
     }
 
-    void transformAssociateToMap()
-    {
+    void transformAssociateToMap(){
         float x1 = cos(transformSum[1]) * (transformBefMapped[3] - transformSum[3])
                  - sin(transformSum[1]) * (transformBefMapped[5] - transformSum[5]);
         float y1 = transformBefMapped[4] - transformSum[4];
@@ -488,7 +530,9 @@ public:
 
     void transformUpdate()
     {
-		if (imuPointerLast >= 0) {
+      if (imuPointerLast >= 0) {
+        ROS_INFO("imu Value added");
+
 		    float imuRollLast = 0, imuPitchLast = 0;
 		    while (imuPointerFront != imuPointerLast) {
 		        if (timeLaserOdometry + scanPeriod < imuTime[imuPointerFront]) {
@@ -515,7 +559,33 @@ public:
 		    transformTobeMapped[2] = 0.998 * transformTobeMapped[2] + 0.002 * imuRollLast;
 		  }
 
-      ROS_INFO("transformUpdate");
+      //
+
+      if (QuatEnvironmentPointerLast >= 0){
+        ROS_INFO("Environment Correction Value Used");
+
+        float rollBaseRobot, pitchBaseRobot;
+        float rollEnvironment, pitchEnvironment;
+        float ratioFront, ratioBack;
+
+        pitchBaseRobot = QuatBaseRobotPitch[0];
+        rollBaseRobot = QuatBaseRobotRoll[0];
+
+        pitchEnvironment = QuatEnvironmentPitch[0];
+        rollEnvironment = QuatEnvironmentRoll[0];
+
+        ratioBack = 0.025;
+        ratioFront = 1-ratioBack;
+
+        if (abs(pitchBaseRobot - pitchEnvironment) <= 45){
+          transformTobeMapped[0] = ratioFront * transformTobeMapped[0] + ratioBack * (QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0]);
+          //ROS_INFO("gPitch - bPitch =  %f", (QuatBaseRobotPitch[0] - QuatEnvironmentPitch[0])*180/PI);
+        }
+        if (abs(rollBaseRobot - rollEnvironment) <= 45){
+          transformTobeMapped[2] = ratioFront * transformTobeMapped[2] + ratioBack * (QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0]);
+          //ROS_INFO("gRoll - bRoll =  %f", (QuatBaseRobotRoll[0] - QuatEnvironmentRoll[0])*180/PI);
+        }
+      }
 
   		for (int i = 0; i < 6; i++) {
   		    transformBefMapped[i] = transformSum[i];
@@ -620,9 +690,8 @@ public:
             float z1 = pointFrom->z;
 
             float x2 = x1;
-            float y2 = cos(transformIn->roll) * y1 -                                     // (keyPoseOriginlast->points[idxKeyPoseOrigin].yaw, -keyPoseOriginlast->points[idxKeyPoseOrigin].roll, keyPoseOriginlast->points[idxKeyPoseOrigin].pitch);
-                                    // from mapOptimization, rpy was yrp orders...sin(transformIn->roll) * z1;
-            float z2 = sin(transformIn->roll) * y1 + cos(transformIn->roll)* z1;
+            float y2 = cos(transformIn->roll) * y1 - sin(transformIn->roll) * z1;
+            float z2 = sin(transformIn->roll) * y1 + cos(transformIn->roll) * z1;
 
             pointTo.x = cos(transformIn->pitch) * x2 + sin(transformIn->pitch) * z2 + transformIn->x;
             pointTo.y = y2 + transformIn->y;
@@ -685,12 +754,45 @@ public:
         imuPitch[imuPointerLast] = pitch;
     }
 
+
+
     void cloudSphereHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
-        timeCloudSphereLast = msg->header.stamp.toSec();
-        CloudSphereLast->clear();
-        pcl::fromROSMsg(*msg, *CloudSphereLast);
-        newCloudSphereLast = true;
+      timeCloudSphereLast = msg->header.stamp.toSec();
+      CloudSphereLast->clear();
+      pcl::fromROSMsg(*msg, *CloudSphereLast);
+      newCloudSphereLast = true;
     }
+
+    void quarternionBaseRobotHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
+      //timeQuaternionBaseRobot = msg->header.stamp.toSec();
+      // QuatBaseRobot = msg->quaternion;
+      quaternionMsgToTF(msg->quaternion, QuatBaseRobot);
+
+      double roll, pitch, yaw;
+      tf::Matrix3x3(QuatBaseRobot).getRPY(roll, pitch, yaw);
+      QuatBaseRobotPointerLast = (QuatBaseRobotPointerLast + 1) % BaseRobotEnvQuatQueLength;
+      QuatBaseRobotPointerLast = 0;
+      QuatBaseRobotTime[QuatBaseRobotPointerLast] = msg->header.stamp.toSec();
+      QuatBaseRobotRoll[QuatBaseRobotPointerLast] = roll;
+      QuatBaseRobotPitch[QuatBaseRobotPointerLast] = pitch;
+
+    }
+
+    void quarternionEnvironmentHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
+      //timeQuaternionEnvironment= msg->header.stamp.toSec();
+      //QuatEnvironment = msg->quaternion;
+      tf::quaternionMsgToTF(msg->quaternion, QuatEnvironment);
+
+      double roll, pitch, yaw;
+      tf::Matrix3x3(QuatEnvironment).getRPY(roll, pitch, yaw);
+      QuatEnvironmentPointerLast = (QuatEnvironmentPointerLast + 1) % BaseRobotEnvQuatQueLength;
+      QuatEnvironmentPointerLast = 0;
+      QuatEnvironmentTime[QuatEnvironmentPointerLast] = msg->header.stamp.toSec();
+      QuatEnvironmentRoll[QuatEnvironmentPointerLast] = roll;
+      QuatEnvironmentPitch[QuatEnvironmentPointerLast] = pitch;
+
+    }
+
 
 
 
