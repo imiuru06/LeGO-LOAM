@@ -77,6 +77,10 @@ private:
 
   PointType nanPoint; // fill in fullCloud at each iteration
 
+  cv::Mat rangeMat;
+  cv::Mat labelMat; // label matrix for segmentaiton marking
+
+
 public:
     // Constructor
     correctTransform():
@@ -98,6 +102,10 @@ public:
       subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
       subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
       */
+      nanPoint.x = std::numeric_limits<float>::quiet_NaN();
+      nanPoint.y = std::numeric_limits<float>::quiet_NaN();
+      nanPoint.z = std::numeric_limits<float>::quiet_NaN();
+      nanPoint.intensity = -1;
 
       allocateMemory();
     }
@@ -125,15 +133,12 @@ public:
       xGround=0; yGround=0; zGround=0;   // ground
       xBase=0; yBase=0; zBase=0;   // base
 
-      nanPoint.x = std::numeric_limits<float>::quiet_NaN();
-      nanPoint.y = std::numeric_limits<float>::quiet_NaN();
-      nanPoint.z = std::numeric_limits<float>::quiet_NaN();
-      nanPoint.intensity = -1;
-
       cloudRoiFiltered->points.resize(N_SCAN*Horizon_SCAN);
 
-
       std::fill(cloudRoiFiltered->points.begin(), cloudRoiFiltered->points.end(), nanPoint);
+
+      rangeMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32F, cv::Scalar::all(FLT_MAX));
+      labelMat = cv::Mat(N_SCAN, Horizon_SCAN, CV_32S, cv::Scalar::all(0));
 
     }
 
@@ -150,6 +155,11 @@ public:
       timelaserCloudSurround = msg->header.stamp.toSec();
       laserCloudSurroundlast->clear();
       pcl::fromROSMsg(*msg, *laserCloudSurroundlast);
+
+      // Remove Nan points
+      std::vector<int> indices;
+      pcl::removeNaNFromPointCloud(*laserCloudSurroundlast, *laserCloudSurroundlast, indices);
+
       newlaserCloudSurroundLast = true;
     }
 
@@ -252,7 +262,8 @@ public:
       if (cloudRoiFiltered->points.empty())
         return;
 
-//      *cloudRoiFilteredUS = * cloudRoiFiltered;
+//      *cloudRoiFilteredUS = *
+;
 
       pcl::PointCloud<pcl::PointXYZ>::Ptr cloudFilterIn (new pcl::PointCloud<pcl::PointXYZ>());
       copyPointCloud(*cloudRoiFiltered, *cloudFilterIn);
@@ -478,25 +489,100 @@ public:
     void getCylinderParam(){
 //      if (cloudRoiFilteredDS->points.size() <= 100)
 //        return;
+
+      // for roi filter
+      pcl::PassThrough<PointType> pass_x;
+      pcl::PointCloud<PointType> xf_cloud;
+      pcl::PointCloud<PointType>::Ptr tmp(new pcl::PointCloud<PointType>());
+      *tmp = *laserCloudSurroundlast;
+      pass_x.setInputCloud(tmp);
+      pass_x.setFilterFieldName("x");
+      pass_x.setFilterLimits (-5, 5);
+      pass_x.filter (*laserCloudSurroundlast);
+
+      *tmp = *laserCloudSurroundlast;
+
+      pass_x.setInputCloud(tmp);
+      pass_x.setFilterFieldName("z");
+      pass_x.setFilterLimits (-0.4, 0.4);
+      pass_x.filter (*laserCloudSurroundlast);
+
+
+      ROS_INFO("==== getCylinderParam ====");
+
       pcl::NormalEstimation<PointType, pcl::Normal> ne;
       pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
       //pcl::KdTreeFLANN<PointType>::Ptr tree (new pcl::KdTreeFLANN<PointType> ());
       pcl::search::KdTree<PointType>::Ptr tree (new pcl::search::KdTree<PointType> ());
 
-
-      //ROS_INFO("======check 1st======");
       // range image projection
+
+
+      //pcl::PointCloud<pcl::PointXYZ>::Ptr cloudFilterOut (new pcl::PointCloud<pcl::PointXYZ>());
+      //copyPointCloud( *cloudFilterOut, *cloudRoiFiltered);
+
+
+      ne.setSearchMethod (tree);
+      ne.setInputCloud (laserCloudSurroundlast);
+      ne.setKSearch (50);
+      ne.compute (*cloud_normals);
+
+
+
+
+      // Set RANSAC
+      // Create the segmentation object for the model and set all the parameters
+      pcl::SACSegmentationFromNormals<PointType, pcl::Normal> seg;
+      pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
+      pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
+      seg.setOptimizeCoefficients (true);
+      seg.setModelType (pcl::SACMODEL_CYLINDER);
+      seg.setMethodType (pcl::SAC_RANSAC);
+
+      seg.setNormalDistanceWeight ( 1.0 );
+      seg.setMaxIterations ( 4000 );
+      seg.setDistanceThreshold ( 0.3 );
+      seg.setRadiusLimits ( 1.2, 1.5 );
+
+      seg.setAxis(Eigen::Vector3f(1,0,0));
+      seg.setInputCloud ( laserCloudSurroundlast );
+      seg.setInputNormals (cloud_normals);
+//      seg.setInputNormals ( cloudRoiFiltered );
+
+      // Segment the largest component from the cropped cloud
+      seg.segment (*inliers, *coefficients);
+      if (inliers->indices.size () == 0) {
+        ROS_WARN_STREAM ("Could not estimate a model for the given dataset.");
+        //break;
+      }
+
+      // Extract the planar inliers from the input cloud
+      pcl::ExtractIndices<PointType> extract;
+      extract.setInputCloud (laserCloudSurroundlast);
+      extract.setIndices(inliers);
+      extract.setNegative (false);
+
+      // Get the points associated with the planar surface
+      extract.filter (*cloudRANSACFiltered);
+      // ROS_INFO_STREAM("PointCloud representing the component: " << cloudRANSACFiltered->points.size () << " data points." );
+
+      // Remove the planar inliers, extract the rest
+      extract.setNegative (true);
+      extract.filter (*cloudRANSACFilteredRest);
+
       float verticalAngle, horizonAngle, range;
       size_t rowIdn, columnIdn, index, cloudSize;
 
       PointType thisPoint;
+      //ROS_INFO("======check 1st====== : %d", (int) cloudRoiFiltered->points.size());
 
-      cloudSize = laserCloudSurroundlast->points.size();
+      cloudSize = cloudRANSACFilteredRest->points.size();
       //ROS_INFO("size of laserCloudSurroundlast : %d", (int) cloudSize);
+
       for (size_t i = 0; i < cloudSize; ++i){
-        thisPoint.x = laserCloudSurroundlast->points[i].x;
-        thisPoint.y = laserCloudSurroundlast->points[i].y;
-        thisPoint.z = laserCloudSurroundlast->points[i].z;
+        thisPoint.x = cloudRANSACFilteredRest->points[i].x;
+        thisPoint.y = cloudRANSACFilteredRest->points[i].y;
+        thisPoint.z = cloudRANSACFilteredRest->points[i].z;
         // find the row and column index in the iamge for this point
         verticalAngle = atan2(thisPoint.z, sqrt(thisPoint.x * thisPoint.x + thisPoint.y * thisPoint.y)) * 180 / M_PI;
 
@@ -515,78 +601,55 @@ public:
 
         if (range < 0.1)
           continue;
-        if(horizonAngle <= - 60 && horizonAngle >= -120)
-          if(verticalAngle <= -10 && verticalAngle >= 10)
-            continue;
+        //  ROS_INFO("======check====== before for, horizonAngle : %f" , verticalAngle);
+        if(horizonAngle <= - 60 && horizonAngle >= -120){
+          //ROS_INFO("======check====== horizonAngle : %f" , horizonAngle);
+          continue;
+        }
+
+
 
         //ROS_INFO("======check 1st====== horizonAngle : %f", range);
-        // rangeMat.at<float>(rowIdn, columnIdn) = range;
+        rangeMat.at<float>(rowIdn, columnIdn) = range;
         thisPoint.intensity = (float)rowIdn + (float)columnIdn / 10000.0;
 
         index = columnIdn  + rowIdn * Horizon_SCAN;
-        //ROS_INFO("size of index : %d", (int) index);
+//        ROS_INFO("In for logic, index : %d", (int) index);
 
         //cloudRoiFiltered->points[index] = thisPoint;
         cloudRoiFiltered->points[index] = thisPoint;
+
+        cloudRoiFilteredUS->push_back(thisPoint);
         // cloudRoiFiltered->points[index].intensity = range; // the corresponding range of a point is saved as "intensity"
-        //ROS_INFO("size of thisPoint : %f", thisPoint.x);
+//        ROS_INFO("In for logic, point.x : %f", thisPoint.x);
+//        ROS_INFO("In for logic, point.y : %f", thisPoint.y);/
+//        ROS_INFO("In for logic, point.z : %f", thisPoint.z);
+
       }
+      /*
+      for (size_t i = 0; i < N_SCAN; ++i){
+        for (size_t j = 0; j < Horizon_SCAN; ++j){
+          if (rangeMat.at<float>(i,j) == FLT_MAX){
+              labelMat.at<int>(i,j) = -1;
+              if (labelMat.at<int>(i,j) > 0 && labelMat.at<int>(i,j) != 999999){
+                  pubEuclideanClustering->push_back(cloudRoiFiltered->points[j + i*Horizon_SCAN]);
+                  pubEuclideanClustering->points.back().intensity = labelMat.at<int>(i,j);
+              }
+
+          }
+        }
+      }*/
+
       //ROS_INFO("======check 2st====== : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("======check 3st====== : %d", (int) laserCloudSurroundlast->points.size());
 
       // jw , using for skipping the unuseful data of Person pushing the cart
 
 
-      ne.setSearchMethod (tree);
-      ne.setInputCloud (laserCloudSurroundlast);
-      ne.setKSearch (50);
-      ne.compute (*cloud_normals);
-
-
-      // Set RANSAC
-      // Create the segmentation object for the model and set all the parameters
-      pcl::SACSegmentationFromNormals<PointType, pcl::Normal> seg;
-      pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
-      pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
-      seg.setOptimizeCoefficients (true);
-      seg.setModelType (pcl::SACMODEL_CYLINDER);
-      seg.setMethodType (pcl::SAC_RANSAC);
-
-      seg.setNormalDistanceWeight ( 0.1 );
-      seg.setMaxIterations ( 2000 );
-      seg.setDistanceThreshold ( 0.2 );
-      seg.setRadiusLimits ( 1.0, 1.5 );
-
-      seg.setAxis(Eigen::Vector3f(1,0,0));
-      seg.setInputCloud ( cloudRoiFiltered );
-      seg.setInputNormals (cloud_normals);
-//      seg.setInputNormals ( cloudRoiFiltered );
-
-      // Segment the largest component from the cropped cloud
-      seg.segment (*inliers, *coefficients);
-      if (inliers->indices.size () == 0) {
-        ROS_WARN_STREAM ("Could not estimate a model for the given dataset.");
-        //break;
-      }
-
-      // Extract the planar inliers from the input cloud
-      pcl::ExtractIndices<PointType> extract;
-      extract.setInputCloud (cloudRoiFiltered);
-      extract.setIndices(inliers);
-      extract.setNegative (false);
-
-      // Get the points associated with the planar surface
-      extract.filter (*cloudRANSACFiltered);
-      // ROS_INFO_STREAM("PointCloud representing the component: " << cloudRANSACFiltered->points.size () << " data points." );
-
-      // Remove the planar inliers, extract the rest
-      extract.setNegative (true);
-      extract.filter (*cloudRANSACFilteredRest);
-
-      ROS_INFO("======getCylinderParam=====");
-
       //ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
       ROS_INFO("Size of cloudRANSACFiltered : %d", (int) cloudRANSACFiltered->points.size());
       ROS_INFO("Size of cloudRANSACFilteredRest : %d", (int) cloudRANSACFilteredRest->points.size());
+      ROS_INFO("Size of pubEuclideanClustering : %d", (int) cloudRoiFilteredUS->points.size());
 
     }
 
@@ -771,10 +834,10 @@ public:
       if (cloudRANSACFiltered->points.empty())
         return;
         */
-
+      ROS_INFO("In pulishAll");
       sensor_msgs::PointCloud2 cloudMsgTemp;
       //pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
-      pcl::toROSMsg(*cloudRoiFiltered, cloudMsgTemp);
+      pcl::toROSMsg(*cloudRoiFilteredUS, cloudMsgTemp);
 
       cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
       cloudMsgTemp.header.frame_id = "/velodyne";

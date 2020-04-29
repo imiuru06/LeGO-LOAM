@@ -85,7 +85,7 @@ public:
         pubFullCloud = nh.advertise<sensor_msgs::PointCloud2> ("/full_cloud_projected", 1);
         pubFullInfoCloud = nh.advertise<sensor_msgs::PointCloud2> ("/full_cloud_info", 1);
 
-        //pubGroundCloud = nh.advertise<sensor_msgs::PointCloud2> ("/ground_cloud", 1);
+        pubGroundCloud = nh.advertise<sensor_msgs::PointCloud2> ("/ground_cloud", 1);
         pubSegmentedCloud = nh.advertise<sensor_msgs::PointCloud2> ("/segmented_cloud", 1);
         pubSegmentedCloudPure = nh.advertise<sensor_msgs::PointCloud2> ("/segmented_cloud_pure", 1);
         pubSegmentedCloudInfo = nh.advertise<cloud_msgs::cloud_info> ("/segmented_cloud_info", 1);
@@ -200,6 +200,7 @@ public:
         PointType thisPoint;
 
         cloudSize = laserCloudIn->points.size();
+        ROS_INFO("======check 1st====== : %d", (int) cloudSize);
 
         for (size_t i = 0; i < cloudSize; ++i){
 
@@ -234,6 +235,8 @@ public:
             fullInfoCloud->points[index] = thisPoint;
             fullInfoCloud->points[index].intensity = range; // the corresponding range of a point is saved as "intensity"
         }
+        ROS_INFO("======check 2st====== : %d", (int) fullCloud->points.size());
+
     }
 
 
