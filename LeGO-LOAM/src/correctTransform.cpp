@@ -609,8 +609,8 @@ public:
       ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRANSACFilteredRest->points.size());
 
     }
-    if (cloudSphereFiltered->points.empty())
-      return;
+    //if (cloudSphereFiltered->points.empty())
+    //  return;
 
     // void getEuclideanCluster(pcl::PointCloud<pcl::PointXYZ::Ptr> cloudArg){
     // pcl::PointCloud<pcl::PointXYZ::Ptr> cloudArg
