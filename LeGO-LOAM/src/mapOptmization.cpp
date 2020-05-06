@@ -1019,7 +1019,7 @@ public:
         icp.setMaximumIterations(100);
         icp.setTransformationEpsilon(1e-6);
         icp.setEuclideanFitnessEpsilon(1e-6);
-        icp.setRANSACIterations(0);
+        icp.setRANSACIterations(5);
         // Align clouds
         icp.setInputSource(latestSurfKeyFrameCloud);
         icp.setInputTarget(nearHistorySurfKeyFrameCloudDS);

@@ -158,15 +158,15 @@ public:
       // 1) set ROI Cloud around Pose3
       setCloudROI();
 
-      setCloudVoxelization();
+//      setCloudVoxelization();
 
-      getEuclideanCluster();
+//      getEuclideanCluster();
 
       getPlaneParam();
 
       // getCylinderParam();
 
-      getSphereParam();
+//      getSphereParam();
 
 
 
@@ -663,15 +663,15 @@ public:
         cloud_cluster->height = 1;
         cloud_cluster->is_dense = true;
 
-/*
-        clusters.push_back(cloud_cluster);
-        sensor_msgs::PointCloud2 cloudMsgTemp;
-        pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
 
-        cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
-        cloudMsgTemp.header.frame_id = "/camera_init";
-        pubSphereCloud.publish(cloudMsgTemp);
-*/
+//        clusters.push_back(cloud_cluster);
+//        sensor_msgs::PointCloud2 cloudMsgTemp;
+//        pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
+
+//        cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
+//        cloudMsgTemp.header.frame_id = "/camera_init";
+//        pubSphereCloud.publish(cloudMsgTemp);
+
         clusters.push_back(cloud_cluster);
         //sensor_msgs::PointCloud2::Ptr tempROSMsg; //(new sensor_msgs::PointCloud2);
         sensor_msgs::PointCloud2 tempROSMsg;
