@@ -188,7 +188,7 @@ public:
       float minXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x-distanceRoiRange;
       float maxXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x+distanceRoiRange;
       float minYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y-distanceRoiRange;
-      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y+distanceRoiRange;
+      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y;//+distanceRoiRange;
       float minZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z-distanceRoiRange;
       float maxZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z+distanceRoiRange;
 
@@ -719,7 +719,7 @@ public:
 
       sensor_msgs::PointCloud2 cloudMsgTemp;
       //pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
-      pcl::toROSMsg(*cloudRoiFilteredDS, cloudMsgTemp);
+      pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
 
       cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
       cloudMsgTemp.header.frame_id = "/camera_init";
