@@ -76,6 +76,13 @@ private:
     ros::Subscriber subLaserOdometry;
     ros::Subscriber subImu;
 
+
+    // added
+    ros::Subscriber subSphereCloud;
+    ros::Subscriber subQuaternionBaseRobot;
+    ros::Subscriber subQuaternionEnv;
+
+
     nav_msgs::Odometry odomAftMapped;
     tf::StampedTransform aftMappedTrans;
     tf::TransformBroadcaster tfBroadcaster;
@@ -115,6 +122,12 @@ private:
 
     pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLast; // surf feature set from odoOptimization
     pcl::PointCloud<PointType>::Ptr laserCloudSurfTotalLastDS; // downsampled corner featuer set from odoOptimization
+
+
+
+    pcl::PointCloud<PointType>::Ptr CloudSphereLast;
+
+
 
     pcl::PointCloud<PointType>::Ptr laserCloudOri;
     pcl::PointCloud<PointType>::Ptr coeffSel;
@@ -163,10 +176,17 @@ private:
     double timeLaserCloudOutlierLast;
     double timeLastGloalMapPublish;
 
+    double timeCloudSphereLast;
+    double timeQuaternionBaseRobot;
+    double timeQuaternionEnvironment;
+
+
     bool newLaserCloudCornerLast;
     bool newLaserCloudSurfLast;
     bool newLaserOdometry;
     bool newLaserCloudOutlierLast;
+
+    bool newCloudSphereLast;
 
 
     float transformLast[6];
@@ -218,6 +238,22 @@ private:
     float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;
     float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;
 
+    tf::Quaternion QuatBaseRobot;
+    tf::Quaternion QuatEnvironment;
+
+    double QuatBaseRobotTime[BaseRobotEnvQuatQueLength];
+    float QuatBaseRobotRoll[BaseRobotEnvQuatQueLength];
+    float QuatBaseRobotPitch[BaseRobotEnvQuatQueLength];
+
+    double QuatEnvironmentTime[BaseRobotEnvQuatQueLength];
+    float QuatEnvironmentRoll[BaseRobotEnvQuatQueLength];
+    float QuatEnvironmentPitch[BaseRobotEnvQuatQueLength];
+
+    int QuatBaseRobotPointerLast;
+    int QuatEnvironmentPointerLast;
+
+
+
 public:
 
 
@@ -225,42 +261,48 @@ public:
     mapOptimization():
         nh("~")
     {
+
     	ISAM2Params parameters;
-		parameters.relinearizeThreshold = 0.01;
-		parameters.relinearizeSkip = 1;
+		  parameters.relinearizeThreshold = 0.01;
+		  parameters.relinearizeSkip = 1;
     	isam = new ISAM2(parameters);
 
-        pubKeyPoses = nh.advertise<sensor_msgs::PointCloud2>("/key_pose_origin", 2);
-        pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_surround", 2);
-        pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
+      pubKeyPoses = nh.advertise<sensor_msgs::PointCloud2>("/key_pose_origin", 2);
+      pubLaserCloudSurround = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_surround", 2);
+      pubOdomAftMapped = nh.advertise<nav_msgs::Odometry> ("/aft_mapped_to_init", 5);
 
-        subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
-        subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
-        subOutlierCloudLast = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud_last", 2, &mapOptimization::laserCloudOutlierLastHandler, this);
-        subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
-        subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
+      subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
+      subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
+      subOutlierCloudLast = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud_last", 2, &mapOptimization::laserCloudOutlierLastHandler, this);
+      subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
+      subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
-        pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
-        pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
-        pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
+      subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
+      subQuaternionBaseRobot = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_BaseRobot", 2, &mapOptimization::quarternionBaseRobotHandler, this);
+      subQuaternionEnv = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_Environment", 2, &mapOptimization::quarternionEnvironmentHandler, this);
 
-        downSizeFilterCorner.setLeafSize(0.2, 0.2, 0.2);
-        downSizeFilterSurf.setLeafSize(0.4, 0.4, 0.4);
-        downSizeFilterOutlier.setLeafSize(0.4, 0.4, 0.4);
 
-        downSizeFilterHistoryKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for histor key frames of loop closure
-        downSizeFilterSurroundingKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for surrounding key poses of scan-to-map optimization
+      pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
+      pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
+      pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
 
-        downSizeFilterGlobalMapKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for global map visualization
-        downSizeFilterGlobalMapKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for global map visualization
+      downSizeFilterCorner.setLeafSize(0.2, 0.2, 0.2);
+      downSizeFilterSurf.setLeafSize(0.4, 0.4, 0.4);
+      downSizeFilterOutlier.setLeafSize(0.4, 0.4, 0.4);
 
-        odomAftMapped.header.frame_id = "/camera_init";
-        odomAftMapped.child_frame_id = "/aft_mapped";
+      downSizeFilterHistoryKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for histor key frames of loop closure
+      downSizeFilterSurroundingKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for surrounding key poses of scan-to-map optimization
 
-        aftMappedTrans.frame_id_ = "/camera_init";
-        aftMappedTrans.child_frame_id_ = "/aft_mapped";
+      downSizeFilterGlobalMapKeyPoses.setLeafSize(1.0, 1.0, 1.0); // for global map visualization
+      downSizeFilterGlobalMapKeyFrames.setLeafSize(0.4, 0.4, 0.4); // for global map visualization
 
-        allocateMemory();
+      odomAftMapped.header.frame_id = "/camera_init";
+      odomAftMapped.child_frame_id = "/aft_mapped";
+
+      aftMappedTrans.frame_id_ = "/camera_init";
+      aftMappedTrans.child_frame_id_ = "/aft_mapped";
+
+      allocateMemory();
     }
 
     void allocateMemory(){
@@ -282,6 +324,11 @@ public:
         laserCloudOutlierLastDS.reset(new pcl::PointCloud<PointType>()); // downsampled corner feature set from odoOptimization
         laserCloudSurfTotalLast.reset(new pcl::PointCloud<PointType>()); // surf feature set from odoOptimization
         laserCloudSurfTotalLastDS.reset(new pcl::PointCloud<PointType>()); // downsampled surf featuer set from odoOptimization
+
+
+        CloudSphereLast.reset(new pcl::PointCloud<PointType>());
+
+
 
         laserCloudOri.reset(new pcl::PointCloud<PointType>());
         coeffSel.reset(new pcl::PointCloud<PointType>());
@@ -316,6 +363,11 @@ public:
         timeLaserCloudOutlierLast = 0;
         timeLastGloalMapPublish = 0;
 
+        timeCloudSphereLast = 0;
+        timeQuaternionBaseRobot = 0;
+        timeQuaternionEnvironment = 0;
+
+
         timeLastProcessing = -1;
 
         newLaserCloudCornerLast = false;
@@ -323,6 +375,8 @@ public:
 
         newLaserOdometry = false;
         newLaserCloudOutlierLast = false;
+
+        newCloudSphereLast = false;
 
         for (int i = 0; i < 6; ++i){
             transformLast[i] = 0;
@@ -341,6 +395,23 @@ public:
             imuRoll[i] = 0;
             imuPitch[i] = 0;
         }
+
+        QuatBaseRobotPointerLast = -1;
+        QuatEnvironmentPointerLast = -1;
+
+        for (int i =0; i< BaseRobotEnvQuatQueLength; ++i){
+
+          QuatBaseRobotTime[i] = 0;
+          QuatBaseRobotRoll[i] = 0;
+          QuatBaseRobotPitch[i] = 0;
+
+          QuatEnvironmentTime[i] = 0;
+          QuatEnvironmentRoll[i] = 0;
+          QuatEnvironmentPitch[i] = 0;
+        }
+
+
+
 
         gtsam::Vector Vector6(6);
         Vector6 << 1e-6, 1e-6, 1e-6, 1e-8, 1e-8, 1e-6;
@@ -371,8 +442,12 @@ public:
         latestFrameID = 0;
     }
 
+<<<<<<< HEAD
     void transformAssociateToMap()
     {
+=======
+    void transformAssociateToMap(){
+>>>>>>> 7a8124d6213464d766df6348d6340cf0517c355a
         float x1 = cos(transformSum[1]) * (transformBefMapped[3] - transformSum[3])
                  - sin(transformSum[1]) * (transformBefMapped[5] - transformSum[5]);
         float y1 = transformBefMapped[4] - transformSum[4];
@@ -460,11 +535,18 @@ public:
 
     void transformUpdate()
     {
+<<<<<<< HEAD
       ROS_INFO("=====================transforUpdate=====================");
 		if (imuPointerLast >= 0) {
         ROS_INFO("=====================imuData In=====================");
 		    float imuRollLast = 0,
          imuPitchLast = 0;
+=======
+      if (imuPointerLast >= 0) {
+        ROS_INFO("imu Value added");
+
+		    float imuRollLast = 0, imuPitchLast = 0;
+>>>>>>> 7a8124d6213464d766df6348d6340cf0517c355a
 		    while (imuPointerFront != imuPointerLast) {
 		        if (timeLaserOdometry + scanPeriod < imuTime[imuPointerFront]) {
 		            break;
@@ -492,10 +574,45 @@ public:
 		    transformTobeMapped[2] = 0.998 * transformTobeMapped[2] + 0.002 * imuRollLast;
 		  }
 
+<<<<<<< HEAD
     	for (int i = 0; i < 6; i++) {
     	    transformBefMapped[i] = transformSum[i];
     	    transformAftMapped[i] = transformTobeMapped[i];
     	}
+=======
+      //
+
+      if (QuatEnvironmentPointerLast >= 0){
+        ROS_INFO("Environment Correction Value Used");
+
+        float rollBaseRobot, pitchBaseRobot;
+        float rollEnvironment, pitchEnvironment;
+        float ratioFront, ratioBack;
+
+        pitchBaseRobot = QuatBaseRobotPitch[0];
+        rollBaseRobot = QuatBaseRobotRoll[0];
+
+        pitchEnvironment = QuatEnvironmentPitch[0];
+        rollEnvironment = QuatEnvironmentRoll[0];
+
+        ratioBack = 0.025;
+        ratioFront = 1-ratioBack;
+
+        if (abs(pitchBaseRobot - pitchEnvironment) <= 45){
+          transformTobeMapped[0] = ratioFront * transformTobeMapped[0] + ratioBack * (QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0]);
+          //ROS_INFO("gPitch - bPitch =  %f", (QuatBaseRobotPitch[0] - QuatEnvironmentPitch[0])*180/PI);
+        }
+        if (abs(rollBaseRobot - rollEnvironment) <= 45){
+          transformTobeMapped[2] = ratioFront * transformTobeMapped[2] + ratioBack * (QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0]);
+          //ROS_INFO("gRoll - bRoll =  %f", (QuatBaseRobotRoll[0] - QuatEnvironmentRoll[0])*180/PI);
+        }
+      }
+
+  		for (int i = 0; i < 6; i++) {
+  		    transformBefMapped[i] = transformSum[i];
+  		    transformAftMapped[i] = transformTobeMapped[i];
+  		}
+>>>>>>> 7a8124d6213464d766df6348d6340cf0517c355a
     }
 
     void updatePointAssociateToMapSinCos(){
@@ -596,7 +713,7 @@ public:
 
             float x2 = x1;
             float y2 = cos(transformIn->roll) * y1 - sin(transformIn->roll) * z1;
-            float z2 = sin(transformIn->roll) * y1 + cos(transformIn->roll)* z1;
+            float z2 = sin(transformIn->roll) * y1 + cos(transformIn->roll) * z1;
 
             pointTo.x = cos(transformIn->pitch) * x2 + sin(transformIn->pitch) * z2 + transformIn->x;
             pointTo.y = y2 + transformIn->y;
@@ -633,10 +750,15 @@ public:
         timeLaserOdometry = laserOdometry->header.stamp.toSec();
         double roll, pitch, yaw;
         geometry_msgs::Quaternion geoQuat = laserOdometry->pose.pose.orientation;
-        tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
-        transformSum[0] = -pitch;
-        transformSum[1] = -yaw;
+        tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //transformSum[0] = -pitch;
+        //transformSum[1] = -yaw;
+        //transformSum[2] = roll;
+        transformSum[0] = pitch;
+        transformSum[1] = yaw;
         transformSum[2] = roll;
+
         transformSum[3] = laserOdometry->pose.pose.position.x;
         transformSum[4] = laserOdometry->pose.pose.position.y;
         transformSum[5] = laserOdometry->pose.pose.position.z;
@@ -654,14 +776,59 @@ public:
         imuPitch[imuPointerLast] = pitch;
     }
 
+
+
+    void cloudSphereHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
+      timeCloudSphereLast = msg->header.stamp.toSec();
+      CloudSphereLast->clear();
+      pcl::fromROSMsg(*msg, *CloudSphereLast);
+      newCloudSphereLast = true;
+    }
+
+    void quarternionBaseRobotHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
+      //timeQuaternionBaseRobot = msg->header.stamp.toSec();
+      // QuatBaseRobot = msg->quaternion;
+      quaternionMsgToTF(msg->quaternion, QuatBaseRobot);
+
+      double roll, pitch, yaw;
+      tf::Matrix3x3(QuatBaseRobot).getRPY(roll, pitch, yaw);
+      QuatBaseRobotPointerLast = (QuatBaseRobotPointerLast + 1) % BaseRobotEnvQuatQueLength;
+      QuatBaseRobotPointerLast = 0;
+      QuatBaseRobotTime[QuatBaseRobotPointerLast] = msg->header.stamp.toSec();
+      QuatBaseRobotRoll[QuatBaseRobotPointerLast] = roll;
+      QuatBaseRobotPitch[QuatBaseRobotPointerLast] = pitch;
+
+    }
+
+    void quarternionEnvironmentHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
+      //timeQuaternionEnvironment= msg->header.stamp.toSec();
+      //QuatEnvironment = msg->quaternion;
+      tf::quaternionMsgToTF(msg->quaternion, QuatEnvironment);
+
+      double roll, pitch, yaw;
+      tf::Matrix3x3(QuatEnvironment).getRPY(roll, pitch, yaw);
+      QuatEnvironmentPointerLast = (QuatEnvironmentPointerLast + 1) % BaseRobotEnvQuatQueLength;
+      QuatEnvironmentPointerLast = 0;
+      QuatEnvironmentTime[QuatEnvironmentPointerLast] = msg->header.stamp.toSec();
+      QuatEnvironmentRoll[QuatEnvironmentPointerLast] = roll;
+      QuatEnvironmentPitch[QuatEnvironmentPointerLast] = pitch;
+
+    }
+
+
+
+
     void publishTF(){
 
         geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
-                                  (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
-
+                                  // (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
+                                  (transformAftMapped[2], transformAftMapped[0], transformAftMapped[1]);
         odomAftMapped.header.stamp = ros::Time().fromSec(timeLaserOdometry);
-        odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
-        odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
+        //odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
+        //odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
+        odomAftMapped.pose.pose.orientation.x = geoQuat.y;
+        odomAftMapped.pose.pose.orientation.y = geoQuat.z;
+
         odomAftMapped.pose.pose.orientation.z = geoQuat.x;
         odomAftMapped.pose.pose.orientation.w = geoQuat.w;
         odomAftMapped.pose.pose.position.x = transformAftMapped[3];
@@ -676,7 +843,8 @@ public:
         pubOdomAftMapped.publish(odomAftMapped);
 
         aftMappedTrans.stamp_ = ros::Time().fromSec(timeLaserOdometry);
-        aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        // aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        aftMappedTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
         aftMappedTrans.setOrigin(tf::Vector3(transformAftMapped[3], transformAftMapped[4], transformAftMapped[5]));
         tfBroadcaster.sendTransform(aftMappedTrans);
     }
@@ -685,7 +853,7 @@ public:
 
         if (pubKeyPoses.getNumSubscribers() != 0){
             sensor_msgs::PointCloud2 cloudMsgTemp;
-            pcl::toROSMsg(*cloudKeyPoses3D, cloudMsgTemp);
+            pcl::toROSMsg(*cloudKeyPoses6D, cloudMsgTemp);
             cloudMsgTemp.header.stamp = ros::Time().fromSec(timeLaserOdometry);
             cloudMsgTemp.header.frame_id = "/camera_init";
             pubKeyPoses.publish(cloudMsgTemp);
@@ -873,7 +1041,7 @@ public:
         icp.setMaximumIterations(100);
         icp.setTransformationEpsilon(1e-6);
         icp.setEuclideanFitnessEpsilon(1e-6);
-        icp.setRANSACIterations(0);
+        icp.setRANSACIterations(5);
         // Align clouds
         icp.setInputSource(latestSurfKeyFrameCloud);
         icp.setInputTarget(nearHistorySurfKeyFrameCloudDS);
@@ -1387,9 +1555,13 @@ public:
         isamCurrentEstimate = isam->calculateEstimate();
         latestEstimate = isamCurrentEstimate.at<Pose3>(isamCurrentEstimate.size()-1);
 
+
+        // camera frame to lidar frame
         thisPose3D.x = latestEstimate.translation().y();
         thisPose3D.y = latestEstimate.translation().z();
         thisPose3D.z = latestEstimate.translation().x();
+
+
         thisPose3D.intensity = cloudKeyPoses3D->points.size(); // this can be used as index
         cloudKeyPoses3D->push_back(thisPose3D);
 
@@ -1397,21 +1569,26 @@ public:
         thisPose6D.y = thisPose3D.y;
         thisPose6D.z = thisPose3D.z;
         thisPose6D.intensity = thisPose3D.intensity; // this can be used as index
+
         thisPose6D.roll  = latestEstimate.rotation().pitch();
         thisPose6D.pitch = latestEstimate.rotation().yaw();
         thisPose6D.yaw   = latestEstimate.rotation().roll(); // in camera frame
+
         thisPose6D.time = timeLaserOdometry;
         cloudKeyPoses6D->push_back(thisPose6D);
         /**
          * save updated transform
          */
         if (cloudKeyPoses3D->points.size() > 1){
+
             transformAftMapped[0] = latestEstimate.rotation().pitch();
             transformAftMapped[1] = latestEstimate.rotation().yaw();
             transformAftMapped[2] = latestEstimate.rotation().roll();
+
             transformAftMapped[3] = latestEstimate.translation().y();
             transformAftMapped[4] = latestEstimate.translation().z();
             transformAftMapped[5] = latestEstimate.translation().x();
+
 
             for (int i = 0; i < 6; ++i){
             	transformLast[i] = transformAftMapped[i];
@@ -1479,8 +1656,10 @@ public:
 
                 timeLastProcessing = timeLaserOdometry;
 
+                // Convert point cloud coordinates to the world coordinate system
                 transformAssociateToMap();
 
+                // Because the frequency of the frame number is greater than the frequency of the construction, it is necessary to extract the key frames for matching.
                 extractSurroundingKeyFrames();
 
                 downsampleCurrentScan();
@@ -1489,6 +1668,7 @@ public:
 
                 saveKeyFramesAndFactor();
 
+                // send TF Transform
                 correctPoses();
 
                 publishTF();

@@ -23,6 +23,34 @@
 #include <pcl/common/common.h>
 #include <pcl/registration/icp.h>
 
+// by correctTransform
+#include <pcl/filters/passthrough.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/search/kdtree.h>
+
+#include <pcl/surface/mls.h>
+#include <pcl/surface/bilateral_upsampling.h>
+
+
+
+
+
+#include <pcl/sample_consensus/ransac.h>
+#include <pcl/sample_consensus/sac_model.h>
+#include <pcl/sample_consensus/sac.h>
+
+
+//#include <pcl/sample_consensus/sac_model_plane.h>
+//#include <pcl/sample_consensus/sac_model_cylinder.h>
+#include <pcl/segmentation/sac_segmentation.h>
+
+
+
+//#include <pcl/sample_consensus/method_types.h>
+//#include <pcl/sample_consensus/model_types.h>
+
+
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_datatypes.h>
 
@@ -44,6 +72,9 @@
 #include <thread>
 #include <mutex>
 
+// Variables for Test
+#include "TestVariables.h"
+
 #define PI 3.14159265
 
 using namespace std;
@@ -54,7 +85,7 @@ extern const string pointCloudTopic = "/velodyne_points";
 extern const string imuTopic = "/imu/data";
 
 // Save pcd
-extern const string fileDirectory = "/tmp/";
+extern const string fileDirectory = "~/catkin_ws/pcd/";
 
 // VLP-16
 /*
@@ -91,6 +122,10 @@ extern const int groundScanInd = 20;
 // extern const float ang_res_y = 33.2/float(N_SCAN-1);
 // extern const float ang_bottom = 16.6+0.1;
 // extern const int groundScanInd = 15;
+
+//
+
+extern const int BaseRobotEnvQuatQueLength = 200;
 
 extern const bool loopClosureEnableFlag = false;
 extern const double mappingProcessInterval = 0.3;
