@@ -158,15 +158,15 @@ public:
       // 1) set ROI Cloud around Pose3
       setCloudROI();
 
-      setCloudVoxelization();
+      //setCloudVoxelization();
 
-      getEuclideanCluster();
+      //getEuclideanCluster();
 
       getPlaneParam();
 
       // getCylinderParam();
 
-      getSphereParam();
+      //getSphereParam();
 
 
 
@@ -188,7 +188,7 @@ public:
       float minXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x-distanceRoiRange;
       float maxXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x+distanceRoiRange;
       float minYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y-distanceRoiRange;
-      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y+distanceRoiRange;
+      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y;//+distanceRoiRange;
       float minZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z-distanceRoiRange;
       float maxZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z+distanceRoiRange;
 
