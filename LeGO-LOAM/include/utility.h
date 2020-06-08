@@ -103,6 +103,15 @@ extern const int groundScanInd = 7;
 // extern const float ang_bottom = 30.67;
 // extern const int groundScanInd = 20;
 
+// VLP-32C
+//extern const int N_SCAN = 32;
+//extern const int Horizon_SCAN = 1800;
+//extern const float ang_res_x = 0.2;//360.0/float(Horizon_SCAN);
+//extern const float ang_res_y = 40.0/float(N_SCAN-1);//41.33/float(N_SCAN-1);
+//extern const float ang_bottom = 25.0;//30.67;
+//extern const int groundScanInd = 20;
+
+
 // Ouster users may need to uncomment line 159 in imageProjection.cpp
 // Usage of Ouster imu data is not fully supported yet, please just publish point cloud data
 // Ouster OS1-16
