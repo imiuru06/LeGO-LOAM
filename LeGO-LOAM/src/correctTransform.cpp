@@ -307,7 +307,7 @@ public:
       // last idx is the present.
       // robot positiong
 
-      if (cloudRoiFilteredDS->points.size() <= 100)
+      if (cloudRoiFiltered->points.size() <= 100)
         return;
 
       int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
@@ -359,13 +359,13 @@ public:
       seg.setDistanceThreshold (0.1);
       ROS_INFO("======getPlaneParam=====");
 
-      ROS_INFO("before Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
+      ROS_INFO("before Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
 
 
 
 
       // Segment the largest planar component from the cropped cloud
-      seg.setInputCloud (cloudRoiFilteredDS);
+      seg.setInputCloud (cloudRoiFiltered);
       seg.segment (*inliers, *coefficients);
       if (inliers->indices.size () == 0)
       {
@@ -374,16 +374,14 @@ public:
       }
 
 
-
-
       // Extract the planar inliers from the input cloud
       pcl::ExtractIndices<PointType> extract;
-      extract.setInputCloud (cloudRoiFilteredDS);
+      extract.setInputCloud (cloudRoiFiltered);
       extract.setIndices(inliers);
       extract.setNegative (false);
 
 
-      ROS_INFO("after Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
+      ROS_INFO("after Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
 
 
       // Get the points associated with the planar surface
@@ -718,8 +716,7 @@ public:
         */
 
       sensor_msgs::PointCloud2 cloudMsgTemp;
-      //pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
-      pcl::toROSMsg(*cloudRoiFilteredDS, cloudMsgTemp);
+      pcl::toROSMsg(*cloudRANSACFiltered, cloudMsgTemp);
 
       cloudMsgTemp.header.stamp = ros::Time().fromSec(timelaserCloudSurround);
       cloudMsgTemp.header.frame_id = "/camera_init";

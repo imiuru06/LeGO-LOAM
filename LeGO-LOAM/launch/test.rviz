@@ -5,8 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /TF1
-        - /Clustered1
-        - /ROI1
+        - /RansacGrounded1
       Splitter Ratio: 0.484184921
     Tree Height: 797
   - Class: rviz/Selection
@@ -25,7 +24,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: ROI
+    SyncSource: ""
   - Class: rviz/Help
     Name: Help
 Toolbars:
@@ -38,33 +37,13 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
-        aft_mapped:
-          Value: false
-        base_link:
-          Value: false
-        camera:
-          Value: false
-        camera_init:
-          Value: false
-        laser_odom:
-          Value: false
-        map:
-          Value: false
       Marker Scale: 10
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        map:
-          camera_init:
-            aft_mapped:
-              {}
-            camera:
-              base_link:
-                {}
-            laser_odom:
-              {}
+        {}
       Update Interval: 0
       Value: true
     - Class: rviz/Axes
@@ -534,40 +513,10 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 3
-      Min Color: 0; 0; 0
-      Min Intensity: 3
-      Name: Clustered
-      Position Transformer: XYZ
-      Queue Size: 10
-      Selectable: true
-      Size (Pixels): 3
-      Size (m): 0.100000001
-      Style: Flat Squares
-      Topic: /cloud_clustered
-      Unreliable: false
-      Use Fixed Frame: true
-      Use rainbow: true
-      Value: true
-    - Alpha: 1
-      Autocompute Intensity Bounds: true
-      Autocompute Value Bounds:
-        Max Value: 10
-        Min Value: -10
-        Value: true
-      Axis: Z
-      Channel Name: intensity
-      Class: rviz/PointCloud2
-      Color: 255; 255; 255
-      Color Transformer: Intensity
-      Decay Time: 0
-      Enabled: false
-      Invert Rainbow: false
-      Max Color: 255; 255; 255
       Max Intensity: 15.1502495
       Min Color: 0; 0; 0
       Min Intensity: 0
-      Name: ROI
+      Name: RansacGrounded
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
@@ -578,7 +527,7 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -599,7 +548,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/ThirdPersonFollower
-      Distance: 11.5399914
+      Distance: 40.142437
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
@@ -614,10 +563,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.00520199724
+      Pitch: -0.294798017
       Target Frame: base_link
       Value: ThirdPersonFollower (rviz)
-      Yaw: 3.17349267
+      Yaw: 3.58349276
     Saved: ~
 Window Geometry:
   Displays:
