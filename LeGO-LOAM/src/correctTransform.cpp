@@ -188,7 +188,7 @@ public:
       float minXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x-distanceRoiRange;
       float maxXRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].x+distanceRoiRange;
       float minYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y-distanceRoiRange;
-      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y;//+distanceRoiRange;
+      float maxYRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].y-0.5;//+distanceRoiRange;
       float minZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z-distanceRoiRange;
       float maxZRoi = keyPoseOriginlast->points[idxKeyPoseOrigin].z+distanceRoiRange;
 
@@ -356,7 +356,7 @@ public:
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
       seg.setMaxIterations (100);
-      seg.setDistanceThreshold (0.1);
+      seg.setDistanceThreshold (0.08);
       ROS_INFO("======getPlaneParam=====");
 
       ROS_INFO("before Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());

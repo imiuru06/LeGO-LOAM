@@ -1671,26 +1671,20 @@ public:
     void publishOdometry(){
 
 				float rollOriginTF = transformSum[2];
-				// float pitchOriginTF = -transformSum[0];
-				// float yawOriginTF = -transformSum[1];
-				float pitchOriginTF = transformSum[0];
-				float yawOriginTF = transformSum[1];
+				float pitchOriginTF = -transformSum[0];
+				float yawOriginTF = -transformSum[1];
+				// float pitchOriginTF = transformSum[0];
+				// float yawOriginTF = transformSum[1];
 
 
         // geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(transformSum[2], -transformSum[0], -transformSum[1]);
 				geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(rollOriginTF, pitchOriginTF, yawOriginTF);
 
-				// base on the map TF
-				// -geoQuat.y = ori of x
-				// -geoQuat.z = ori of y
-				// geoQuat.x = ori of z
-				// geoQuat.w = ori of w
-
         laserOdometry.header.stamp = cloudHeader.stamp;
-        laserOdometry.pose.pose.orientation.x = geoQuat.y;
-        laserOdometry.pose.pose.orientation.y = geoQuat.z;
-				//laserOdometry.pose.pose.orientation.x = -geoQuat.y;
-        //laserOdometry.pose.pose.orientation.y = -geoQuat.z;
+        //laserOdometry.pose.pose.orientation.x = geoQuat.y;
+        //laserOdometry.pose.pose.orientation.y = geoQuat.z;
+				laserOdometry.pose.pose.orientation.x = -geoQuat.y;
+        laserOdometry.pose.pose.orientation.y = -geoQuat.z;
 
         laserOdometry.pose.pose.orientation.z = geoQuat.x;
         laserOdometry.pose.pose.orientation.w = geoQuat.w;
@@ -1700,8 +1694,8 @@ public:
         pubLaserOdometry.publish(laserOdometry);
 
         laserOdometryTrans.stamp_ = cloudHeader.stamp;
-        laserOdometryTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
-				// laserOdometryTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        // laserOdometryTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
+				laserOdometryTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
         laserOdometryTrans.setOrigin(tf::Vector3(transformSum[3], transformSum[4], transformSum[5]));
         tfBroadcaster.sendTransform(laserOdometryTrans);
     }

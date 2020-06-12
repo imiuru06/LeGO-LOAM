@@ -728,14 +728,14 @@ public:
         timeLaserOdometry = laserOdometry->header.stamp.toSec();
         double roll, pitch, yaw;
         geometry_msgs::Quaternion geoQuat = laserOdometry->pose.pose.orientation;
-        tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
-        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
-        //transformSum[0] = -pitch;
-        //transformSum[1] = -yaw;
-        //transformSum[2] = roll;
-        transformSum[0] = pitch;
-        transformSum[1] = yaw;
+        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        transformSum[0] = -pitch;
+        transformSum[1] = -yaw;
         transformSum[2] = roll;
+        //transformSum[0] = pitch;
+        //transformSum[1] = yaw;
+        //transformSum[2] = roll;
 
         transformSum[3] = laserOdometry->pose.pose.position.x;
         transformSum[4] = laserOdometry->pose.pose.position.y;
@@ -799,13 +799,13 @@ public:
     void publishTF(){
 
         geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
-                                  // (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
-                                  (transformAftMapped[2], transformAftMapped[0], transformAftMapped[1]);
+                                   (transformAftMapped[2], -transformAftMapped[0], -transformAftMapped[1]);
+                                  // (transformAftMapped[2], transformAftMapped[0], transformAftMapped[1]);
         odomAftMapped.header.stamp = ros::Time().fromSec(timeLaserOdometry);
-        //odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
-        //odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
-        odomAftMapped.pose.pose.orientation.x = geoQuat.y;
-        odomAftMapped.pose.pose.orientation.y = geoQuat.z;
+        odomAftMapped.pose.pose.orientation.x = -geoQuat.y;
+        odomAftMapped.pose.pose.orientation.y = -geoQuat.z;
+        //odomAftMapped.pose.pose.orientation.x = geoQuat.y;
+        //odomAftMapped.pose.pose.orientation.y = geoQuat.z;
 
         odomAftMapped.pose.pose.orientation.z = geoQuat.x;
         odomAftMapped.pose.pose.orientation.w = geoQuat.w;
@@ -821,8 +821,8 @@ public:
         pubOdomAftMapped.publish(odomAftMapped);
 
         aftMappedTrans.stamp_ = ros::Time().fromSec(timeLaserOdometry);
-        // aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
-        aftMappedTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
+        aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
+        // aftMappedTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
         aftMappedTrans.setOrigin(tf::Vector3(transformAftMapped[3], transformAftMapped[4], transformAftMapped[5]));
         tfBroadcaster.sendTransform(aftMappedTrans);
     }
@@ -1019,7 +1019,7 @@ public:
         icp.setMaximumIterations(100);
         icp.setTransformationEpsilon(1e-6);
         icp.setEuclideanFitnessEpsilon(1e-6);
-        icp.setRANSACIterations(0);
+        icp.setRANSACIterations(50);
         // Align clouds
         icp.setInputSource(latestSurfKeyFrameCloud);
         icp.setInputTarget(nearHistorySurfKeyFrameCloudDS);
