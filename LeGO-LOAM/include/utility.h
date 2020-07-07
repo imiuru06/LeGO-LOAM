@@ -25,7 +25,7 @@
 
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_datatypes.h>
- 
+
 #include <vector>
 #include <cmath>
 #include <algorithm>
@@ -104,9 +104,9 @@ extern const int segmentValidLineNum = 3;
 extern const float segmentAlphaX = ang_res_x / 180.0 * M_PI;
 extern const float segmentAlphaY = ang_res_y / 180.0 * M_PI;
 
-
 extern const int edgeFeatureNum = 2;
 extern const int surfFeatureNum = 4;
+
 extern const int sectionsTotal = 6;
 extern const float edgeThreshold = 0.1;
 extern const float surfThreshold = 0.1;
@@ -124,13 +124,13 @@ extern const float historyKeyframeFitnessScore = 0.3; // the smaller the better 
 extern const float globalMapVisualizationSearchRadius = 500.0; // key frames with in n meters will be visualized
 
 
-struct smoothness_t{ 
+struct smoothness_t{
     float value;
     size_t ind;
 };
 
-struct by_value{ 
-    bool operator()(smoothness_t const &left, smoothness_t const &right) { 
+struct by_value{
+    bool operator()(smoothness_t const &left, smoothness_t const &right) {
         return left.value < right.value;
     }
 };
