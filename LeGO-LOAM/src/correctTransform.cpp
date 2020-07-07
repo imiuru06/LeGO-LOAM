@@ -355,7 +355,7 @@ public:
       seg.setOptimizeCoefficients (true);
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
-      seg.setMaxIterations (100);
+      seg.setMaxIterations (150);
       seg.setDistanceThreshold (0.08);
       ROS_INFO("======getPlaneParam=====");
 

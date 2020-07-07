@@ -149,8 +149,10 @@ extern const float segmentAlphaX = ang_res_x / 180.0 * M_PI;
 extern const float segmentAlphaY = ang_res_y / 180.0 * M_PI;
 
 
-extern const int edgeFeatureNum = 2;
-extern const int surfFeatureNum = 4;
+//extern const int edgeFeatureNum = 2;
+//extern const int surfFeatureNum = 4;
+extern const int edgeFeatureNum = 8;
+extern const int surfFeatureNum = 16;
 extern const int sectionsTotal = 6;
 extern const float edgeThreshold = 0.1;
 extern const float surfThreshold = 0.1;

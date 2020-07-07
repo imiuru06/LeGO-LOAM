@@ -691,7 +691,9 @@ public:
                         segInfo.segmentedCloudGroundFlag[ind] == false) {
 
                         largestPickedNum++;
-                        if (largestPickedNum <= 2) {
+                        //if (largestPickedNum <= 2) {
+												if (largestPickedNum <= edgeFeatureNum) {
+
                             cloudLabel[ind] = 2;
                             cornerPointsSharp->push_back(segmentedCloud->points[ind]);
                             cornerPointsLessSharp->push_back(segmentedCloud->points[ind]);
@@ -729,7 +731,10 @@ public:
                         surfPointsFlat->push_back(segmentedCloud->points[ind]);
 
                         smallestPickedNum++;
-                        if (smallestPickedNum >= 4) {
+                        //if (smallestPickedNum >= 4) {
+												if (smallestPickedNum >= surfFeatureNum) {
+
+
                             break;
                         }
 

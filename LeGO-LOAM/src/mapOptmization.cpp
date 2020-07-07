@@ -579,10 +579,12 @@ public:
 
         if (abs(pitchBaseRobot - pitchEnvironment) <= 45){
           transformTobeMapped[0] = ratioFront * transformTobeMapped[0] + ratioBack * (QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0]);
+          //transformTobeMapped[0] -= QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0];
           //ROS_INFO("gPitch - bPitch =  %f", (QuatBaseRobotPitch[0] - QuatEnvironmentPitch[0])*180/PI);
         }
         if (abs(rollBaseRobot - rollEnvironment) <= 45){
           transformTobeMapped[2] = ratioFront * transformTobeMapped[2] + ratioBack * (QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0]);
+          //transformTobeMapped[2] -= QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0];
           //ROS_INFO("gRoll - bRoll =  %f", (QuatBaseRobotRoll[0] - QuatEnvironmentRoll[0])*180/PI);
         }
       }
