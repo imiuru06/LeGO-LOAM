@@ -40,28 +40,39 @@ private:
 
 	ros::NodeHandle nh;
 
-    ros::Subscriber subLaserCloud;
-    ros::Subscriber subLaserCloudInfo;
-    ros::Subscriber subOutlierCloud;
-    ros::Subscriber subImu;
 
-    ros::Publisher pubCornerPointsSharp;
-    ros::Publisher pubCornerPointsLessSharp;
-    ros::Publisher pubSurfPointsFlat;
-    ros::Publisher pubSurfPointsLessFlat;
+	// added
+	ros::Subscriber subGroundCloud;
+	ros::Subscriber subQuaternionBaseRobot;
+	ros::Subscriber subQuaternionEnv;
 
-    pcl::PointCloud<PointType>::Ptr segmentedCloud;
-    pcl::PointCloud<PointType>::Ptr outlierCloud;
 
-    pcl::PointCloud<PointType>::Ptr cornerPointsSharp;
-    pcl::PointCloud<PointType>::Ptr cornerPointsLessSharp;
-    pcl::PointCloud<PointType>::Ptr surfPointsFlat;
-    pcl::PointCloud<PointType>::Ptr surfPointsLessFlat;
+  ros::Subscriber subLaserCloud;
+  ros::Subscriber subLaserCloudInfo;
+  ros::Subscriber subOutlierCloud;
+  ros::Subscriber subImu;
 
-    pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScan;
-    pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScanDS;
+  ros::Publisher pubCornerPointsSharp;
+  ros::Publisher pubCornerPointsLessSharp;
+  ros::Publisher pubSurfPointsFlat;
+  ros::Publisher pubSurfPointsLessFlat;
 
-    pcl::VoxelGrid<PointType> downSizeFilter;
+  pcl::PointCloud<PointType>::Ptr segmentedCloud;
+  pcl::PointCloud<PointType>::Ptr outlierCloud;
+
+  pcl::PointCloud<PointType>::Ptr cornerPointsSharp;
+  pcl::PointCloud<PointType>::Ptr cornerPointsLessSharp;
+  pcl::PointCloud<PointType>::Ptr surfPointsFlat;
+  pcl::PointCloud<PointType>::Ptr surfPointsLessFlat;
+
+  pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScan;
+  pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScanDS;
+
+  pcl::PointCloud<PointType>::Ptr CloudGroundLast;
+
+
+
+  pcl::VoxelGrid<PointType> downSizeFilter;
 
     double timeScanCur;
     double timeNewSegmentedCloud;
@@ -156,6 +167,10 @@ private:
     float imuShiftFromStartX, imuShiftFromStartY, imuShiftFromStartZ;
     float imuVeloFromStartX, imuVeloFromStartY, imuVeloFromStartZ;
 
+		double timeCloudGroundLast;
+    bool newCloudGroundLast;
+
+
     pcl::PointCloud<PointType>::Ptr laserCloudCornerLast;
     pcl::PointCloud<PointType>::Ptr laserCloudSurfLast;
     pcl::PointCloud<PointType>::Ptr laserCloudOri;
@@ -190,6 +205,9 @@ public:
         subOutlierCloud = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud", 1, &FeatureAssociation::outlierCloudHandler, this);
         subImu = nh.subscribe<sensor_msgs::Imu>(imuTopic, 50, &FeatureAssociation::imuHandler, this);
 
+				subGroundCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &FeatureAssociation::cloudGroundHandler, this);
+
+
         pubCornerPointsSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_sharp", 1);
         pubCornerPointsLessSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_less_sharp", 1);
         pubSurfPointsFlat = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_flat", 1);
@@ -220,10 +238,17 @@ public:
         surfPointsLessFlatScan.reset(new pcl::PointCloud<PointType>());
         surfPointsLessFlatScanDS.reset(new pcl::PointCloud<PointType>());
 
+
+				CloudGroundLast.reset(new pcl::PointCloud<PointType>());
+
         timeScanCur = 0;
         timeNewSegmentedCloud = 0;
         timeNewSegmentedCloudInfo = 0;
         timeNewOutlierCloud = 0;
+
+
+				newCloudGroundLast = false;
+
 
         newSegmentedCloud = false;
         newSegmentedCloudInfo = false;
@@ -1645,6 +1670,8 @@ public:
 
     void integrateTransformation(){
         float rx, ry, rz, tx, ty, tz;
+
+				// -transformCur[0] value
         AccumulateRotation(transformSum[0], transformSum[1], transformSum[2],
                            -transformCur[0], -transformCur[1], -transformCur[2], rx, ry, rz);
 
@@ -1776,6 +1803,8 @@ public:
         }
     }
 
+
+
     void runFeatureAssociation()
     {
 
@@ -1820,6 +1849,18 @@ public:
 
         publishCloudsLast(); // cloud to mapOptimization
     }
+
+		void cloudGroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
+			timeCloudGroundLast = msg->header.stamp.toSec();
+			CloudGroundLast->clear();
+			pcl::fromROSMsg(*msg, *CloudGroundLast);
+			newCloudGroundLast = true;
+
+
+		}
+
+
+
 };
 
 

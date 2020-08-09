@@ -78,9 +78,9 @@ private:
 
 
     // added
-    ros::Subscriber subSphereCloud;
-    ros::Subscriber subQuaternionBaseRobot;
-    ros::Subscriber subQuaternionEnv;
+//    ros::Subscriber subSphereCloud;
+//    ros::Subscriber subQuaternionBaseRobot;
+//    ros::Subscriber subQuaternionEnv;
 
 
     nav_msgs::Odometry odomAftMapped;
@@ -277,9 +277,9 @@ public:
       subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
       subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
-      subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
-      subQuaternionBaseRobot = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_BaseRobot", 2, &mapOptimization::quarternionBaseRobotHandler, this);
-      subQuaternionEnv = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_Environment", 2, &mapOptimization::quarternionEnvironmentHandler, this);
+      //subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
+      //subQuaternionBaseRobot = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_BaseRobot", 2, &mapOptimization::quarternionBaseRobotHandler, this);
+      //subQuaternionEnv = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_Environment", 2, &mapOptimization::quarternionEnvironmentHandler, this);
 
 
       pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
@@ -940,6 +940,7 @@ public:
 
     bool detectLoopClosure(){
 
+
         latestSurfKeyFrameCloud->clear();
         nearHistorySurfKeyFrameCloud->clear();
         nearHistorySurfKeyFrameCloudDS->clear();
@@ -962,6 +963,8 @@ public:
         if (closestHistoryFrameID == -1){
             return false;
         }
+
+        ROS_INFO("detectLoopClosure");
         // save latest key frames
         latestFrameIDLoopCloure = cloudKeyPoses3D->points.size() - 1;
         *latestSurfKeyFrameCloud += *transformPointCloud(cornerCloudKeyFrames[latestFrameIDLoopCloure], &cloudKeyPoses6D->points[latestFrameIDLoopCloure]);
@@ -1013,6 +1016,8 @@ public:
             if (potentialLoopFlag == false)
                 return;
         }
+
+        ROS_INFO("performLoopClosure");
         // reset the flag first no matter icp successes or not
         potentialLoopFlag = false;
         // ICP Settings

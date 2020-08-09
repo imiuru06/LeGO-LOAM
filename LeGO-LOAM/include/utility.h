@@ -134,7 +134,7 @@ extern const int groundScanInd = 7;
 
 extern const int BaseRobotEnvQuatQueLength = 200;
 
-extern const bool loopClosureEnableFlag = false;
+extern const bool loopClosureEnableFlag = true;
 extern const double mappingProcessInterval = 0.3;
 
 extern const float scanPeriod = 0.1;
