@@ -348,6 +348,10 @@ public:
         nearHistorySurfKeyFrameCloudDS.reset(new pcl::PointCloud<PointType>());
 
         latestCornerKeyFrameCloud.reset(new pcl::PointCloud<PointType>());
+        
+        float accX = imuIn->linear_acceleration.y - sin(roll) * cos(pitch) * 9.81;
+        float accY = imuIn->linear_acceleration.z - cos(roll) * cos(pitch) * 9.81;
+        float accZ = imuIn->linear_acceleration.x + sin(pitch) * 9.81;;
         latestSurfKeyFrameCloud.reset(new pcl::PointCloud<PointType>());
         latestSurfKeyFrameCloudDS.reset(new pcl::PointCloud<PointType>());
 
@@ -530,6 +534,9 @@ public:
 
     void transformUpdate()
     {
+      ROS_INFO("transformUpdate");
+      ROS_INFO("imuPointerLast: %d", imuPointerLast);
+
       if (imuPointerLast >= 0) {
         ROS_INFO("imu Value added");
 

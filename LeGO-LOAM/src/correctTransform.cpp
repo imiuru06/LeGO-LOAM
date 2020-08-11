@@ -229,9 +229,9 @@ public:
       pass_z.setFilterLimits (minZRoi, maxZRoi);
       pass_z.filter (*cloudRoiFiltered);
 
-      ROS_INFO("======setCloudROI=====");
-      ROS_INFO("Size of laserCloudSurroundlast : %d", (int) laserCloudSurroundlast->points.size());
-      ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("======setCloudROI=====");
+      //ROS_INFO("Size of laserCloudSurroundlast : %d", (int) laserCloudSurroundlast->points.size());
+      //ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
     }
 
     void setCloudVoxelization(){
@@ -294,11 +294,11 @@ public:
       downSizeFilter.filter(*cloudRoiFilteredDS);
 
 
-      ROS_INFO("======setCloudVoxelization=====");
+      //ROS_INFO("======setCloudVoxelization=====");
 
-      ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
-      ROS_INFO("Size of cloudRoiFilteredUS : %d", (int) cloudRoiFilteredUS->points.size());
-      ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
+      //ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("Size of cloudRoiFilteredUS : %d", (int) cloudRoiFilteredUS->points.size());
+      //ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
     }
 
     void getPlaneParam(){
@@ -357,9 +357,9 @@ public:
       seg.setMethodType (pcl::SAC_RANSAC);
       seg.setMaxIterations (150);
       seg.setDistanceThreshold (0.08);
-      ROS_INFO("======getPlaneParam=====");
+      //ROS_INFO("======getPlaneParam=====");
 
-      ROS_INFO("before Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("before Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
 
 
 
@@ -381,7 +381,7 @@ public:
       extract.setNegative (false);
 
 
-      ROS_INFO("after Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("after Size of cloudRoiFilteredDS : %d", (int) cloudRoiFiltered->points.size());
 
 
       // Get the points associated with the planar surface
@@ -392,8 +392,8 @@ public:
       extract.setNegative (true);
       extract.filter (*cloudRANSACFilteredRest);
 
-      ROS_INFO("Size of cloudRANSACFiltered : %d", (int) cloudRANSACFiltered->points.size());
-      ROS_INFO("Size of cloudRANSACFilteredRest : %d", (int) cloudRANSACFilteredRest->points.size());
+      //ROS_INFO("Size of cloudRANSACFiltered : %d", (int) cloudRANSACFiltered->points.size());
+      //ROS_INFO("Size of cloudRANSACFilteredRest : %d", (int) cloudRANSACFilteredRest->points.size());
 
 
       /*
@@ -525,11 +525,11 @@ public:
       extract.setNegative (true);
       extract.filter (*cloudRANSACFilteredRest);
 
-      ROS_INFO("======getCylinderParam=====");
+      //ROS_INFO("======getCylinderParam=====");
 
-      ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
-      ROS_INFO("Size of cloudRANSACFiltered : %d", (int) cloudRANSACFiltered->points.size());
-      ROS_INFO("Size of cloudRANSACFilteredRest : %d", (int) cloudRANSACFilteredRest->points.size());
+      //ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRoiFilteredDS->points.size());
+      //ROS_INFO("Size of cloudRANSACFiltered : %d", (int) cloudRANSACFiltered->points.size());
+      //ROS_INFO("Size of cloudRANSACFilteredRest : %d", (int) cloudRANSACFilteredRest->points.size());
 
     }
 
@@ -540,7 +540,7 @@ public:
 
       // Set RANSAC
       // Create the segmentation object for the planar model and set all the parameters
-      ROS_INFO("======getSphereParam=====");
+      //ROS_INFO("======getSphereParam=====");
 
       size_t itrNum = 4;
       float xCenter[itrNum];
@@ -599,12 +599,12 @@ public:
       int iTmp;
       for (size_t i=0; i<itrNum; i++){
         iTmp = int (i);
-        ROS_INFO("%d : %f, %f, %f, %f", iTmp, xCenter[i], yCenter[i], zCenter[i], rCenter[i]);
+        //ROS_INFO("%d : %f, %f, %f, %f", iTmp, xCenter[i], yCenter[i], zCenter[i], rCenter[i]);
       }
 
-      ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
-      ROS_INFO("Size of cloudRoiFilteredUS : %d", (int) cloudSphereFiltered->points.size());
-      ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRANSACFilteredRest->points.size());
+      //ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
+      //ROS_INFO("Size of cloudRoiFilteredUS : %d", (int) cloudSphereFiltered->points.size());
+      //ROS_INFO("Size of cloudRoiFilteredDS : %d", (int) cloudRANSACFilteredRest->points.size());
 
     }
     //if (cloudSphereFiltered->points.empty())
