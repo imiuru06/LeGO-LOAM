@@ -560,7 +560,7 @@ public:
 		  }
 
       //
-
+/*
       if (QuatEnvironmentPointerLast >= 0){
         ROS_INFO("Environment Correction Value Used");
 
@@ -588,6 +588,7 @@ public:
           //ROS_INFO("gRoll - bRoll =  %f", (QuatBaseRobotRoll[0] - QuatEnvironmentRoll[0])*180/PI);
         }
       }
+*/
 
   		for (int i = 0; i < 6; i++) {
   		    transformBefMapped[i] = transformSum[i];
@@ -857,9 +858,9 @@ public:
         // save final point cloud
         pcl::io::savePCDFileASCII(fileDirectory+"finalCloud.pcd", *globalMapKeyFramesDS);
 
-        string cornerMapString = "/tmp/cornerMap.pcd";
-        string surfaceMapString = "/tmp/surfaceMap.pcd";
-        string trajectoryString = "/tmp/trajectory.pcd";
+        string cornerMapString = "/${HOME}/catkin_ws/cornerMap.pcd";
+        string surfaceMapString = "/${HOME}/catkin_ws/surfaceMap.pcd";
+        string trajectoryString = "/${HOME}/catkin_ws/trajectory.pcd";
 
         pcl::PointCloud<PointType>::Ptr cornerMapCloud(new pcl::PointCloud<PointType>());
         pcl::PointCloud<PointType>::Ptr cornerMapCloudDS(new pcl::PointCloud<PointType>());
@@ -964,7 +965,7 @@ public:
             return false;
         }
 
-        ROS_INFO("detectLoopClosure");
+        // ROS_INFO("detectLoopClosure");
         // save latest key frames
         latestFrameIDLoopCloure = cloudKeyPoses3D->points.size() - 1;
         *latestSurfKeyFrameCloud += *transformPointCloud(cornerCloudKeyFrames[latestFrameIDLoopCloure], &cloudKeyPoses6D->points[latestFrameIDLoopCloure]);
@@ -1017,7 +1018,7 @@ public:
                 return;
         }
 
-        ROS_INFO("performLoopClosure");
+        // ROS_INFO("performLoopClosure");
         // reset the flag first no matter icp successes or not
         potentialLoopFlag = false;
         // ICP Settings

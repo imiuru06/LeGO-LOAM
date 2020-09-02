@@ -42,9 +42,9 @@ private:
 
 
 	// added
-	ros::Subscriber subGroundCloud;
-	ros::Subscriber subQuaternionBaseRobot;
-	ros::Subscriber subQuaternionEnv;
+	// ros::Subscriber subGroundCloud;
+	// ros::Subscriber subQuaternionBaseRobot;
+	// ros::Subscriber subQuaternionEnv;
 
 
   ros::Subscriber subLaserCloud;
@@ -205,7 +205,7 @@ public:
         subOutlierCloud = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud", 1, &FeatureAssociation::outlierCloudHandler, this);
         subImu = nh.subscribe<sensor_msgs::Imu>(imuTopic, 50, &FeatureAssociation::imuHandler, this);
 
-				subGroundCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &FeatureAssociation::cloudGroundHandler, this);
+				//subGroundCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &FeatureAssociation::cloudGroundHandler, this);
 
 
         pubCornerPointsSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_sharp", 1);
