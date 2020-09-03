@@ -17,4 +17,12 @@
     <node pkg="lego_loam" type="correctTransform"   name="correctTransform"  output="screen"/>
     <node pkg="lego_loam" type="transformFusion"    name="transformFusion"    output="screen"/>
 
+    <!---->
+    <node pkg="rosbag" type="record" name="rosbag_record" output="screen"
+              args="-o /mnt/h/result_data
+              /aft_mapped_to_init
+              /integrated_to_init
+              /laser_odom_to_init">
+    </node>
+
 </launch>

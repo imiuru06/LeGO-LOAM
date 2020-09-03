@@ -78,9 +78,8 @@ private:
 
 
     // added
-//    ros::Subscriber subSphereCloud;
-//    ros::Subscriber subQuaternionBaseRobot;
-//    ros::Subscriber subQuaternionEnv;
+
+    ros::Subscriber subVectors;
 
 
     nav_msgs::Odometry odomAftMapped;
@@ -238,20 +237,11 @@ private:
     float cRoll, sRoll, cPitch, sPitch, cYaw, sYaw, tX, tY, tZ;
     float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;
 
-    tf::Quaternion QuatBaseRobot;
-    tf::Quaternion QuatEnvironment;
 
-    double QuatBaseRobotTime[BaseRobotEnvQuatQueLength];
-    float QuatBaseRobotRoll[BaseRobotEnvQuatQueLength];
-    float QuatBaseRobotPitch[BaseRobotEnvQuatQueLength];
+    float gx, gy, gz;
+    float lx, ly, lz;
 
-    double QuatEnvironmentTime[BaseRobotEnvQuatQueLength];
-    float QuatEnvironmentRoll[BaseRobotEnvQuatQueLength];
-    float QuatEnvironmentPitch[BaseRobotEnvQuatQueLength];
-
-    int QuatBaseRobotPointerLast;
-    int QuatEnvironmentPointerLast;
-
+    bool newVectors;
 
 
 public:
@@ -277,14 +267,13 @@ public:
       subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
       subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
-      //subSphereCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &mapOptimization::cloudSphereHandler, this);
-      //subQuaternionBaseRobot = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_BaseRobot", 2, &mapOptimization::quarternionBaseRobotHandler, this);
-      //subQuaternionEnv = nh.subscribe<geometry_msgs::QuaternionStamped>("/Quaternion_Environment", 2, &mapOptimization::quarternionEnvironmentHandler, this);
-
+      subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &mapOptimization::vectorsHandler, this);
 
       pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
       pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
       pubRecentKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/recent_cloud", 2);
+
+
 
       downSizeFilterCorner.setLeafSize(0.2, 0.2, 0.2);
       downSizeFilterSurf.setLeafSize(0.4, 0.4, 0.4);
@@ -378,6 +367,8 @@ public:
 
         newCloudSphereLast = false;
 
+        newVectors = false;
+
         for (int i = 0; i < 6; ++i){
             transformLast[i] = 0;
             transformSum[i] = 0;
@@ -394,20 +385,6 @@ public:
             imuTime[i] = 0;
             imuRoll[i] = 0;
             imuPitch[i] = 0;
-        }
-
-        QuatBaseRobotPointerLast = -1;
-        QuatEnvironmentPointerLast = -1;
-
-        for (int i =0; i< BaseRobotEnvQuatQueLength; ++i){
-
-          QuatBaseRobotTime[i] = 0;
-          QuatBaseRobotRoll[i] = 0;
-          QuatBaseRobotPitch[i] = 0;
-
-          QuatEnvironmentTime[i] = 0;
-          QuatEnvironmentRoll[i] = 0;
-          QuatEnvironmentPitch[i] = 0;
         }
 
 
@@ -440,6 +417,9 @@ public:
         aLoopIsClosed = false;
 
         latestFrameID = 0;
+
+        gx = 0; gy = 0; gz = 0;
+        lx = 0; ly = 0; lz = 0;
     }
 
     void transformAssociateToMap(){
@@ -746,6 +726,17 @@ public:
         newLaserOdometry = true;
     }
 
+    void vectorsHandler(const cloud_msgs::vector_msgs vectors){
+        gx = vectors.gx;
+        gy = vectors.gy;
+        gz = vectors.gz;
+        lx = vectors.lx;
+        ly = vectors.ly;
+        lz = vectors.lz;
+
+        newVectors = true;
+    }
+
     void imuHandler(const sensor_msgs::Imu::ConstPtr& imuIn){
         double roll, pitch, yaw;
         tf::Quaternion orientation;
@@ -765,39 +756,6 @@ public:
       pcl::fromROSMsg(*msg, *CloudSphereLast);
       newCloudSphereLast = true;
     }
-
-    void quarternionBaseRobotHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
-      //timeQuaternionBaseRobot = msg->header.stamp.toSec();
-      // QuatBaseRobot = msg->quaternion;
-      quaternionMsgToTF(msg->quaternion, QuatBaseRobot);
-
-      double roll, pitch, yaw;
-      tf::Matrix3x3(QuatBaseRobot).getRPY(roll, pitch, yaw);
-      QuatBaseRobotPointerLast = (QuatBaseRobotPointerLast + 1) % BaseRobotEnvQuatQueLength;
-      QuatBaseRobotPointerLast = 0;
-      QuatBaseRobotTime[QuatBaseRobotPointerLast] = msg->header.stamp.toSec();
-      QuatBaseRobotRoll[QuatBaseRobotPointerLast] = roll;
-      QuatBaseRobotPitch[QuatBaseRobotPointerLast] = pitch;
-
-    }
-
-    void quarternionEnvironmentHandler(const geometry_msgs::QuaternionStamped::ConstPtr& msg){
-      //timeQuaternionEnvironment= msg->header.stamp.toSec();
-      //QuatEnvironment = msg->quaternion;
-      tf::quaternionMsgToTF(msg->quaternion, QuatEnvironment);
-
-      double roll, pitch, yaw;
-      tf::Matrix3x3(QuatEnvironment).getRPY(roll, pitch, yaw);
-      QuatEnvironmentPointerLast = (QuatEnvironmentPointerLast + 1) % BaseRobotEnvQuatQueLength;
-      QuatEnvironmentPointerLast = 0;
-      QuatEnvironmentTime[QuatEnvironmentPointerLast] = msg->header.stamp.toSec();
-      QuatEnvironmentRoll[QuatEnvironmentPointerLast] = roll;
-      QuatEnvironmentPitch[QuatEnvironmentPointerLast] = pitch;
-
-    }
-
-
-
 
     void publishTF(){
 
@@ -1372,12 +1330,25 @@ public:
             return false;
         }
 
+        // added
+
+        if (newVectors == true){
+          laserCloudSelNum = laserCloudSelNum + 1;
+        }
+
         cv::Mat matA(laserCloudSelNum, 6, CV_32F, cv::Scalar::all(0));
         cv::Mat matAt(6, laserCloudSelNum, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtA(6, 6, CV_32F, cv::Scalar::all(0));
         cv::Mat matB(laserCloudSelNum, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtB(6, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matX(6, 1, CV_32F, cv::Scalar::all(0));
+
+        if (newVectors == true){
+          laserCloudSelNum = laserCloudSelNum - 1;
+        }
+
+
+        //for (int i = 0; i < laserCloudSelNum; i++) {
         for (int i = 0; i < laserCloudSelNum; i++) {
             pointOri = laserCloudOri->points[i];
             coeff = coeffSel->points[i];
@@ -1403,6 +1374,20 @@ public:
             matA.at<float>(i, 5) = coeff.z;
             matB.at<float>(i, 0) = -coeff.intensity;
         }
+
+        if (newVectors == true){
+          matA.at<float>(laserCloudSelNum, 0) = 0;
+          matA.at<float>(laserCloudSelNum, 1) = 0;
+          matA.at<float>(laserCloudSelNum, 2) = 0;
+          matA.at<float>(laserCloudSelNum, 3) = 0;
+          matA.at<float>(laserCloudSelNum, 4) = 0;
+          matA.at<float>(laserCloudSelNum, 5) = 0;
+
+          float diffVector = sqrt (((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
+          matB.at<float>(laserCloudSelNum, 0) = -1.5 * diffVector;
+          newVectors = false;
+        }
+
         cv::transpose(matA, matAt);
         matAtA = matAt * matA;
         matAtB = matAt * matB;
@@ -1635,6 +1620,7 @@ public:
         {
 
             newLaserCloudCornerLast = false; newLaserCloudSurfLast = false; newLaserCloudOutlierLast = false; newLaserOdometry = false;
+            newLaserOdometry = false;
 
             std::lock_guard<std::mutex> lock(mtx);
 

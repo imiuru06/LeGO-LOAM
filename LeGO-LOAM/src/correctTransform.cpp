@@ -21,6 +21,7 @@ private:
   ros::Publisher pubGroundGMCloud;  // ground Cloud of Global map
   ros::Publisher pubGroundLCCloud;  // Local Cloud of Global map
 
+  ros::Publisher pubNormalVector;  // Local Cloud of Global map
 // ROS Publisher for Frame
 
 
@@ -88,6 +89,8 @@ public:
 
       pubGroundGMCloud = nh.advertise<sensor_msgs::PointCloud2>("/ground_global_cloud", 2);
       pubGroundLCCloud = nh.advertise<sensor_msgs::PointCloud2>("/ground_local_cloud", 2);
+
+      pubNormalVector = nh.advertise<cloud_msgs::vector_msgs>("/vectors", 2);
       /*
       subLaserCloudCornerLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_corner_last", 2, &mapOptimization::laserCloudCornerLastHandler, this);
       subLaserCloudSurfLast = nh.subscribe<sensor_msgs::PointCloud2>("/laser_cloud_surf_last", 2, &mapOptimization::laserCloudSurfLastHandler, this);
@@ -157,7 +160,7 @@ public:
 
       //setCloudVoxelization();
 
-      //getPlaneParam();
+      getPlaneParam();
 
       // getCylinderParam();
 
@@ -173,7 +176,6 @@ public:
       if (laserCloudSurroundlast->points.empty() || keyPoseOriginlast->points.empty())
         return;
 
-
       int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
       int distanceRoiRange = 4;
 
@@ -186,20 +188,12 @@ public:
 
       // for roi filter
       pcl::PassThrough<PointType> pass_x;
-      pcl::PointCloud<PointType>::Ptr xf_cloud (new pcl::PointCloud<PointType>);
-
+      pcl::PointCloud<PointType> xf_cloud;
       pass_x.setInputCloud(laserCloudSurroundlast);
-
       pass_x.setFilterFieldName("x");
-
-      ROS_INFO("minXRoi : %f, maxXRoi : %f", minXRoi, maxXRoi);
       pass_x.setFilterLimits (minXRoi, maxXRoi);
-      pass_x.filter (*xf_cloud);
+      pass_x.filter (xf_cloud);
 
-      xf_cloud->clear();
-
-
-/*
       pcl::PointCloud<PointType>::Ptr xf_cloud_ptr(new pcl::PointCloud<PointType>(xf_cloud));
       pcl::PassThrough<PointType> pass_y;
       pcl::PointCloud<PointType> yf_cloud;
@@ -214,23 +208,17 @@ public:
       pcl::PointCloud<PointType>::Ptr yf_cloud_ptr(new pcl::PointCloud<PointType>(yf_cloud));
       pcl::PassThrough<PointType> pass_z;
 
-      //ROS_INFO("yf_cloud_ptr Size is : %d", yf_cloud_ptr->points.size());
       pass_z.setInputCloud(yf_cloud_ptr);
       pass_z.setFilterFieldName("z");
       pass_z.setFilterLimits (minZRoi, maxZRoi);
       pass_z.filter (*cloudRoiFiltered);
 
-      // ROS_INFO("======setCloudROI=====");
-      // ROS_INFO("Size of laserCloudSurroundlast : %d", (int) laserCloudSurroundlast->points.size());
-      // ROS_INFO("Size of cloudRoiFiltered : %d", (int) cloudRoiFiltered->points.size());
-      */
     }
 
     void setCloudVoxelization(){
 
       // Upsampling
-      if (cloudRoiFiltered->points.empty())
-        return;
+
 
 //      *cloudRoiFilteredUS = * cloudRoiFiltered;
 
@@ -302,32 +290,14 @@ public:
       if (cloudRoiFiltered->points.size() <= 100)
         return;
 
-      if (groundCloudlast->points.size() <= 100)
-        return ;
-
-      // get the angle between Vectors
-      float gx = 0, gy = 0, gz = 0;   // ground
-      float bx = 0, by = 0, bz = 0;   // base
+      // Vectors
+      float gx = 0, gy = 0, gz = 0;   // global_ground
+      float lx = 0, ly = 0, lz = 0;   // local_ground
 
       // int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
 
 /*
-      float tfRoll = keyPoseOriginlast->points[idxKeyPoseOrigin].yaw;
-      float tfPitch = keyPoseOriginlast->points[idxKeyPoseOrigin].roll;
-      float tfYaw = keyPoseOriginlast->points[idxKeyPoseOrigin].pitch;
-
-      geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(tfRoll, tfPitch, tfYaw);
-                                    // from mapOptimization, rpy was yrp orders...
-                                    // i want to find a xy plane vector of Base robot.
-                                    /
-
-
       float normVecb = 0, normVecg = 0;
-      float angleBetweenVectors = 0;
-      float angleDegree = 0;
-
-      double gRoll = 0, gPitch = 0, gYaw = 0;
-      double bRoll = 0, bPitch = 0, bYaw = 0;
 
       //
       bw = geoQuat.w;
@@ -342,7 +312,7 @@ public:
         return;
 */
 
-      // Set RANSAC : Ground Cloud
+      // Set RANSAC : Global Ground Cloud
       // Create the segmentation object for the planar model and set all the parameters
       pcl::SACSegmentation<PointType> seg;
       pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
@@ -350,9 +320,8 @@ public:
       seg.setOptimizeCoefficients (true);
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
-      seg.setMaxIterations (150);
+      seg.setMaxIterations (100);
       seg.setDistanceThreshold (0.1);
-
 
       // Segment the largest planar component from the cropped cloud
       seg.setInputCloud (cloudRoiFiltered);
@@ -377,17 +346,32 @@ public:
       // extract.filter (*cloudRANSACFilteredRest);
 
       //coefficients.value.resize(3);
-      gx = coefficients->values[2];
-      gy = coefficients->values[0];
-      gz = coefficients->values[1];
-
+      gx = -coefficients->values[0];
+      gy = coefficients->values[2];
+      //gz = coefficients->values[0];
+      gz = -coefficients->values[1];
       //normVecg = sqrt(gx*gx+gy*gy+gz*gz);
 
       ROS_INFO("global coefficients of %f, %f, %f", gx, gy, gz);
 
+      if (groundCloudlast->points.empty())
+        return ;
 
-/*
-      // Set RANSAC : Part of Global Map
+      int cloudSize = groundCloudlast->points.size();
+
+      PointType point;
+      /*
+      for (int i = 0; i < cloudSize; i++) {
+        point.x = groundCloudlast->points[i].y;
+        point.y = groundCloudlast->points[i].z;
+        point.z = groundCloudlast->points[i].x;
+        point.intensity = groundCloudlast->points[i].intensity;
+
+        groundCloudlast->points[i] = point;
+      }*/
+
+
+      // Set RANSAC : Part of local Map
       // Create the segmentation object for the planar model and set all the parameters
       //pcl::SACSegmentation<PointType> seg;
       //pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
@@ -396,11 +380,11 @@ public:
       seg.setOptimizeCoefficients (true);
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
-      seg.setMaxIterations (150);
+      seg.setMaxIterations (100);
       seg.setDistanceThreshold (0.1);
 
       // Segment the largest planar component from the cropped cloud
-      seg.setInputCloud (cloudRoiFiltered);
+      seg.setInputCloud (groundCloudlast);
       seg.segment (*inliers, *coefficients);
       if (inliers->indices.size () == 0)
       {
@@ -410,7 +394,7 @@ public:
 
       // Extract the planar inliers from the input cloud
       //pcl::ExtractIndices<PointType> extract;
-      extract.setInputCloud (cloudRoiFiltered);
+      extract.setInputCloud (groundCloudlast);
       extract.setIndices(inliers);
       extract.setNegative (false);
 
@@ -419,18 +403,30 @@ public:
 
       // Remove the planar inliers, extract the rest
       //extract.setNegative (true);
-      //extract.filter (*cloudRANSACFilteredRest);
-
+      //extract.filter (*cloudRSGroundLocal);
 
       //coefficients.value.resize(3);
-      bx = coefficients->values[2];
-      by = coefficients->values[0];
-      bz = coefficients->values[1];
-
-      //normVecg = sqrt(gx*gx+gy*gy+gz*gz);
-
-      ROS_INFO("coefficients of %f, %f, %f", bx, by, bz);
+/*
+      bx = -coefficients->values[1];
+      by = -coefficients->values[2];
+      bz = coefficients->values[0];
 */
+      lx = coefficients->values[1];
+      ly = coefficients->values[0];
+      lz = coefficients->values[2];
+
+      ROS_INFO("coefficients of %f, %f, %f", lx, ly, lz);
+
+      cloud_msgs::vector_msgs vectorDiff;
+      vectorDiff.gx = gx;
+      vectorDiff.gy = gy;
+      vectorDiff.gz = gz;
+      vectorDiff.lx = lx;
+      vectorDiff.ly = ly;
+      vectorDiff.lz = lz;
+      vectorDiff.header.stamp = ros::Time().fromSec(timegroundCloud);
+
+      pubNormalVector.publish(vectorDiff);
 
     }
 
@@ -555,32 +551,35 @@ public:
 
     void pulishAll(){
 
-      //if (pubSphereCloud.getNumSubscribers() == 0)
-      //  return;
+      if (cloudRSGroundGlobal->points.empty())
+        return;
 
-      //if (cloudRANSACFiltered->points.empty())
-      //  return;
-/*
       sensor_msgs::PointCloud2 cloudMsgGlobal;
       pcl::toROSMsg(*cloudRSGroundGlobal, cloudMsgGlobal);
       cloudMsgGlobal.header.stamp = ros::Time().fromSec(timegroundCloud);
       cloudMsgGlobal.header.frame_id = "/camera_init";
       pubGroundGMCloud.publish(cloudMsgGlobal);
+      cloudRSGroundGlobal->clear();
+
+      if (cloudRSGroundLocal->points.empty())
+        return;
 
       sensor_msgs::PointCloud2 cloudMsgLocal;
       pcl::toROSMsg(*cloudRSGroundLocal, cloudMsgLocal);
       cloudMsgLocal.header.stamp = ros::Time().fromSec(timegroundCloud);
       cloudMsgLocal.header.frame_id = "/camera_init";
       pubGroundLCCloud.publish(cloudMsgLocal);
-*/
+
+      cloudRSGroundLocal->clear();
+
+
       cloudRoiFiltered->clear();
       // cloudRoiFilteredUS->clear();
       // cloudRoiFilteredDS->clear();
       cloudRANSACFiltered->clear();
       cloudRANSACFilteredRest->clear();
 
-      cloudRSGroundLocal->clear();
-      cloudRSGroundGlobal->clear();
+
 
 
     }

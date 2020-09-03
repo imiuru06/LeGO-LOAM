@@ -9,6 +9,7 @@
 #include <nav_msgs/Odometry.h>
 
 #include "cloud_msgs/cloud_info.h"
+#include "cloud_msgs/vector_msgs.h"
 
 #include <opencv/cv.h>
 

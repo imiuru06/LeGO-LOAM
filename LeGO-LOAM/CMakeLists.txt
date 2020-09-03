@@ -26,7 +26,8 @@ find_package(OpenCV REQUIRED QUIET)
 
 catkin_package(
   INCLUDE_DIRS include
-  CATKIN_DEPENDS cloud_msgs
+  CATKIN_DEPENDS
+    cloud_msgs
   DEPENDS PCL
 )
 

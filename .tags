@@ -270,27 +270,93 @@ minAngRad	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/
 maxAngDeg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float maxAngDeg = 0;$/;"	variable	line:10
 minAngDeg	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^float minAngDeg = 0;$/;"	variable	line:11
 cntTest	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/TestVariables.h	/^int cntTest = 0;$/;"	variable	line:15
+_UTILITY_LIDAR_ODOMETRY_H_	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^#define _UTILITY_LIDAR_ODOMETRY_H_$/;"	macro	line:2
+PI	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^#define PI /;"	macro	line:79
+PointType	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^typedef pcl::PointXYZI  PointType;$/;"	typedef	line:83
+pointCloudTopic	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string pointCloudTopic = "\/velodyne_points";$/;"	variable	line:85
+imuTopic	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string imuTopic = "\/imu\/data";$/;"	variable	line:86
+fileDirectory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const string fileDirectory = "\/home\/adip\/catkin_ws\/pcd\/";$/;"	variable	line:89
+N_SCAN	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int N_SCAN = 16;$/;"	variable	line:92
+Horizon_SCAN	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int Horizon_SCAN = 1800;$/;"	variable	line:93
+ang_res_x	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_res_x = 0.2;$/;"	variable	line:94
+ang_res_y	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_res_y = 2.0;$/;"	variable	line:95
+ang_bottom	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float ang_bottom = 15.0+0.1;$/;"	variable	line:96
+groundScanInd	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int groundScanInd = 7;$/;"	variable	line:97
+BaseRobotEnvQuatQueLength	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int BaseRobotEnvQuatQueLength = 200;$/;"	variable	line:136
+loopClosureEnableFlag	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const bool loopClosureEnableFlag = true;$/;"	variable	line:138
+mappingProcessInterval	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const double mappingProcessInterval = 0.3;$/;"	variable	line:139
+scanPeriod	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float scanPeriod = 0.1;$/;"	variable	line:141
+systemDelay	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int systemDelay = 0;$/;"	variable	line:142
+imuQueLength	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int imuQueLength = 200;$/;"	variable	line:143
+sensorMountAngle	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float sensorMountAngle = 0.0;$/;"	variable	line:145
+segmentTheta	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentTheta = 60.0\/180.0*M_PI; \/\/ decrese this value may improve accuracy$/;"	variable	line:146
+segmentValidPointNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int segmentValidPointNum = 5;$/;"	variable	line:147
+segmentValidLineNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int segmentValidLineNum = 3;$/;"	variable	line:148
+segmentAlphaX	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentAlphaX = ang_res_x \/ 180.0 * M_PI;$/;"	variable	line:149
+segmentAlphaY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float segmentAlphaY = ang_res_y \/ 180.0 * M_PI;$/;"	variable	line:150
+edgeFeatureNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int edgeFeatureNum = 8;$/;"	variable	line:153
+surfFeatureNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int surfFeatureNum = 16;$/;"	variable	line:154
+sectionsTotal	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int sectionsTotal = 6;$/;"	variable	line:157
+edgeThreshold	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float edgeThreshold = 0.1;$/;"	variable	line:158
+surfThreshold	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float surfThreshold = 0.1;$/;"	variable	line:159
+nearestFeatureSearchSqDist	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float nearestFeatureSearchSqDist = 25;$/;"	variable	line:160
+surroundingKeyframeSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float surroundingKeyframeSearchRadius = 50.0; \/\/ key frame that is within n meters from current pose will be considerd for scan-to-map optimization (when loop closure disabled)$/;"	variable	line:164
+surroundingKeyframeSearchNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int   surroundingKeyframeSearchNum = 50; \/\/ submap size (when loop closure enabled)$/;"	variable	line:165
+historyKeyframeSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float historyKeyframeSearchRadius = 7.0; \/\/ key frame that is within n meters from current pose will be considerd for loop closure$/;"	variable	line:167
+historyKeyframeSearchNum	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const int   historyKeyframeSearchNum = 25; \/\/ 2n+1 number of hostory key frames will be fused into a submap for loop closure$/;"	variable	line:168
+historyKeyframeFitnessScore	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float historyKeyframeFitnessScore = 0.3; \/\/ the smaller the better alignment$/;"	variable	line:169
+globalMapVisualizationSearchRadius	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^extern const float globalMapVisualizationSearchRadius = 500.0; \/\/ key frames with in n meters will be visualized$/;"	variable	line:171
+smoothness_t	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct smoothness_t{$/;"	struct	line:174
+value	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float value;$/;"	member	line:175	struct:smoothness_t
+ind	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    size_t ind;$/;"	member	line:176	struct:smoothness_t
+by_value	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct by_value{$/;"	struct	line:179
+operator ()	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    bool operator()(smoothness_t const &left, smoothness_t const &right) {$/;"	function	line:180	struct:by_value	signature:(smoothness_t const &left, smoothness_t const &right)
+PointXYZIRPYT	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^struct PointXYZIRPYT$/;"	struct	line:188
+PCL_ADD_INTENSITY	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    PCL_ADD_INTENSITY;$/;"	member	line:191	struct:PointXYZIRPYT
+roll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float roll;$/;"	member	line:192	struct:PointXYZIRPYT
+pitch	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float pitch;$/;"	member	line:193	struct:PointXYZIRPYT
+yaw	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    float yaw;$/;"	member	line:194	struct:PointXYZIRPYT
+time	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^    double time;$/;"	member	line:195	struct:PointXYZIRPYT
+EIGEN_ALIGN16	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^} EIGEN_ALIGN16;$/;"	variable	line:197	typeref:struct:PointXYZIRPYT
+PointTypePose	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/include/utility.h	/^typedef PointXYZIRPYT  PointTypePose;$/;"	typedef	line:206
 correctTransform	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^class correctTransform{$/;"	class	line:10	file:
 nh	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::NodeHandle nh;$/;"	member	line:15	class:correctTransform	file:
 pubSphereCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubSphereCloud;$/;"	member	line:18	class:correctTransform	file:
-subLaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subLaserCloudSurround;$/;"	member	line:43	class:correctTransform	file:
-subKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subKeyPoseOrigin;$/;"	member	line:44	class:correctTransform	file:
-laserCloudSurroundlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr laserCloudSurroundlast; \/\/$/;"	member	line:48	class:correctTransform	file:
-cloudRoiFiltered	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRoiFiltered;$/;"	member	line:50	class:correctTransform	file:
-keyPoseOriginlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointTypePose>::Ptr keyPoseOriginlast;$/;"	member	line:51	class:correctTransform	file:
-cloudRansacResult	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRansacResult;$/;"	member	line:53	class:correctTransform	file:
-inliersRansac	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  vector<int> inliersRansac;$/;"	member	line:55	class:correctTransform	file:
-normalVector	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  Eigen::VectorXf normalVector;$/;"	member	line:56	class:correctTransform	file:
-pass	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PassThrough<PointType> pass;$/;"	member	line:59	class:correctTransform	file:
-timelaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timelaserCloudSurround;$/;"	member	line:61	class:correctTransform	file:
-timeKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timeKeyPoseOrigin;$/;"	member	line:62	class:correctTransform	file:
-newlaserCloudSurroundLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newlaserCloudSurroundLast;$/;"	member	line:65	class:correctTransform	file:
-newKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newKeyPoseOrigin;$/;"	member	line:66	class:correctTransform	file:
-correctTransform	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    correctTransform():$/;"	function	line:70	class:correctTransform	signature:()
-allocateMemory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void allocateMemory() {$/;"	function	line:95	class:correctTransform	signature:()
-keyPoseOriginHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void keyPoseOriginHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:109	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
-laserCloudSurroundHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void laserCloudSurroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:118	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
-runMain	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void runMain(){$/;"	function	line:126	class:correctTransform	signature:()
-getCylinderParam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void getCylinderParam(){$/;"	function	line:141	class:correctTransform	signature:()
-pulishAll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void pulishAll(){$/;"	function	line:227	class:correctTransform	signature:()
-main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^int main(int argc, char** argv)$/;"	function	line:243	signature:(int argc, char** argv)
+pubEuclideanClustering	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubEuclideanClustering;$/;"	member	line:19	class:correctTransform	file:
+pubGroundGMCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubGroundGMCloud;  \/\/ ground Cloud of Global map$/;"	member	line:21	class:correctTransform	file:
+pubGroundLCCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubGroundLCCloud;  \/\/ Local Cloud of Global map$/;"	member	line:22	class:correctTransform	file:
+pubNormalVector	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Publisher pubNormalVector;  \/\/ Local Cloud of Global map$/;"	member	line:24	class:correctTransform	file:
+subLaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subLaserCloudSurround;$/;"	member	line:38	class:correctTransform	file:
+subKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subKeyPoseOrigin;$/;"	member	line:39	class:correctTransform	file:
+subGroundCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  ros::Subscriber subGroundCloud;$/;"	member	line:40	class:correctTransform	file:
+laserCloudSurroundlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr laserCloudSurroundlast; \/\/$/;"	member	line:42	class:correctTransform	file:
+groundCloudlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr groundCloudlast;$/;"	member	line:43	class:correctTransform	file:
+cloudRoiFiltered	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRoiFiltered;$/;"	member	line:45	class:correctTransform	file:
+cloudRoiFilteredUS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRoiFilteredUS;$/;"	member	line:46	class:correctTransform	file:
+cloudRoiFilteredDS	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRoiFilteredDS;$/;"	member	line:47	class:correctTransform	file:
+cloudRANSACFiltered	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRANSACFiltered;$/;"	member	line:49	class:correctTransform	file:
+cloudRANSACFilteredRest	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRANSACFilteredRest;$/;"	member	line:50	class:correctTransform	file:
+cloudRSGroundLocal	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRSGroundLocal;$/;"	member	line:52	class:correctTransform	file:
+cloudRSGroundGlobal	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointType>::Ptr cloudRSGroundGlobal;$/;"	member	line:53	class:correctTransform	file:
+keyPoseOriginlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  pcl::PointCloud<PointTypePose>::Ptr keyPoseOriginlast;$/;"	member	line:56	class:correctTransform	file:
+inliersRansac	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  vector<int> inliersRansac;$/;"	member	line:59	class:correctTransform	file:
+normalVector	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  Eigen::VectorXf normalVector;$/;"	member	line:60	class:correctTransform	file:
+timelaserCloudSurround	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timelaserCloudSurround;$/;"	member	line:63	class:correctTransform	file:
+timegroundCloud	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timegroundCloud;$/;"	member	line:64	class:correctTransform	file:
+timeKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  double timeKeyPoseOrigin;$/;"	member	line:65	class:correctTransform	file:
+newlaserCloudSurroundLast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newlaserCloudSurroundLast;$/;"	member	line:68	class:correctTransform	file:
+newgroundCloudlast	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newgroundCloudlast;$/;"	member	line:69	class:correctTransform	file:
+newKeyPoseOrigin	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^  bool newKeyPoseOrigin;$/;"	member	line:70	class:correctTransform	file:
+correctTransform	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    correctTransform():$/;"	function	line:75	class:correctTransform	signature:()
+allocateMemory	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void allocateMemory() {$/;"	function	line:103	class:correctTransform	signature:()
+keyPoseOriginHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void keyPoseOriginHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:128	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+groundCloudHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void groundCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:136	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+laserCloudSurroundHandler	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void laserCloudSurroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){$/;"	function	line:143	class:correctTransform	signature:(const sensor_msgs::PointCloud2ConstPtr& msg)
+runMain	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void runMain(){$/;"	function	line:151	class:correctTransform	signature:()
+setCloudROI	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void setCloudROI(){$/;"	function	line:173	class:correctTransform	signature:()
+setCloudVoxelization	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void setCloudVoxelization(){$/;"	function	line:218	class:correctTransform	signature:()
+getPlaneParam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void getPlaneParam(){$/;"	function	line:284	class:correctTransform	signature:()
+getCylinderParam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void getCylinderParam(){$/;"	function	line:431	class:correctTransform	signature:()
+getSphereParam	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void getSphereParam(){$/;"	function	line:479	class:correctTransform	signature:()
+pulishAll	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^    void pulishAll(){$/;"	function	line:550	class:correctTransform	signature:()
+main	/home/adip/catkin_ws/src/LeGO-LOAM/LeGO-LOAM/src/correctTransform.cpp	/^int main(int argc, char** argv)$/;"	function	line:586	signature:(int argc, char** argv)
