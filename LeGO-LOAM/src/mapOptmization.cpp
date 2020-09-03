@@ -1384,7 +1384,7 @@ public:
           matA.at<float>(laserCloudSelNum, 5) = 0;
 
           float diffVector = sqrt (((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
-          matB.at<float>(laserCloudSelNum, 0) = -1.5 * diffVector;
+          matB.at<float>(laserCloudSelNum, 0) = -1 * diffVector;
           newVectors = false;
         }
 
@@ -1428,7 +1428,9 @@ public:
         transformTobeMapped[3] += matX.at<float>(3, 0);
         transformTobeMapped[4] += matX.at<float>(4, 0);
         transformTobeMapped[5] += matX.at<float>(5, 0);
-
+        ROS_INFO("%f, %f, %f, %f, %f, %f", transformTobeMapped[0], transformTobeMapped[1], transformTobeMapped[2],
+          transformTobeMapped[3], transformTobeMapped[4], transformTobeMapped[5]);
+          
         float deltaR = sqrt(
                             pow(pcl::rad2deg(matX.at<float>(0, 0)), 2) +
                             pow(pcl::rad2deg(matX.at<float>(1, 0)), 2) +

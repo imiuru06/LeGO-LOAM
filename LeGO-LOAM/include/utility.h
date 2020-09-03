@@ -133,8 +133,8 @@ extern const int groundScanInd = 7;
 
 //
 
-extern const int BaseRobotEnvQuatQueLength = 200;
-
+//extern const int BaseRobotEnvQuatQueLength = 200;
+extern const bool RansacFlag = true;
 extern const bool loopClosureEnableFlag = true;
 extern const double mappingProcessInterval = 0.3;
 
@@ -150,8 +150,8 @@ extern const float segmentAlphaX = ang_res_x / 180.0 * M_PI;
 extern const float segmentAlphaY = ang_res_y / 180.0 * M_PI;
 
 
-extern const int edgeFeatureNum = 8;
-extern const int surfFeatureNum = 16;
+extern const int edgeFeatureNum = 2;
+extern const int surfFeatureNum = 4;
 //extern const int edgeFeatureNum = 8;
 //extern const int surfFeatureNum = 16;
 extern const int sectionsTotal = 6;

@@ -156,11 +156,11 @@ public:
       // Params related it following the utility.h
 
       // 1) set ROI Cloud around Pose3
-      setCloudROI();
+//      setCloudROI();
 
       //setCloudVoxelization();
 
-      getPlaneParam();
+//      getPlaneParam();
 
       // getCylinderParam();
 
@@ -320,7 +320,7 @@ public:
       seg.setOptimizeCoefficients (true);
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
-      seg.setMaxIterations (100);
+      seg.setMaxIterations (50);
       seg.setDistanceThreshold (0.1);
 
       // Segment the largest planar component from the cropped cloud
@@ -380,7 +380,7 @@ public:
       seg.setOptimizeCoefficients (true);
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
-      seg.setMaxIterations (100);
+      seg.setMaxIterations (50);
       seg.setDistanceThreshold (0.1);
 
       // Segment the largest planar component from the cropped cloud
@@ -411,8 +411,8 @@ public:
       by = -coefficients->values[2];
       bz = coefficients->values[0];
 */
-      lx = coefficients->values[1];
-      ly = coefficients->values[0];
+      lx = coefficients->values[0];
+      ly = coefficients->values[1];
       lz = coefficients->values[2];
 
       ROS_INFO("coefficients of %f, %f, %f", lx, ly, lz);
@@ -549,6 +549,24 @@ public:
 
     }
 
+    void RansacThread(){
+
+        if (RansacFlag == false)
+            return;
+
+        ros::Rate rate(1);
+        while (ros::ok()){
+            rate.sleep();
+
+            // 1) set ROI Cloud around Pose3
+            setCloudROI();
+
+            //setCloudVoxelization();
+
+            getPlaneParam();
+        }
+    }
+
     void pulishAll(){
 
       if (cloudRSGroundGlobal->points.empty())
@@ -569,6 +587,7 @@ public:
       cloudMsgLocal.header.stamp = ros::Time().fromSec(timegroundCloud);
       cloudMsgLocal.header.frame_id = "/camera_init";
       pubGroundLCCloud.publish(cloudMsgLocal);
+
 
       cloudRSGroundLocal->clear();
 
@@ -593,6 +612,7 @@ int main(int argc, char** argv)
 
     correctTransform CT;
 
+    std::thread loopthread(&correctTransform::RansacThread, &CT);
 
     ros::Rate rate(200);
     while (ros::ok())
@@ -602,6 +622,8 @@ int main(int argc, char** argv)
         rate.sleep();
     }
     //ros::spin();
+    loopthread.join();
+
 
     return 0;
 }
