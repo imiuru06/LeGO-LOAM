@@ -40,13 +40,6 @@ private:
 
 	ros::NodeHandle nh;
 
-
-	// added
-	// ros::Subscriber subGroundCloud;
-	// ros::Subscriber subQuaternionBaseRobot;
-	// ros::Subscriber subQuaternionEnv;
-
-
   ros::Subscriber subLaserCloud;
   ros::Subscriber subLaserCloudInfo;
   ros::Subscriber subOutlierCloud;
@@ -56,6 +49,13 @@ private:
   ros::Publisher pubCornerPointsLessSharp;
   ros::Publisher pubSurfPointsFlat;
   ros::Publisher pubSurfPointsLessFlat;
+
+	// added
+
+	ros::Subscriber subVectors;
+	ros::Subscriber subGroundCloudRS;
+
+
 
   pcl::PointCloud<PointType>::Ptr segmentedCloud;
   pcl::PointCloud<PointType>::Ptr outlierCloud;
@@ -68,7 +68,7 @@ private:
   pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScan;
   pcl::PointCloud<PointType>::Ptr surfPointsLessFlatScanDS;
 
-  pcl::PointCloud<PointType>::Ptr CloudGroundLast;
+  pcl::PointCloud<PointType>::Ptr GroundCloudLast;
 
 
 
@@ -168,7 +168,11 @@ private:
     float imuVeloFromStartX, imuVeloFromStartY, imuVeloFromStartZ;
 
 		double timeCloudGroundLast;
-    bool newCloudGroundLast;
+    bool newGroundCloudRS;
+		bool newVectors;
+
+		float gvx, gvy, gvz;
+    float lvx, lvy, lvz;
 
 
     pcl::PointCloud<PointType>::Ptr laserCloudCornerLast;
@@ -205,10 +209,11 @@ public:
         subOutlierCloud = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud", 1, &FeatureAssociation::outlierCloudHandler, this);
         subImu = nh.subscribe<sensor_msgs::Imu>(imuTopic, 50, &FeatureAssociation::imuHandler, this);
 
-				//subGroundCloud = nh.subscribe<sensor_msgs::PointCloud2>("/cloud_sphere", 2, &FeatureAssociation::cloudGroundHandler, this);
+				//subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &FeatureAssociation::vectorsHandler, this);
+				//subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &FeatureAssociation::groundCloudRSHandler, this);
 
 
-        pubCornerPointsSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_sharp", 1);
+		    pubCornerPointsSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_sharp", 1);
         pubCornerPointsLessSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_less_sharp", 1);
         pubSurfPointsFlat = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_flat", 1);
         pubSurfPointsLessFlat = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_less_flat", 1);
@@ -239,7 +244,7 @@ public:
         surfPointsLessFlatScanDS.reset(new pcl::PointCloud<PointType>());
 
 
-				CloudGroundLast.reset(new pcl::PointCloud<PointType>());
+				GroundCloudLast.reset(new pcl::PointCloud<PointType>());
 
         timeScanCur = 0;
         timeNewSegmentedCloud = 0;
@@ -247,7 +252,8 @@ public:
         timeNewOutlierCloud = 0;
 
 
-				newCloudGroundLast = false;
+				newGroundCloudRS = true;
+				newVectors = true;
 
 
         newSegmentedCloud = false;
@@ -278,6 +284,9 @@ public:
         imuAngularRotationXCur = 0; imuAngularRotationYCur = 0; imuAngularRotationZCur = 0;
         imuAngularRotationXLast = 0; imuAngularRotationYLast = 0; imuAngularRotationZLast = 0;
         imuAngularFromStartX = 0; imuAngularFromStartY = 0; imuAngularFromStartZ = 0;
+
+				gvx = 0; gvy = 0; gvz = 0;
+        lvx = 0; lvy = 0; lvz = 0;
 
         for (int i = 0; i < imuQueLength; ++i)
         {
@@ -480,6 +489,29 @@ public:
 
         newSegmentedCloud = true;
     }
+
+
+		void vectorsHandler(const cloud_msgs::vector_msgs vectors){
+				gvx = vectors.gx;
+				gvy = vectors.gy;
+				gvz = vectors.gz;
+				lvx = vectors.lx;
+				lvy = vectors.ly;
+				lvz = vectors.lz;
+
+				newVectors = true;
+		}
+
+		void groundCloudRSHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
+			timeCloudGroundLast = msg->header.stamp.toSec();
+			GroundCloudLast->clear();
+			pcl::fromROSMsg(*msg, *GroundCloudLast);
+			newGroundCloudRS = true;
+
+
+		}
+
+
 
     void outlierCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msgIn){
 
@@ -1245,12 +1277,34 @@ public:
 
         int pointSelNum = laserCloudOri->points.size();
 
-        cv::Mat matA(pointSelNum, 3, CV_32F, cv::Scalar::all(0));
+				// to added the points on plane
+				// added by jw
+
+
+				int totalCloudSelNum = pointSelNum;
+				int groundCloudSelNum = GroundCloudLast->points.size();	//////////////
+
+				if (newVectors == true && newGroundCloudRS == true){
+
+					ROS_INFO("num ground in LMOptim of Surf: %d", groundCloudSelNum);
+					totalCloudSelNum = pointSelNum + groundCloudSelNum ;
+				}
+
+        cv::Mat matA(totalCloudSelNum, 3, CV_32F, cv::Scalar::all(0));
+        cv::Mat matAt(3, totalCloudSelNum, CV_32F, cv::Scalar::all(0));
+        cv::Mat matAtA(3, 3, CV_32F, cv::Scalar::all(0));
+        cv::Mat matB(totalCloudSelNum, 1, CV_32F, cv::Scalar::all(0));
+        cv::Mat matAtB(3, 1, CV_32F, cv::Scalar::all(0));
+        cv::Mat matX(3, 1, CV_32F, cv::Scalar::all(0));
+
+/*
+				cv::Mat matA(pointSelNum, 3, CV_32F, cv::Scalar::all(0));
         cv::Mat matAt(3, pointSelNum, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtA(3, 3, CV_32F, cv::Scalar::all(0));
         cv::Mat matB(pointSelNum, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtB(3, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matX(3, 1, CV_32F, cv::Scalar::all(0));
+*/
 
         float srx = sin(transformCur[0]);
         float crx = cos(transformCur[0]);
@@ -1271,6 +1325,8 @@ public:
 
         float c1 = -b6; float c2 = b5; float c3 = tx*b6 - ty*b5; float c4 = -crx*crz; float c5 = crx*srz; float c6 = ty*c5 + tx*-c4;
         float c7 = b2; float c8 = -b1; float c9 = tx*-b2 - ty*-b1;
+
+
 
         for (int i = 0; i < pointSelNum; i++) {
 
@@ -1295,6 +1351,56 @@ public:
             matB.at<float>(i, 0) = -0.05 * d2;
         }
 
+				// what jw needs is
+				//
+				if (newVectors == true  && newGroundCloudRS == true){
+					int jj=0;
+
+					float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
+					float px=0, py=0, pz=0;
+					float costFunction=0;;
+					float errThr = 0.2;
+					ROS_INFO("error is : %f ", sqrt(diffVector));
+					ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
+
+					for (int i = 0; i < groundCloudSelNum; i++) {
+							jj = i+pointSelNum;
+							if (sqrt(diffVector)>=errThr)
+								break;
+							pointOri = GroundCloudLast->points[i];
+							coeff = coeffSel->points[i];
+
+							px = pointOri.x;
+							py = pointOri.y;
+							pz = pointOri.z;
+
+							float arx = (crx*sry*srz*pointOri.x + crx*crz*sry*pointOri.y - srx*sry*pointOri.z) * coeff.x
+												+ (-srx*srz*pointOri.x - crz*srx*pointOri.y - crx*pointOri.z) * coeff.y
+												+ (crx*cry*srz*pointOri.x + crx*cry*crz*pointOri.y - cry*srx*pointOri.z) * coeff.z;
+
+							float ary = ((cry*srx*srz - crz*sry)*pointOri.x
+												+ (sry*srz + cry*crz*srx)*pointOri.y + crx*cry*pointOri.z) * coeff.x
+												+ ((-cry*crz - srx*sry*srz)*pointOri.x
+												+ (cry*srz - crz*srx*sry)*pointOri.y - crx*sry*pointOri.z) * coeff.z;
+
+							float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOri.y)*coeff.x
+												+ (crx*crz*pointOri.x - crx*srz*pointOri.y) * coeff.y
+												+ ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
+
+							costFunction = sqrt((sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+														-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+														* (sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+														-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+																					+ diffVector)/2;
+
+							matA.at<float>(jj, 0) = arx;
+							matA.at<float>(jj, 1) = ary;
+							matA.at<float>(jj, 2) = arz;
+							matB.at<float>(jj, 0) = -0.05*costFunction;
+					}
+					newVectors = false;
+					newGroundCloudRS = false;
+				}
         cv::transpose(matA, matAt);
         matAtA = matAt * matA;
         matAtB = matAt * matB;
@@ -1708,6 +1814,11 @@ public:
 				// float pitchOriginTF = transformSum[0];
 				// float yawOriginTF = transformSum[1];
 
+				// ROS_INFO("roll, 2, : %f ", rollOriginTF);
+				// ROS_INFO("pitch, -0, : %f ", pitchOriginTF);
+				// ROS_INFO("yaw, -1, : %f ", yawOriginTF);
+
+
 
         // geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(transformSum[2], -transformSum[0], -transformSum[1]);
 				geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(rollOriginTF, pitchOriginTF, yawOriginTF);
@@ -1810,7 +1921,9 @@ public:
 
         if (newSegmentedCloud && newSegmentedCloudInfo && newOutlierCloud &&
             std::abs(timeNewSegmentedCloudInfo - timeNewSegmentedCloud) < 0.05 &&
-            std::abs(timeNewOutlierCloud - timeNewSegmentedCloud) < 0.05){
+						std::abs(timeNewOutlierCloud - timeNewSegmentedCloud) < 0.05 ){
+            //std::abs(timeNewOutlierCloud - timeNewSegmentedCloud) < 0.05 &&
+					  //newVectors && newGroundCloudRS){
 
             newSegmentedCloud = false;
             newSegmentedCloudInfo = false;
@@ -1850,17 +1963,6 @@ public:
         publishCloudsLast(); // cloud to mapOptimization
     }
 
-		void cloudGroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
-			timeCloudGroundLast = msg->header.stamp.toSec();
-			CloudGroundLast->clear();
-			pcl::fromROSMsg(*msg, *CloudGroundLast);
-			newCloudGroundLast = true;
-
-
-		}
-
-
-
 };
 
 
@@ -1884,6 +1986,6 @@ int main(int argc, char** argv)
         rate.sleep();
     }
 
-    ros::spin();
+    // ros::spin();
     return 0;
 }

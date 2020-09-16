@@ -80,6 +80,7 @@ private:
     // added
 
     ros::Subscriber subVectors;
+    ros::Subscriber subGroundCloudRS;
 
 
     nav_msgs::Odometry odomAftMapped;
@@ -125,6 +126,7 @@ private:
 
 
     pcl::PointCloud<PointType>::Ptr CloudSphereLast;
+    pcl::PointCloud<PointType>::Ptr groundCloudRS;
 
 
 
@@ -175,9 +177,7 @@ private:
     double timeLaserCloudOutlierLast;
     double timeLastGloalMapPublish;
 
-    double timeCloudSphereLast;
-    double timeQuaternionBaseRobot;
-    double timeQuaternionEnvironment;
+    double timeGroundCloudRS;
 
 
     bool newLaserCloudCornerLast;
@@ -185,7 +185,9 @@ private:
     bool newLaserOdometry;
     bool newLaserCloudOutlierLast;
 
-    bool newCloudSphereLast;
+
+    bool newGroundCloudRS;
+    bool newVectors;
 
 
     float transformLast[6];
@@ -238,10 +240,11 @@ private:
     float ctRoll, stRoll, ctPitch, stPitch, ctYaw, stYaw, tInX, tInY, tInZ;
 
 
-    float gx, gy, gz;
-    float lx, ly, lz;
+    float gvx, gvy, gvz;
+    float lvx, lvy, lvz;
 
-    bool newVectors;
+
+
 
 
 public:
@@ -268,6 +271,7 @@ public:
       subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
       subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &mapOptimization::vectorsHandler, this);
+      subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &mapOptimization::groundCloudRSHandler, this);
 
       pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
       pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
@@ -316,7 +320,7 @@ public:
 
 
         CloudSphereLast.reset(new pcl::PointCloud<PointType>());
-
+        groundCloudRS.reset(new pcl::PointCloud<PointType>());
 
 
         laserCloudOri.reset(new pcl::PointCloud<PointType>());
@@ -352,10 +356,7 @@ public:
         timeLaserCloudOutlierLast = 0;
         timeLastGloalMapPublish = 0;
 
-        timeCloudSphereLast = 0;
-        timeQuaternionBaseRobot = 0;
-        timeQuaternionEnvironment = 0;
-
+        timeGroundCloudRS = 0;
 
         timeLastProcessing = -1;
 
@@ -365,9 +366,9 @@ public:
         newLaserOdometry = false;
         newLaserCloudOutlierLast = false;
 
-        newCloudSphereLast = false;
-
-        newVectors = false;
+        //////////////////////////////////
+        newVectors = true;
+        newGroundCloudRS = true;
 
         for (int i = 0; i < 6; ++i){
             transformLast[i] = 0;
@@ -418,8 +419,8 @@ public:
 
         latestFrameID = 0;
 
-        gx = 0; gy = 0; gz = 0;
-        lx = 0; ly = 0; lz = 0;
+        gvx = 0; gvy = 0; gvz = 0;
+        lvx = 0; lvy = 0; lvz = 0;
     }
 
     void transformAssociateToMap(){
@@ -511,7 +512,7 @@ public:
     void transformUpdate()
     {
       if (imuPointerLast >= 0) {
-        ROS_INFO("imu Value added");
+        // ROS_INFO("imu Value added");
 
 		    float imuRollLast = 0, imuPitchLast = 0;
 		    while (imuPointerFront != imuPointerLast) {
@@ -538,37 +539,6 @@ public:
 		    transformTobeMapped[0] = 0.998 * transformTobeMapped[0] + 0.002 * imuPitchLast;
 		    transformTobeMapped[2] = 0.998 * transformTobeMapped[2] + 0.002 * imuRollLast;
 		  }
-
-      //
-/*
-      if (QuatEnvironmentPointerLast >= 0){
-        ROS_INFO("Environment Correction Value Used");
-
-        float rollBaseRobot, pitchBaseRobot;
-        float rollEnvironment, pitchEnvironment;
-        float ratioFront, ratioBack;
-
-        pitchBaseRobot = QuatBaseRobotPitch[0];
-        rollBaseRobot = QuatBaseRobotRoll[0];
-
-        pitchEnvironment = QuatEnvironmentPitch[0];
-        rollEnvironment = QuatEnvironmentRoll[0];
-
-        ratioBack = 0.025;
-        ratioFront = 1-ratioBack;
-
-        if (abs(pitchBaseRobot - pitchEnvironment) <= 45){
-          transformTobeMapped[0] = ratioFront * transformTobeMapped[0] + ratioBack * (QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0]);
-          //transformTobeMapped[0] -= QuatEnvironmentPitch[0] - QuatBaseRobotPitch[0];
-          //ROS_INFO("gPitch - bPitch =  %f", (QuatBaseRobotPitch[0] - QuatEnvironmentPitch[0])*180/PI);
-        }
-        if (abs(rollBaseRobot - rollEnvironment) <= 45){
-          transformTobeMapped[2] = ratioFront * transformTobeMapped[2] + ratioBack * (QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0]);
-          //transformTobeMapped[2] -= QuatEnvironmentRoll[0] - QuatBaseRobotRoll[0];
-          //ROS_INFO("gRoll - bRoll =  %f", (QuatBaseRobotRoll[0] - QuatEnvironmentRoll[0])*180/PI);
-        }
-      }
-*/
 
   		for (int i = 0; i < 6; i++) {
   		    transformBefMapped[i] = transformSum[i];
@@ -711,14 +681,21 @@ public:
         timeLaserOdometry = laserOdometry->header.stamp.toSec();
         double roll, pitch, yaw;
         geometry_msgs::Quaternion geoQuat = laserOdometry->pose.pose.orientation;
-        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
         tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //tf::Matrix3x3(tf::Quaternion(geoQuat.z, geoQuat.x, geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
+        //tf::Matrix3x3(tf::Quaternion(geoQuat.x, geoQuat.y, geoQuat.z, geoQuat.w)).getRPY(roll, pitch, yaw);
         transformSum[0] = -pitch;
         transformSum[1] = -yaw;
         transformSum[2] = roll;
-        //transformSum[0] = pitch;
-        //transformSum[1] = yaw;
-        //transformSum[2] = roll;
+        /*
+        transformSum[0] = pitch;
+        transformSum[1] = yaw;
+        transformSum[2] = roll;
+
+        transformSum[0] = roll;
+        transformSum[1] = pitch;
+        transformSum[2] = yaw;
+        */
 
         transformSum[3] = laserOdometry->pose.pose.position.x;
         transformSum[4] = laserOdometry->pose.pose.position.y;
@@ -727,15 +704,23 @@ public:
     }
 
     void vectorsHandler(const cloud_msgs::vector_msgs vectors){
-        gx = vectors.gx;
-        gy = vectors.gy;
-        gz = vectors.gz;
-        lx = vectors.lx;
-        ly = vectors.ly;
-        lz = vectors.lz;
+        gvx = vectors.gx;
+        gvy = vectors.gy;
+        gvz = vectors.gz;
+        lvx = vectors.lx;
+        lvy = vectors.ly;
+        lvz = vectors.lz;
 
         newVectors = true;
     }
+
+    void groundCloudRSHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
+      timeGroundCloudRS = msg->header.stamp.toSec();
+      groundCloudRS->clear();
+      pcl::fromROSMsg(*msg, *groundCloudRS);
+      newGroundCloudRS = true;
+    }
+
 
     void imuHandler(const sensor_msgs::Imu::ConstPtr& imuIn){
         double roll, pitch, yaw;
@@ -748,7 +733,7 @@ public:
         imuPitch[imuPointerLast] = pitch;
     }
 
-
+/*
 
     void cloudSphereHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
       timeCloudSphereLast = msg->header.stamp.toSec();
@@ -756,7 +741,7 @@ public:
       pcl::fromROSMsg(*msg, *CloudSphereLast);
       newCloudSphereLast = true;
     }
-
+*/
     void publishTF(){
 
         geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw
@@ -783,7 +768,7 @@ public:
 
         aftMappedTrans.stamp_ = ros::Time().fromSec(timeLaserOdometry);
         aftMappedTrans.setRotation(tf::Quaternion(-geoQuat.y, -geoQuat.z, geoQuat.x, geoQuat.w));
-        // aftMappedTrans.setRotation(tf::Quaternion(geoQuat.y, geoQuat.z, geoQuat.x, geoQuat.w));
+        //aftMappedTrans.setRotation(tf::Quaternion(geoQuat.x, geoQuat.y, geoQuat.z, geoQuat.w));
         aftMappedTrans.setOrigin(tf::Vector3(transformAftMapped[3], transformAftMapped[4], transformAftMapped[5]));
         tfBroadcaster.sendTransform(aftMappedTrans);
     }
@@ -808,7 +793,8 @@ public:
     }
 
     void visualizeGlobalMapThread(){
-        ros::Rate rate(0.2);
+        //ros::Rate rate(0.2);
+        ros::Rate rate(2);
         while (ros::ok()){
             rate.sleep();
             publishGlobalMap();
@@ -876,6 +862,7 @@ public:
         sensor_msgs::PointCloud2 cloudMsgTemp;
         pcl::toROSMsg(*globalMapKeyFramesDS, cloudMsgTemp);
         cloudMsgTemp.header.stamp = ros::Time().fromSec(timeLaserOdometry);
+        //cloudMsgTemp.header.stamp = ros::Time::now();
         cloudMsgTemp.header.frame_id = "/camera_init";
         pubLaserCloudSurround.publish(cloudMsgTemp);
 
@@ -1325,31 +1312,35 @@ public:
         float srz = sin(transformTobeMapped[2]);
         float crz = cos(transformTobeMapped[2]);
 
+
         int laserCloudSelNum = laserCloudOri->points.size();
         if (laserCloudSelNum < 50) {
             return false;
         }
+        // added by jw
+        int totalCloudSelNum = 0;
+        totalCloudSelNum = laserCloudSelNum;
+        int groundCloudSelNum = groundCloudRS->points.size();
 
-        // added
 
-        if (newVectors == true){
-          laserCloudSelNum = laserCloudSelNum + 1;
+        if (newVectors == true && newGroundCloudRS == true){
+
+          // ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
+          totalCloudSelNum = laserCloudSelNum + groundCloudSelNum;
+          ROS_INFO("laserCloudSelNum : %d", laserCloudSelNum);
+          ROS_INFO("groundCloudSelNum : %d", groundCloudSelNum);
+          ROS_INFO("totalCloudSelNum : %d", totalCloudSelNum);
         }
 
-        cv::Mat matA(laserCloudSelNum, 6, CV_32F, cv::Scalar::all(0));
-        cv::Mat matAt(6, laserCloudSelNum, CV_32F, cv::Scalar::all(0));
+        cv::Mat matA(totalCloudSelNum, 6, CV_32F, cv::Scalar::all(0));
+        cv::Mat matAt(6, totalCloudSelNum, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtA(6, 6, CV_32F, cv::Scalar::all(0));
-        cv::Mat matB(laserCloudSelNum, 1, CV_32F, cv::Scalar::all(0));
+        cv::Mat matB(totalCloudSelNum, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtB(6, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matX(6, 1, CV_32F, cv::Scalar::all(0));
 
-        if (newVectors == true){
-          laserCloudSelNum = laserCloudSelNum - 1;
-        }
 
-
-        //for (int i = 0; i < laserCloudSelNum; i++) {
-        for (int i = 0; i < laserCloudSelNum; i++) {
+        for (int i = 0; i < laserCloudSelNum; i++){
             pointOri = laserCloudOri->points[i];
             coeff = coeffSel->points[i];
 
@@ -1366,6 +1357,7 @@ public:
                       + (crx*crz*pointOri.x - crx*srz*pointOri.y) * coeff.y
                       + ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
 
+
             matA.at<float>(i, 0) = arx;
             matA.at<float>(i, 1) = ary;
             matA.at<float>(i, 2) = arz;
@@ -1373,19 +1365,73 @@ public:
             matA.at<float>(i, 4) = coeff.y;
             matA.at<float>(i, 5) = coeff.z;
             matB.at<float>(i, 0) = -coeff.intensity;
+
+
         }
+        // ROS_INFO("coeff.intensity is : %f ", sqrt(coeff.intensity));
+        // added by jw
+        // Normalization with Plane Normal Vector and point clouds on local plane
 
-        if (newVectors == true){
-          matA.at<float>(laserCloudSelNum, 0) = 0;
-          matA.at<float>(laserCloudSelNum, 1) = 0;
-          matA.at<float>(laserCloudSelNum, 2) = 0;
-          matA.at<float>(laserCloudSelNum, 3) = 0;
-          matA.at<float>(laserCloudSelNum, 4) = 0;
-          matA.at<float>(laserCloudSelNum, 5) = 0;
+        if (newVectors == true  && newGroundCloudRS == true){
 
-          float diffVector = sqrt (((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
-          matB.at<float>(laserCloudSelNum, 0) = -1 * diffVector;
+          int j=0;
+          float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
+          float px, py, pz;
+          float costFunction;
+          float errThr = 0.2;
+          ROS_INFO("error is : %f ", sqrt(diffVector));
+          ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
+
+
+
+          for (int i = 0; i < groundCloudSelNum; i++) {
+
+            if (sqrt(diffVector)>=errThr)
+              break;
+
+            j = i+laserCloudSelNum;
+            pointOri = groundCloudRS->points[i];
+            coeff = coeffSel->points[i];
+            coeff.x = 1;
+            coeff.y = 1;
+            coeff.z = 1;
+
+              px = pointOri.x;
+              py = pointOri.y;
+              pz = pointOri.z;
+
+              float arx = (crx*sry*srz*pointOri.x + crx*crz*sry*pointOri.y - srx*sry*pointOri.z) * coeff.x
+                        + (-srx*srz*pointOri.x - crz*srx*pointOri.y - crx*pointOri.z) * coeff.y
+                        + (crx*cry*srz*pointOri.x + crx*cry*crz*pointOri.y - cry*srx*pointOri.z) * coeff.z;
+
+              float ary = ((cry*srx*srz - crz*sry)*pointOri.x
+                        + (sry*srz + cry*crz*srx)*pointOri.y + crx*cry*pointOri.z) * coeff.x
+                        + ((-cry*crz - srx*sry*srz)*pointOri.x
+                        + (cry*srz - crz*srx*sry)*pointOri.y - crx*sry*pointOri.z) * coeff.z;
+
+              float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOri.y)*coeff.x
+                        + (crx*crz*pointOri.x - crx*srz*pointOri.y) * coeff.y
+                        + ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
+
+              costFunction = sqrt((sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+                            -sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+                            * (sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+                            -sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+                                          + sqrt(diffVector))/2;
+
+
+
+              matA.at<float>(j, 0) = arx;
+              matA.at<float>(j, 1) = ary;
+              matA.at<float>(j, 2) = arz;
+              matA.at<float>(j, 3) = coeff.x;
+              matA.at<float>(j, 4) = coeff.y;
+              matA.at<float>(j, 5) = coeff.z;
+              matB.at<float>(j, 0) = -costFunction;
+          }
+
           newVectors = false;
+          newGroundCloudRS = false;
         }
 
         cv::transpose(matA, matAt);
@@ -1428,9 +1474,9 @@ public:
         transformTobeMapped[3] += matX.at<float>(3, 0);
         transformTobeMapped[4] += matX.at<float>(4, 0);
         transformTobeMapped[5] += matX.at<float>(5, 0);
-        ROS_INFO("%f, %f, %f, %f, %f, %f", transformTobeMapped[0], transformTobeMapped[1], transformTobeMapped[2],
-          transformTobeMapped[3], transformTobeMapped[4], transformTobeMapped[5]);
-          
+        //ROS_INFO("%f, %f, %f, %f, %f, %f", transformTobeMapped[0], transformTobeMapped[1], transformTobeMapped[2],
+        //  transformTobeMapped[3], transformTobeMapped[4], transformTobeMapped[5]);
+
         float deltaR = sqrt(
                             pow(pcl::rad2deg(matX.at<float>(0, 0)), 2) +
                             pow(pcl::rad2deg(matX.at<float>(1, 0)), 2) +
@@ -1618,11 +1664,14 @@ public:
         if (newLaserCloudCornerLast  && std::abs(timeLaserCloudCornerLast  - timeLaserOdometry) < 0.005 &&
             newLaserCloudSurfLast    && std::abs(timeLaserCloudSurfLast    - timeLaserOdometry) < 0.005 &&
             newLaserCloudOutlierLast && std::abs(timeLaserCloudOutlierLast - timeLaserOdometry) < 0.005 &&
-            newLaserOdometry)
+            newVectors && newGroundCloudRS && newLaserOdometry)
         {
 
             newLaserCloudCornerLast = false; newLaserCloudSurfLast = false; newLaserCloudOutlierLast = false; newLaserOdometry = false;
             newLaserOdometry = false;
+            // Initializing in process
+            //newVectors = false;
+            //newGroundCloudRS = false;
 
             std::lock_guard<std::mutex> lock(mtx);
 
