@@ -22,17 +22,8 @@ private:
   ros::Publisher pubGroundLCCloud;  // Local Cloud of Global map
 
   ros::Publisher pubNormalVector;
-// ROS Publisher for Frame
 
-// ROS Subscriber
-// for Susscriber
-// ros::Subscriber subVar;
-// set subVar = nh.subscribe<>(,,handler);
-// in handler
-// declaration at Private in Class double timeVar;
-// in constructor, set timeVar = 0;
-// declaration at Private in Class bool newVar;
-// in constructor, set timeVar = false;
+
 
   ros::Subscriber subLaserCloudSurround;
   ros::Subscriber subKeyPoseOrigin;
@@ -72,6 +63,10 @@ private:
   float rollGlobal;
   float pitchGlobal;
   float yawGlobal;
+
+  // Vectors
+  float gx; float gy; float gz;   // global_ground
+  float lx; float ly; float lz;   // local_ground
 
 public:
     // Constructor
@@ -132,6 +127,10 @@ public:
       pitchGlobal = 0;
       yawGlobal = 0;
 
+      // Vectors
+      gx = 0; gy = 0; gz = 0;   // global_ground
+      lx = 0; ly = 0; lz = 0;   // local_ground
+
     }
 
     void keyPoseOriginHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
@@ -144,6 +143,7 @@ public:
 
     void groundCloudHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
       timegroundCloud = msg->header.stamp.toSec();
+      //ROS_INFO("%f_03_correct : groundCloudHandler", timegroundCloud);
       groundCloudlast->clear();
       pcl::fromROSMsg(*msg, *groundCloudlast);
       newgroundCloudlast = true;
@@ -151,6 +151,7 @@ public:
 
     void laserCloudSurroundHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
       timelaserCloudSurround = msg->header.stamp.toSec();
+      //ROS_INFO("%f_03_correct : laserCloudSurroundHandler", timelaserCloudSurround);
       laserCloudSurroundlast->clear();
       pcl::fromROSMsg(*msg, *laserCloudSurroundlast);
       newlaserCloudSurroundLast = true;
@@ -177,14 +178,23 @@ public:
       //if(newlaserCloudSurroundLast && newgroundCloudlast && newKeyPoseOrigin &&
         //std::abs(timelaserCloudSurround - timeKeyPoseOrigin) < 0.05 &&
         //std::abs(timeKeyPoseOrigin - timegroundCloud) < 0.05){
-      if(newlaserCloudSurroundLast && newgroundCloudlast && newKeyPoseOrigin){
-          newlaserCloudSurroundLast=0;
-          newgroundCloudlast=0;
-          newKeyPoseOrigin=0;
+      if(newlaserCloudSurroundLast && newKeyPoseOrigin)
+      {
+        if(newgroundCloudlast){
 
-      }else{
+            newlaserCloudSurroundLast=false;
+            newgroundCloudlast=false;
+            newKeyPoseOrigin=false;
+
+        }else{
+          return ;
+        }
+      }else
+      {
+        newgroundCloudlast=false;
         return ;
       }
+
 
 
 
@@ -270,8 +280,8 @@ public:
         return;
 
       // Vectors
-      float gx = 0, gy = 0, gz = 0;   // global_ground
-      float lx = 0, ly = 0, lz = 0;   // local_ground
+      gx = 0; gy = 0; gz = 0;   // global_ground
+      lx = 0; ly = 0; lz = 0;   // local_ground
 
       // int idxKeyPoseOrigin = keyPoseOriginlast->points.size()-1;
 
@@ -286,7 +296,7 @@ public:
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
       seg.setMaxIterations (50);
-      seg.setDistanceThreshold (0.1);
+      seg.setDistanceThreshold (0.2);
 
       //ROS_INFO("roi number of points : %d", cloudRoiFiltered->size());
       // Segment the largest planar component from the cropped cloud
@@ -347,7 +357,7 @@ public:
       seg.setModelType (pcl::SACMODEL_PLANE);
       seg.setMethodType (pcl::SAC_RANSAC);
       seg.setMaxIterations (50);
-      seg.setDistanceThreshold (0.1);
+      seg.setDistanceThreshold (0.2);
 
       // Segment the largest planar component from the cropped cloud
       seg.setInputCloud (groundCloudlast);
@@ -402,21 +412,6 @@ public:
       lx = coefficients->values[0];
       ly = coefficients->values[1];
       lz = coefficients->values[2];
-
-      ROS_INFO("coefficients of %f, %f, %f", lx, ly, lz);
-
-      cloud_msgs::vector_msgs vectorDiff;
-      vectorDiff.gx = gx;
-      vectorDiff.gy = gy;
-      vectorDiff.gz = gz;
-      vectorDiff.lx = lx;
-      vectorDiff.ly = ly;
-      vectorDiff.lz = lz;
-      // vectorDiff.header.stamp = ros::Time().fromSec(timegroundCloud);
-      vectorDiff.header.stamp = ros::Time::now();
-
-      pubNormalVector.publish(vectorDiff);
-
     }
 
     void getCylinderParam(){
@@ -558,27 +553,42 @@ public:
 */
     void publishAll(){
 
-      if (cloudRSGroundGlobal->points.empty())
-        return;
+//      if (cloudRSGroundLocal->points.empty())
+//        return;
+
+      sensor_msgs::PointCloud2 cloudMsgLocal;
+      pcl::toROSMsg(*cloudRSGroundLocal, cloudMsgLocal);
+      cloudMsgLocal.header.stamp = ros::Time().fromSec(timegroundCloud); //ros::Time::now(); //ros::Time().fromSec(timegroundCloud);
+      cloudMsgLocal.header.frame_id = "/camera_init";
+
+      pubGroundLCCloud.publish(cloudMsgLocal);
+
+//      if (cloudRSGroundGlobal->points.empty())
+//        return;
 
       sensor_msgs::PointCloud2 cloudMsgGlobal;
       pcl::toROSMsg(*cloudRSGroundGlobal, cloudMsgGlobal);
-      cloudMsgGlobal.header.stamp = ros::Time::now(); // ros::Time().fromSec(timegroundCloud);
+      cloudMsgGlobal.header.stamp = ros::Time().fromSec(timegroundCloud); //ros::Time::now(); // ros::Time().fromSec(timegroundCloud);
       cloudMsgGlobal.header.frame_id = "/camera_init";
 
 
       pubGroundGMCloud.publish(cloudMsgGlobal);
       cloudRSGroundGlobal->clear();
 
-      if (cloudRSGroundLocal->points.empty())
-        return;
 
-      sensor_msgs::PointCloud2 cloudMsgLocal;
-      pcl::toROSMsg(*cloudRSGroundLocal, cloudMsgLocal);
-      cloudMsgLocal.header.stamp = ros::Time::now(); //ros::Time().fromSec(timegroundCloud);
-      cloudMsgLocal.header.frame_id = "/camera_init";
 
-      pubGroundLCCloud.publish(cloudMsgLocal);
+      // vector
+      cloud_msgs::vector_msgs vectorDiff;
+      vectorDiff.gx = gx;
+      vectorDiff.gy = gy;
+      vectorDiff.gz = gz;
+      vectorDiff.lx = lx;
+      vectorDiff.ly = ly;
+      vectorDiff.lz = lz;
+      // vectorDiff.header.stamp = ros::Time().fromSec(timegroundCloud);
+      vectorDiff.header.stamp = cloudMsgGlobal.header.stamp; // ros::Time::now();
+
+      pubNormalVector.publish(vectorDiff);
 
       cloudRSGroundLocal->clear();
       cloudRoiFiltered->clear();

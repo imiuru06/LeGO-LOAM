@@ -170,6 +170,7 @@ private:
 		double timeCloudGroundLast;
     bool newGroundCloudRS;
 		bool newVectors;
+		bool optimizeVector;
 
 		float gvx, gvy, gvz;
     float lvx, lvy, lvz;
@@ -209,8 +210,8 @@ public:
         subOutlierCloud = nh.subscribe<sensor_msgs::PointCloud2>("/outlier_cloud", 1, &FeatureAssociation::outlierCloudHandler, this);
         subImu = nh.subscribe<sensor_msgs::Imu>(imuTopic, 50, &FeatureAssociation::imuHandler, this);
 
-				//subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &FeatureAssociation::vectorsHandler, this);
-				//subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &FeatureAssociation::groundCloudRSHandler, this);
+				subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &FeatureAssociation::vectorsHandler, this);
+				subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &FeatureAssociation::groundCloudRSHandler, this);
 
 
 		    pubCornerPointsSharp = nh.advertise<sensor_msgs::PointCloud2>("/laser_cloud_sharp", 1);
@@ -253,8 +254,9 @@ public:
 
 
 				newGroundCloudRS = true;
-				newVectors = true;
+				newVectors = false;
 
+				optimizeVector = false;
 
         newSegmentedCloud = false;
         newSegmentedCloudInfo = false;
@@ -492,14 +494,17 @@ public:
 
 
 		void vectorsHandler(const cloud_msgs::vector_msgs vectors){
-				gvx = vectors.gx;
-				gvy = vectors.gy;
-				gvz = vectors.gz;
-				lvx = vectors.lx;
-				lvy = vectors.ly;
-				lvz = vectors.lz;
 
-				newVectors = true;
+			gvx = vectors.gx;
+			gvy = vectors.gy;
+			gvz = vectors.gz;
+			lvx = vectors.lx;
+			lvy = vectors.ly;
+			lvz = vectors.lz;
+
+			newVectors = true;
+
+			//ROS_INFO("%f_02_feature : vectorsHandler ", vectors.header.stamp.toSec());
 		}
 
 		void groundCloudRSHandler(const sensor_msgs::PointCloud2ConstPtr& msg){
@@ -508,7 +513,7 @@ public:
 			pcl::fromROSMsg(*msg, *GroundCloudLast);
 			newGroundCloudRS = true;
 
-
+			//ROS_INFO("%f_02_feature : groundCloudRSHandler ", timeCloudGroundLast);
 		}
 
 
@@ -1279,14 +1284,12 @@ public:
 
 				// to added the points on plane
 				// added by jw
-
-
 				int totalCloudSelNum = pointSelNum;
 				int groundCloudSelNum = GroundCloudLast->points.size();	//////////////
 
-				if (newVectors == true && newGroundCloudRS == true){
+				if (optimizeVector){
 
-					ROS_INFO("num ground in LMOptim of Surf: %d", groundCloudSelNum);
+					ROS_INFO("02_surf feature_num ground in LMOptim: %d", groundCloudSelNum);
 					totalCloudSelNum = pointSelNum + groundCloudSelNum ;
 				}
 
@@ -1353,53 +1356,61 @@ public:
 
 				// what jw needs is
 				//
-				if (newVectors == true  && newGroundCloudRS == true){
+				if (optimizeVector){
 					int jj=0;
 
-					float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
+					float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);
+					//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
 					float px=0, py=0, pz=0;
 					float costFunction=0;;
-					float errThr = 0.2;
-					ROS_INFO("error is : %f ", sqrt(diffVector));
-					ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
+					float errThr = 0.1;
+					ROS_INFO("02_surf feature_error is : %f ", sqrt(diffVector));
 
 					for (int i = 0; i < groundCloudSelNum; i++) {
 							jj = i+pointSelNum;
-							if (sqrt(diffVector)>=errThr)
-								break;
-							pointOri = GroundCloudLast->points[i];
-							coeff = coeffSel->points[i];
+							if (sqrt(diffVector)>=errThr){
+								ROS_INFO("02_featrue : Error is To high");
+								matA.at<float>(jj, 0) = 0;
+								matA.at<float>(jj, 1) = 0;
+								matA.at<float>(jj, 2) = 0;
+								matB.at<float>(jj, 0) = 0;
 
-							px = pointOri.x;
-							py = pointOri.y;
-							pz = pointOri.z;
+							}else
+							{
+								pointOri = GroundCloudLast->points[i];
+								coeff = coeffSel->points[i];
+								coeff.x = 1;
+								coeff.y = 1;
+								coeff.z = 1;
 
-							float arx = (crx*sry*srz*pointOri.x + crx*crz*sry*pointOri.y - srx*sry*pointOri.z) * coeff.x
-												+ (-srx*srz*pointOri.x - crz*srx*pointOri.y - crx*pointOri.z) * coeff.y
-												+ (crx*cry*srz*pointOri.x + crx*cry*crz*pointOri.y - cry*srx*pointOri.z) * coeff.z;
+								px = pointOri.x;
+								py = pointOri.y;
+								pz = pointOri.z;
 
-							float ary = ((cry*srx*srz - crz*sry)*pointOri.x
-												+ (sry*srz + cry*crz*srx)*pointOri.y + crx*cry*pointOri.z) * coeff.x
-												+ ((-cry*crz - srx*sry*srz)*pointOri.x
-												+ (cry*srz - crz*srx*sry)*pointOri.y - crx*sry*pointOri.z) * coeff.z;
+								float arx = (-a1*pointOri.x + a2*pointOri.y + a3*pointOri.z + a4) * coeff.x
+		                      + (a5*pointOri.x - a6*pointOri.y + crx*pointOri.z + a7) * coeff.y
+		                      + (a8*pointOri.x - a9*pointOri.y - a10*pointOri.z + a11) * coeff.z;
 
-							float arz = ((crz*srx*sry - cry*srz)*pointOri.x + (-cry*crz-srx*sry*srz)*pointOri.y)*coeff.x
-												+ (crx*crz*pointOri.x - crx*srz*pointOri.y) * coeff.y
-												+ ((sry*srz + cry*crz*srx)*pointOri.x + (crz*sry-cry*srx*srz)*pointOri.y)*coeff.z;
+		            float arz = (c1*pointOri.x + c2*pointOri.y + c3) * coeff.x
+		                      + (c4*pointOri.x - c5*pointOri.y + c6) * coeff.y
+		                      + (c7*pointOri.x + c8*pointOri.y + c9) * coeff.z;
 
-							costFunction = sqrt((sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
-														-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
-														* (sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
-														-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
-																					+ diffVector)/2;
+		            float aty = -b6 * coeff.x + c4 * coeff.y + b2 * coeff.z;
 
-							matA.at<float>(jj, 0) = arx;
-							matA.at<float>(jj, 1) = ary;
-							matA.at<float>(jj, 2) = arz;
-							matB.at<float>(jj, 0) = -0.05*costFunction;
+								costFunction = sqrt((sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+															-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+															* (sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+															-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+																						+ diffVector)/2;
+
+								matA.at<float>(jj, 0) = arx;
+								matA.at<float>(jj, 1) = arz;
+								matA.at<float>(jj, 2) = aty;
+								matB.at<float>(jj, 0) = -0.01*costFunction;
+							}
+
 					}
-					newVectors = false;
-					newGroundCloudRS = false;
+					//optimizeVector = false;
 				}
         cv::transpose(matA, matAt);
         matAtA = matAt * matA;
@@ -1460,12 +1471,33 @@ public:
 
         int pointSelNum = laserCloudOri->points.size();
 
+				// to added the points on plane
+				// added by jw
+				int totalCloudSelNum = pointSelNum;
+				int groundCloudSelNum = GroundCloudLast->points.size();	//////////////
+
+				if (optimizeVector){
+
+					//ROS_INFO("02_Corner feature_num ground in LMOptim of Surf: %d", groundCloudSelNum);
+					totalCloudSelNum = pointSelNum + groundCloudSelNum ;
+				}
+
+
+	      cv::Mat matA(totalCloudSelNum, 3, CV_32F, cv::Scalar::all(0));
+	      cv::Mat matAt(3, totalCloudSelNum, CV_32F, cv::Scalar::all(0));
+	      cv::Mat matAtA(3, 3, CV_32F, cv::Scalar::all(0));
+	      cv::Mat matB(totalCloudSelNum, 1, CV_32F, cv::Scalar::all(0));
+	      cv::Mat matAtB(3, 1, CV_32F, cv::Scalar::all(0));
+	      cv::Mat matX(3, 1, CV_32F, cv::Scalar::all(0));
+
+				/*
         cv::Mat matA(pointSelNum, 3, CV_32F, cv::Scalar::all(0));
         cv::Mat matAt(3, pointSelNum, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtA(3, 3, CV_32F, cv::Scalar::all(0));
         cv::Mat matB(pointSelNum, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matAtB(3, 1, CV_32F, cv::Scalar::all(0));
         cv::Mat matX(3, 1, CV_32F, cv::Scalar::all(0));
+				*/
 
         float srx = sin(transformCur[0]);
         float crx = cos(transformCur[0]);
@@ -1502,6 +1534,58 @@ public:
             matB.at<float>(i, 0) = -0.05 * d2;
         }
 
+				// what jw needs is
+				//
+				if (optimizeVector){
+					int jj=0;
+
+					float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);
+					//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
+					float px=0, py=0, pz=0;
+					float costFunction=0;;
+					float errThr = 0.1;
+
+					for (int i = 0; i < groundCloudSelNum; i++) {
+							jj = i+pointSelNum;
+							if (sqrt(diffVector)>=errThr){
+								ROS_INFO("02_featrue : Error is To high");
+								matA.at<float>(jj, 0) = 0;
+								matA.at<float>(jj, 1) = 0;
+								matA.at<float>(jj, 2) = 0;
+								matB.at<float>(jj, 0) = 0;
+
+							}else{
+								pointOri = GroundCloudLast->points[i];
+								coeff = coeffSel->points[i];
+								coeff.x = 1;
+								coeff.y = 1;
+								coeff.z = 1;
+
+								px = pointOri.x;
+								py = pointOri.y;
+								pz = pointOri.z;
+
+								float ary = (b1*pointOri.x + b2*pointOri.y - b3*pointOri.z + b4) * coeff.x
+		                      + (b5*pointOri.x + b6*pointOri.y - b7*pointOri.z + b8) * coeff.z;
+
+		            float atx = -b5 * coeff.x + c5 * coeff.y + b1 * coeff.z;
+
+		            float atz = b7 * coeff.x - srx * coeff.y - b3 * coeff.z;
+
+								costFunction = sqrt((sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+															-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+															* (sqrt(((gvx+px)*(gvx+px)+(gvy+py)*(gvy+py)+(gvz+pz)*(gvz+pz)))
+															-sqrt(((lvx+px)*(lvx+px)+(lvy+py)*(lvy+py)+(lvz+pz)*(lvz+pz))))
+																						+ diffVector)/2;
+
+								matA.at<float>(jj, 0) = ary;
+								matA.at<float>(jj, 1) = atx;
+								matA.at<float>(jj, 2) = atz;
+								matB.at<float>(jj, 0) = -0.01*costFunction;
+							}
+					}
+					optimizeVector = false;
+				}
         cv::transpose(matA, matAt);
         matAtA = matAt * matA;
         matAtB = matAt * matB;
@@ -1556,7 +1640,7 @@ public:
         }
         return true;
     }
-
+/*
     bool calculateTransformation(int iterCount){
 
         int pointSelNum = laserCloudOri->points.size();
@@ -1681,7 +1765,7 @@ public:
         }
         return true;
     }
-
+*/
     void checkSystemInitialization(){
 
         pcl::PointCloud<PointType>::Ptr laserCloudTemp = cornerPointsLessSharp;
@@ -1824,6 +1908,7 @@ public:
 				geometry_msgs::Quaternion geoQuat = tf::createQuaternionMsgFromRollPitchYaw(rollOriginTF, pitchOriginTF, yawOriginTF);
 
         laserOdometry.header.stamp = cloudHeader.stamp;
+				//ROS_INFO("%f_02_feature : publishOdometry", cloudHeader.stamp.toSec());
         //laserOdometry.pose.pose.orientation.x = geoQuat.y;
         //laserOdometry.pose.pose.orientation.y = geoQuat.z;
 				laserOdometry.pose.pose.orientation.x = -geoQuat.y;
@@ -1928,6 +2013,11 @@ public:
             newSegmentedCloud = false;
             newSegmentedCloudInfo = false;
             newOutlierCloud = false;
+						if(newVectors && newGroundCloudRS){
+							optimizeVector = true;
+							newVectors = false;
+							newGroundCloudRS = false;
+						}
         }else{
             return;
         }

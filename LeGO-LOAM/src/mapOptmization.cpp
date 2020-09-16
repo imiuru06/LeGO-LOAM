@@ -270,8 +270,8 @@ public:
       subLaserOdometry = nh.subscribe<nav_msgs::Odometry>("/laser_odom_to_init", 5, &mapOptimization::laserOdometryHandler, this);
       subImu = nh.subscribe<sensor_msgs::Imu> (imuTopic, 50, &mapOptimization::imuHandler, this);
 
-      subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &mapOptimization::vectorsHandler, this);
-      subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &mapOptimization::groundCloudRSHandler, this);
+      // subVectors = nh.subscribe<cloud_msgs::vector_msgs>  ("/vectors", 2, &mapOptimization::vectorsHandler, this);
+      // subGroundCloudRS =nh.subscribe<sensor_msgs::PointCloud2>("/ground_local_cloud", 2, &mapOptimization::groundCloudRSHandler, this);
 
       pubHistoryKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/history_cloud", 2);
       pubIcpKeyFrames = nh.advertise<sensor_msgs::PointCloud2>("/corrected_cloud", 2);
@@ -367,8 +367,8 @@ public:
         newLaserCloudOutlierLast = false;
 
         //////////////////////////////////
-        newVectors = true;
-        newGroundCloudRS = true;
+        newVectors = false;
+        newGroundCloudRS = false;
 
         for (int i = 0; i < 6; ++i){
             transformLast[i] = 0;
@@ -679,6 +679,9 @@ public:
 
     void laserOdometryHandler(const nav_msgs::Odometry::ConstPtr& laserOdometry){
         timeLaserOdometry = laserOdometry->header.stamp.toSec();
+
+        //ROS_INFO("%f_04_map : laserOdometryHandler", timeLaserOdometry);
+
         double roll, pitch, yaw;
         geometry_msgs::Quaternion geoQuat = laserOdometry->pose.pose.orientation;
         tf::Matrix3x3(tf::Quaternion(geoQuat.z, -geoQuat.x, -geoQuat.y, geoQuat.w)).getRPY(roll, pitch, yaw);
@@ -795,9 +798,12 @@ public:
     void visualizeGlobalMapThread(){
         //ros::Rate rate(0.2);
         ros::Rate rate(2);
+
         while (ros::ok()){
-            rate.sleep();
-            publishGlobalMap();
+
+          publishGlobalMap();
+          rate.sleep();
+
         }
         // save final point cloud
         pcl::io::savePCDFileASCII(fileDirectory+"finalCloud.pcd", *globalMapKeyFramesDS);
@@ -850,12 +856,12 @@ public:
         downSizeFilterGlobalMapKeyPoses.filter(*globalMapKeyPosesDS);
 	    // extract visualized and downsampled key frames
         for (int i = 0; i < globalMapKeyPosesDS->points.size(); ++i){
-			int thisKeyInd = (int)globalMapKeyPosesDS->points[i].intensity;
-			*globalMapKeyFrames += *transformPointCloud(cornerCloudKeyFrames[thisKeyInd],   &cloudKeyPoses6D->points[thisKeyInd]);
-			*globalMapKeyFrames += *transformPointCloud(surfCloudKeyFrames[thisKeyInd],    &cloudKeyPoses6D->points[thisKeyInd]);
-			*globalMapKeyFrames += *transformPointCloud(outlierCloudKeyFrames[thisKeyInd], &cloudKeyPoses6D->points[thisKeyInd]);
+    			int thisKeyInd = (int)globalMapKeyPosesDS->points[i].intensity;
+    			*globalMapKeyFrames += *transformPointCloud(cornerCloudKeyFrames[thisKeyInd],   &cloudKeyPoses6D->points[thisKeyInd]);
+    			*globalMapKeyFrames += *transformPointCloud(surfCloudKeyFrames[thisKeyInd],    &cloudKeyPoses6D->points[thisKeyInd]);
+    			*globalMapKeyFrames += *transformPointCloud(outlierCloudKeyFrames[thisKeyInd], &cloudKeyPoses6D->points[thisKeyInd]);
         }
-	    // downsample visualized points
+	      // downsample visualized points
         downSizeFilterGlobalMapKeyFrames.setInputCloud(globalMapKeyFrames);
         downSizeFilterGlobalMapKeyFrames.filter(*globalMapKeyFramesDS);
 
@@ -864,6 +870,7 @@ public:
         cloudMsgTemp.header.stamp = ros::Time().fromSec(timeLaserOdometry);
         //cloudMsgTemp.header.stamp = ros::Time::now();
         cloudMsgTemp.header.frame_id = "/camera_init";
+        //ROS_INFO("%f_04_mapOpti", cloudMsgTemp.header.stamp.toSec());
         pubLaserCloudSurround.publish(cloudMsgTemp);
 
         globalMapKeyPoses->clear();
@@ -1323,7 +1330,7 @@ public:
         int groundCloudSelNum = groundCloudRS->points.size();
 
 
-        if (newVectors == true && newGroundCloudRS == true){
+        if (newVectors&& newGroundCloudRS){
 
           // ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
           totalCloudSelNum = laserCloudSelNum + groundCloudSelNum;
@@ -1372,15 +1379,15 @@ public:
         // added by jw
         // Normalization with Plane Normal Vector and point clouds on local plane
 
-        if (newVectors == true  && newGroundCloudRS == true){
+        if (newVectors && newGroundCloudRS){
 
           int j=0;
           float diffVector = (gvx-lvx)*(gvx-lvx)+(gvy-lvy)*(gvy-lvy)+(gvz-lvz)*(gvz-lvz);//(((gx-lx) + (gy-ly)+ (gz-lz))*((gx-lx) + (gy-ly)+ (gz-lz)));
           float px, py, pz;
           float costFunction;
           float errThr = 0.2;
-          ROS_INFO("error is : %f ", sqrt(diffVector));
-          ROS_INFO("num ground in LMOptim : %d", groundCloudSelNum);
+          //ROS_INFO("04_map : error is : %f ", sqrt(diffVector));
+          //ROS_INFO("04_map : num ground in LMOptim : %d", groundCloudSelNum);
 
 
 
@@ -1664,7 +1671,8 @@ public:
         if (newLaserCloudCornerLast  && std::abs(timeLaserCloudCornerLast  - timeLaserOdometry) < 0.005 &&
             newLaserCloudSurfLast    && std::abs(timeLaserCloudSurfLast    - timeLaserOdometry) < 0.005 &&
             newLaserCloudOutlierLast && std::abs(timeLaserCloudOutlierLast - timeLaserOdometry) < 0.005 &&
-            newVectors && newGroundCloudRS && newLaserOdometry)
+            newLaserOdometry)
+            //newVectors && newGroundCloudRS && newLaserOdometry)
         {
 
             newLaserCloudCornerLast = false; newLaserCloudSurfLast = false; newLaserCloudOutlierLast = false; newLaserOdometry = false;
@@ -1724,6 +1732,7 @@ int main(int argc, char** argv)
         MO.run();
 
         rate.sleep();
+
     }
 
     loopthread.join();
